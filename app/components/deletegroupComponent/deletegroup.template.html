@@ -1,0 +1,8 @@
+<div style="padding: 1rem;" fxLayout="column wrap" class="spborder deletedialog" fxLayoutGap="1em" fxLayoutAlign="start stretch" [fxShow]="true" [fxHide]="false">
+  <div fxLayoutAlign="center center" class="font-14">
+    {{data.msg}}</div>
+  <div fxLayout="row " fxLayoutGap="2em" fxLayoutAlign="center stretch" [fxShow]="true" [fxHide]="false">
+    <button mat-button class="success-btn2" *ngIf="data.positiveButton" (click)="closeDialog(true)">{{data.positiveButton}}</button>
+    <button mat-button class="cancel-btn2" *ngIf="data.negativebuuton" (click)="closeDialog(false)">{{data.negativebuuton}}</button>
+  </div>
+</div>

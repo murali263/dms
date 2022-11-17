@@ -1,0 +1,17 @@
+@import "../../../../src/styles.scss";
+
+.document-action-btn {
+  background: #5597E3;
+  color: $white-color;
+}
+.doc-nav-links{
+  letter-spacing: 0.25pt;
+  color: gray;
+  font-weight: bold;
+}
+.doc-nav-links:hover {
+  text-decoration: underline;
+  color: blueviolet;
+  cursor: pointer;
+}
+

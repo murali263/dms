@@ -1,0 +1,53 @@
+<div fxLayout="column wrap" style="width:100%;padding:15px;" fxLayoutAlign="start stretch" [fxShow]="true" [fxHide]="false">
+  <div fxLayout="row " fxLayoutAlign="start center" [fxShow]="true" [fxHide]="false">
+    <div fxLayout="column wrap" fxFlex="75" fxLayoutAlign="start stretch" [fxShow]="true" [fxHide]="false" fxFlex.md="75" fxFlex.lg="75">
+      <h4 style="padding-left:16px" class="font-color-new">
+        Select folder privileges</h4>
+    </div>
+    <div fxFlex.lg="22" fxLayout="row" fxLayoutAlign="space-around" fxFlex.md="40">
+      <h4 class="font-color-new">Read</h4>
+      <h4 class="font-color-new">Read &amp; Write</h4>
+    </div>
+  </div>
+  <div fxLayout="row wrap" fxLayoutAlign="start stretch" [fxShow]="true" [fxHide]="false">
+    <div style="width:100%">
+      <mat-tree [dataSource]="dataSource" [treeControl]="treeControl">
+        <mat-tree-node *matTreeNodeDef="let node" matTreeNodeToggle matTreeNodePadding [fxShow]="node.item.type == &apos;Folder&apos;">
+          <div class="folder-list" *ngIf="node.item.type == &apos;Folder&apos;" fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="6px">
+            <button mat-icon-button disabled>
+              <img src="assets/Web/folder_new.png" *ngIf="genericService.getFolderChildrenCount(node.item.content).DR_Arr.length == 0">
+              <img *ngIf="genericService.getFolderChildrenCount(node.item.content).DR_Arr.length &gt; 0 " src="assets/Web/folder_new.png">
+            </button>
+            <span matTooltip="{{node.item.name}}" class="folder-privilege-ellipsis">{{node.item.name}}</span>
+          </div>
+          <div class="folder-checkbox checkbox" style="width:22%;position: absolute;right: 10px;" *ngIf="node.item.type == &apos;Folder&apos;">
+            <mat-checkbox id="R-{{node.item.fsuuid}}" class="checklist-leaf-node checklist-leaf-nodeR" [(ngModel)]="node.item.checkedR" required (change)="readAccessCheck($event ,node,&apos;R&apos; ,node.item.checkedR)"></mat-checkbox>
+            <mat-checkbox id="RW-{{node.item.fsuuid}}" class="checklist-leaf-node checklist-leaf-nodeRW" [(ngModel)]="node.item.checkedRW" required (change)="readAccessCheck($event ,node,&apos;RW&apos; ,node.item.checkedRW)"></mat-checkbox>
+          </div>
+        </mat-tree-node>
+
+        <mat-tree-node *matTreeNodeDef="let node; when: hasChild" matTreeNodePadding [fxShow]="node.item.type == &apos;Folder&apos;">
+          <div class="folder-list" *ngIf="node.item.type == &apos;Folder&apos;" fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="6px">
+            <button [attr.id]="&apos;BTN-&apos;+node.item.fsuuid" mat-icon-button matTreeNodeToggle [attr.aria-label]="&apos;toggle &apos; + node.filename" [matTreeNodeToggleRecursive]="true">
+              <span *ngIf="treeControl.isExpanded(node)" class="node-expanded">
+						<img *ngIf="genericService.getFolderChildrenCount(node.item.content).DR_Arr.length &gt; 0 " src="assets/Web/folder_new.png">
+						<img src="assets/Web/folder_new.png" *ngIf="genericService.getFolderChildrenCount(node.item.content).DR_Arr.length == 0">
+			</span>
+              <span *ngIf="!treeControl.isExpanded(node)">
+						<img *ngIf="genericService.getFolderChildrenCount(node.item.content).DR_Arr.length &gt; 0 " src="assets/Web/folder_new.png">
+						<img src="assets/Web/folder_new.png" *ngIf="genericService.getFolderChildrenCount(node.item.content).DR_Arr.length == 0">
+			</span>
+            </button>
+            <span matTooltip="{{node.item.name}}" class="folder-privilege-ellipsis">{{node.item.name}}</span>
+          </div>
+          <div class="folder-checkbox checkbox" style="width:22%;position: absolute;right: 10px;" *ngIf="node.item.type == &apos;Folder&apos;">
+            <mat-checkbox id="R-{{node.item.fsuuid}}" class="checklist-leaf-node checklist-leaf-nodeR" [(ngModel)]="node.item.checkedR" required (change)="readAccessCheck($event ,node,&apos;R&apos; ,node.item.checkedR)"></mat-checkbox>
+            <mat-checkbox id="RW-{{node.item.fsuuid}}" class="checklist-leaf-node checklist-leaf-nodeRW" [(ngModel)]="node.item.checkedRW" required (change)="readAccessCheck($event ,node,&apos;RW&apos; , node.item.checkedRW )"></mat-checkbox>
+          </div>
+        </mat-tree-node>
+
+
+      </mat-tree>
+    </div>
+  </div>
+</div>

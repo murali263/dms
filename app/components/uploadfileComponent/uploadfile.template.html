@@ -1,0 +1,321 @@
+<div fxLayout="column wrap" class="card-padding" fxLayoutGap="1em" fxLayoutAlign="  stretch" [fxShow]="true"
+  [fxHide]="false">
+  <div class="title">
+    Upload New File
+  </div>
+  <mat-card>
+    <mat-card-content>
+      <form [formGroup]="uploaddetails" class="form-padding">
+        <div fxLayout="column wrap" fxLayoutGap="1em" fxLayoutAlign="  center" [fxShow]="true" [fxHide]="false">
+          <div fxLayout="row wrap" fxLayoutAlign="start stretch" fxFlex="100" [fxShow]="true" [fxHide]="false">
+            <div fxLayout="column" class="upload-selection" fxFlex="50" fxLayoutAlign="start stretch" [fxShow]="true"
+              [fxHide]="false">
+              <div fxLayout="row" fxLayoutAlign="start stretch" [fxShow]="true" [fxHide]="false"
+                (click)="fileInput.click();" matTooltip="Upload">
+                <input id="input_fileinput_uploadlead" (click)="fileInput.value = null" type="file"
+                  accept=".png,.jpg,.doc,.docx,.html,.htm,.odt,.pdf,.xls,.xlsx,.csv,.ods,.ppt,.pptx,.txt,.jpeg"
+                  #fileInput style="display:none;" (change)="handleFileInput($event)">
+                <div fxLayout="column" fxFlex="70" [fxShow.lt-sm]="false" fxLayoutAlign="start stretch" [fxShow]="true"
+                  [fxHide]="false">
+                  <input style="outline:none;padding: 7px; cursor:pointer" placeholder="Upload File" type="text">
+                </div>
+                <div fxLayout="column" class="upload-btn pointer" fxFlex="20" fxLayoutAlign="center center"
+                  [fxShow]="true" [fxHide]="false">
+                  <div id="button_choosefile_uploadlead">Upload</div>
+                </div>
+              </div>
+            </div>
+            <div fxLayout="column" class="upload-selection" fxFlex="50" fxLayoutAlign="center stretch" [fxShow]="true"
+              [fxHide]="false">
+              <div style="width:100%;" class="fields upload-selection">
+                <mat-form-field style="width:100%;" [appearance]="&apos;outline&apos;"
+                  [floatLabel]="&apos;always&apos;">
+                  <input matInput placeholder="document name" formControlName="documentName" [disabled]="true" required>
+                  <mat-label>Document Name</mat-label>
+                </mat-form-field>
+              </div>
+            </div>
+          </div>
+          <div fxLayout="row wrap" fxLayoutAlign="start stretch" [fxShow]="true" [fxHide]="false">
+             <!-- <------------------------- Folders start ------------------------->
+            <div style="width: 100%;">
+              <mat-accordion>
+                <mat-expansion-panel>
+                  <mat-expansion-panel-header>
+                    <mat-panel-title>
+                      Select Multiple destinations to upload files .
+                    </mat-panel-title>
+                    <mat-panel-description>
+                    </mat-panel-description>
+                  </mat-expansion-panel-header>
+                  <div fxLayout="row" fxLayoutAlign="center start" fxLayoutGap="20px">
+                    <div fxLayout="column" fxFlex="45" fxLayoutGap="10px">
+                      <span>Folders Available</span>
+                      <div fxLayoutAlign="center center">
+                        <div fxLayout="column" fxLayoutAlign="center center" class="prefix-icon">
+                          <mat-icon>search</mat-icon>
+                        </div>
+                        <input class="input-field-search" type="text" placeholder="Search"
+                          [(ngModel)]="searchFolderValue" name="Search" (keyup)="searchFolder(searchFolderValue)"
+                          [ngModelOptions]="{standalone: true}">
+                      </div>
+
+                      <div name="folders-list" class="folder-list">
+                        <div *ngFor="let folder of newFolderList;let i=index" fxLayout="column" fxLayoutGap="20px">
+                          <div fxLayout="row" fxLayoutAlign="start center" class="pointer" style="min-height:36px;"
+                            (click)="folderSelection(folder.checked = !folder.checked , folder)"
+                            [class]="folder.checked ? &apos;folder-select pointer&apos; : &apos;folder-unselect pointer&apos;">
+                            <!-- <mat-checkbox class="example-margin" [(ngModel)]="folder.checked"
+                              [ngModelOptions]="{standalone: true}"
+                              (change)="folderSelection(event, i , folder.checked , folder)">{{folder.name}}
+                            </mat-checkbox> -->
+                            <label style="padding-left: 6px;max-width:250px" class="pointer ellipsis-text"
+                              [matTooltip]="folder.name">{{folder.name}}</label>
+                          </div>
+                        </div>
+                        <!-- <div style="padding:6px">
+                          <button [fxShow]="enableLoadMore" mat-raised-button class="btn-class confirm"
+                            (click)="loadMore()">More</button>
+                        </div> -->
+                      </div>
+                    </div>
+                    <div fxLayout="column" fxFlex="45" fxLayoutGap="20px">
+                      <div fxLayout="column" fxLayoutGap="10px">
+                        <span>Selected Folders</span>
+                        <div name="folders-list" class="folder-list" style="max-height: 244px;"
+                          [fxHide]="selectedFolderList.length == 0">
+                          <div *ngFor="let listItem of selectedFolderList">
+                            <div fxLayout="row" style="min-height:36px;" fxLayoutAlign="space-between">
+                              <span style="max-width:250px" class="ellipsis-text"
+                                [matTooltip]="listItem.name">{{listItem.name}}</span>
+                              <span style="padding-right:12px">
+                                <mat-icon class="material-icons-outlined pointer"
+                                  [fxHide]="listItem.fsuuid == backendservice.currentFolder.fsuuid"
+                                  (click)="removeFolder(listItem)">cancel</mat-icon>
+                              </span>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div>
+                      </div>
+                    </div>
+                  </div>
+                </mat-expansion-panel>
+              </mat-accordion>
+            </div>
+             <!-- <------------------------- Folders end ------------------------->
+          </div>
+          
+         
+          
+          
+          <div fxLayout="row wrap" fxFlex="100" fxLayoutAlign="start stretch" [fxShow]="true"
+            [fxHide]="false">
+            
+            <!-- <div style="width: 100%;" class=" upload-selection checked"> -->
+            <div fxLayout="column wrap" style="width:100%;" fxFlex="50" [fxShow]="true" [fxHide]="false"
+              class="metadataAlignment upload-selection checked" >
+              
+              <div>
+                <mat-form-field style="width:82%;" [appearance]="&apos;outline&apos;"
+                [floatLabel]="&apos;always&apos;">
+                  <mat-label>Business Department</mat-label>
+                  <mat-select formControlName="businessDepartment" [(value)]="selectedBD">
+                    <mat-option (click)="metaBDId()" *ngFor="let value of businessDepartments" [value]="value.businessid">{{value.businessDepartmentname}}</mat-option>
+                  </mat-select>
+                </mat-form-field>
+              </div>
+              
+              <div formGroupName="configData">
+                <div *ngFor="let m of metadata; let i=index" class="w100">
+                  <!-- <------------------------- Metadata config dropdowns start ------------------------->
+                  <div class="upload-selection" style="width:100%;margin-bottom: 1em;" fxLayout="row" fxFlex="100" *ngIf="m.fieldType == &apos;DDL&apos;">
+                    <mat-form-field style="width:82%;" [appearance]="&apos;outline&apos;"
+                      [floatLabel]="&apos;always&apos;">
+                      <mat-label>{{m.name}}</mat-label>
+
+
+                      <mat-select [formControlName]="m.configId"  placeholder="{{m.name}}" multiple #multiSelect>
+                        <mat-option>
+                          <ngx-mat-select-search  [formControlName]="m.name" placeholderLabel="Search {{m.name}}" noEntriesFoundLabel="&apos;no results found&apos;"></ngx-mat-select-search>
+                        </mat-option>
+                        <mat-option *ngFor="let data of filteredList[m.configId] | async" [value]="data.valueId">
+                          {{data?.value}}
+                        </mat-option>
+  
+
+                      </mat-select>
+                    </mat-form-field>
+                  </div>
+                  <!-- <------------------------- Metadata config Dropdowns end ------------------------->
+
+                  <!-- <------------------------- Metadata free text start ------------------------->
+                  <div class="upload-selection" style="width:100%;margin-bottom: 1em;" fxLayout="row" fxFlex="100" *ngIf="m.fieldType == &apos;FT&apos;">
+                    <mat-form-field style="width:82%;" [appearance]="&apos;outline&apos;"
+                      [floatLabel]="&apos;always&apos;">
+                      <mat-label>{{m.name}}</mat-label>
+                      <input type="text" style="height:20px;margin:0px;" [formControlName]="m.configId" matInput>
+                    </mat-form-field>
+                  </div>
+
+                  <div class="upload-selection" style="width:100%;margin-bottom: 1em;display: inherit !important;" fxLayout="row" fxFlex="100" *ngIf="m.fieldType == &apos;AD&apos;">
+                    <!-- <mat-form-field style="width:82%;" [appearance]="&apos;outline&apos;"
+                      [floatLabel]="&apos;always&apos;">
+                      <mat-label>{{m.name}}</mat-label>
+                      <input type="text" style="height:20px;margin:0px;" [formControlName]="m.configId" matInput>
+                    </mat-form-field>  -->
+                    <mat-form-field appearance="outline" [floatLabel]="&apos;always&apos;" style="width:82%;">
+                      <mat-label>{{m.name}}</mat-label>
+
+                      <mat-chip-list  #chipList>
+                        <div *ngIf="m?.configId==selectaduser[m.configId]">
+                        <mat-chip *ngFor="let adowner of selectedadOwners[m.configId];" [removable]="removable" (removed)="removead(adowner,m.configId)">
+                          {{adowner.displayName}}
+                          <mat-icon matChipRemove *ngIf="removable">cancel</mat-icon>
+
+                        </mat-chip>
+                        <!-- #autoTriggerLvl3="matAutocompleteTrigger" -->
+                      </div>
+                        <input matInput placeholder="Search" [formControlName]="m.configId"   [matAutocomplete]="auto" [matChipInputFor]="chipList"
+                          [matChipInputSeparatorKeyCodes]="separatorKeysCodes" [matChipInputAddOnBlur]="addOnBlur" (matChipInputTokenEnd)="addad($event,m.configId)">
+                      </mat-chip-list>
+                      <mat-autocomplete #auto="matAutocomplete">
+                        <mat-option *ngFor="let adowner of filteredadOwners[m.configId] | async;" [searchValue]="adowner">
+                          <div (click)="optionClickedad($event, adowner)">
+                            <mat-checkbox [checked]="adowner.selected" (change)="toggleSelectionad(adowner,m.configId)"
+                              (click)="$event.stopPropagation()">
+                              {{ adowner.displayName }}<span style="font-size:12px;">({{ adowner.mail }})</span>
+                            </mat-checkbox>
+                          </div>
+                        </mat-option>
+                      </mat-autocomplete>
+                    </mat-form-field>
+                  </div>
+                  <!-- <-------------------------MetaData freetext end ------------------------->
+                </div>
+              </div>
+            </div>
+            <div fxLayout="column wrap" style="width: 100%;" fxFlex="50" [fxShow]="true" [fxHide]="false">
+              <!-- <-------------------------Document owner start------------------------->
+              <mat-form-field appearance="outline" [floatLabel]="&apos;always&apos;" style="margin-bottom: 1em;width: 100%;">
+                <mat-label>Document Owner</mat-label>
+
+                <mat-chip-list #chipList1>
+                  <mat-chip *ngFor="let owner of selectedOwners" [removable]="removable" (removed)="remove(owner)">
+                    {{owner.displayName}}
+                    <mat-icon matChipRemove *ngIf="removable">cancel</mat-icon>
+                  </mat-chip>
+
+                  <input matInput placeholder="Search Owner" (keyup)="autoCompleteOwners(uploaddetails.value.documentOwner , $event)" 
+                    formControlName="documentOwner" [matAutocomplete]="auto3" [matChipInputFor]="chipList1" [matChipInputAddOnBlur]="addOnBlur" (matChipInputTokenEnd)="add($event)" [matChipInputSeparatorKeyCodes]="separatorKeysCodes" 
+                    #autoTriggerDocOwner="matAutocompleteTrigger"
+                    >
+                </mat-chip-list>
+                <mat-autocomplete #auto3="matAutocomplete" >
+                  <mat-option *ngFor="let owner of searchOwners" [value]="owner" >
+                    <div (click)="optionClicked($event, owner)">
+                      <mat-checkbox [checked]="owner.selected" (change)="toggleSelection(owner)"
+                        (click)="$event.stopPropagation()">
+                        {{ owner.displayName }}<span style="font-size:12px;">({{ owner.mail }})</span>
+                      </mat-checkbox>
+                    </div>
+                  </mat-option>
+                </mat-autocomplete>
+              </mat-form-field>
+
+
+              <!-- <-------------------------Document owner end ------------------------->
+
+              <!-- <-------------------------Expiration date start ------------------------->
+              <mat-form-field style="width:100% !important;" [appearance]="&apos;outline&apos;"
+                [floatLabel]="&apos;always&apos;" (click)="picker.open()">
+                <mat-label>Expiration Date</mat-label>
+                <input matInput (keydown.enter)="$event.target.blur()" [min]="minDate" class="pointer"
+                  [matDatepicker]="picker" formControlName="expiryDate" readonly placeholder="Set Expiration Date *"
+                  disabled required>
+                <mat-datepicker-toggle matSuffix [for]="picker">
+                  <div matDatepickerToggleIcon>
+                    <div class="dateicon"><span>{{month}}</span>{{date}}</div>
+                  </div>
+                </mat-datepicker-toggle>
+                <mat-datepicker #picker disabled="false"></mat-datepicker>
+              </mat-form-field>
+              <!-- <-------------------------Expiration date end ------------------------->
+
+              <!-- <-------------------------Approver level1 start ------------------------->
+              <div fxLayout="column" width="100%" class="upload-selection">
+                <mat-checkbox formControlName="approvalLvl1Check" [disabled]="!hasNonApprovalAccess">Approval Level 1
+                </mat-checkbox>
+                <mat-form-field style="width:100%;" [appearance]="&apos;outline&apos;"
+                  [floatLabel]="&apos;always&apos;">
+                  <input type="text" style="height:20px"
+                    (keyup)="onApproverSearch(uploaddetails.value.approverLvl1Control , 1 , $event)"
+                    [readonly]="!uploaddetails.value.approvalLvl1Check" #autoTriggerLvl1="matAutocompleteTrigger"
+                    placeholder="Search Approver 1" matInput formControlName="approverLvl1Control" [matAutocomplete]="auto1">
+                  <mat-autocomplete #auto1="matAutocomplete" (optionSelected)="levelOptionSelected(1)"
+                    [displayWith]="displayFnUserList">
+                    <div *ngIf="userList1.length &gt; 0 &amp;&amp; uploaddetails.value.approverLvl1Control.length &gt; 0">
+                      <mat-option *ngFor="let user of userList1" [value]="user">
+                        {{ user.displayName }}<span style="font-size:12px;">({{ user.userPrincipalName }})</span>
+                      </mat-option>
+                    </div>
+                  </mat-autocomplete>
+                </mat-form-field>
+              </div>
+              <!-- <-------------------------Approver level1 end ------------------------->
+
+                <!-- <-------------------------Approver level2 start ------------------------->
+              <div fxLayout="column" class="upload-selection">
+                <mat-checkbox
+                  [disabled]="!(uploaddetails.value.approverLvl1Control &amp;&amp; uploaddetails.value.approverLvl1Control.username)"
+                  formControlName="approvalLvl2Check" (click)="onUnselectApproval()">Approval Level 2
+                </mat-checkbox>
+                <mat-form-field class="width-100" [appearance]="&apos;outline&apos;" [floatLabel]="&apos;always&apos;">
+                  <input type="text" style="height:20px" [readonly]="!uploaddetails.value.approvalLvl2Check"
+                    (keyup)="onApproverSearch(uploaddetails.value.approverLvl2Control , 2 , $event)"
+                    placeholder="Search Approver 2" #autoTriggerLvl2="matAutocompleteTrigger" matInput
+                    formControlName="approverLvl2Control" [matAutocomplete]="auto2">
+                  <mat-autocomplete #auto2="matAutocomplete" (optionSelected)="levelOptionSelected(2)"
+                    [displayWith]="displayFnUserList">
+
+                    <div
+                      *ngIf="userList2.length &gt; 0 &amp;&amp; uploaddetails.value.approverLvl2Control.length &gt; 0">
+                      <mat-option *ngFor="let user of userList2" [value]="user">
+                        {{ user.displayName }}<span style="font-size:12px;">({{ user.userPrincipalName }})</span>
+                      </mat-option>
+                    </div>
+                  </mat-autocomplete>
+                </mat-form-field>
+              </div>
+               <!-- <-------------------------Approver level2 end ------------------------->
+
+                 <!-- <------------------------- Notes start ------------------------->
+              <div fxLayout="column wrap" class="selectionfeild" style="margin-top: 1em;" fxLayoutAlign="center stretch"
+                [fxShow]="true" [fxHide]="false">
+                <div fxFlex="100" class="selectbtn selectionfeild">
+                  <mat-form-field style="width:100%;" [appearance]="&apos;outline&apos;"
+                    [floatLabel]="&apos;always&apos;">
+                    <mat-label>Notes</mat-label>
+                    <textarea matInput style="height:100px;" maxlength="800" placeholder="Notes"
+                      formControlName="notes"></textarea>
+                  </mat-form-field>
+                </div>
+              </div>
+               <!-- <-------------------------Notes end ------------------------->
+
+            </div>
+            <!-- </div> -->
+
+          </div>
+        </div>
+      </form>
+      <div fxLayout="row wrap" style="padding: 10px 20px;" fxLayoutGap="2em" fxLayoutAlign="center stretch"
+        [fxShow]="true" [fxHide]="false">
+        <button mat-raised-button class="btn-class confirm" (click)="submit(uploaddetails.value)"
+          type="submit">Submit</button>
+        <button mat-raised-button class="btn-class" (click)="cancelUploadFile()">Cancel</button>
+      </div>
+    </mat-card-content>
+  </mat-card>
+</div>

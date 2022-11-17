@@ -1,0 +1,68 @@
+@import "../../../../src/styles.scss";
+
+.card .mat-card {
+    box-shadow   : 3px 4px 9px rgba(0, 0, 0, 0.07);
+    border-radius: 3px;
+    padding      : 0px;
+    height       : 100%;
+    margin       : 0px !important;
+}
+
+.card .mat-card-content {
+    height: 100%;
+}
+
+.card mat-horizontal-stepper {
+    min-height: 370px;
+    height    : 100%;
+}
+
+.card mat-form-field {
+    width: 35%;
+}
+
+.h4,
+h5 {
+    font-weight   : 600;
+    font-size     : 32px;
+    line-height   : 32px;
+    letter-spacing: 0.2px;
+    color         : #000000;
+    margin        : 26px 0px 38px 50px;
+}
+
+.h5 {
+    font-weight: 600 !important;
+    font-size  : 20px !important;
+    line-height: 26px !important;
+    color      : #52575C !important;
+    margin     : 0 2em 0.8em 0 !important;
+}
+
+.h3 {
+    margin: 0 0 10px 0;
+}
+
+.card .mat-horizontal-stepper .mat-horizontal-stepper-header-container {
+    border-bottom: 1px solid #ddd;
+}
+
+.input-outline {
+    padding: 50px 24px 24px 50px !important;
+}
+
+.input-outline input.mat-input-element {
+    font-size     : 12px;
+    line-height   : 16px;
+    display       : flex;
+    align-items   : center;
+    letter-spacing: 0.2px;
+    color         : $sidenav-background;
+}
+::ng-deep .input-outline input.mat-input-element {
+  color: black !important;
+ }
+.prevbtn{
+  background-color:#002147;
+  color: white;
+}

@@ -1,0 +1,23 @@
+<div fxLayout="column wrap" fxLayoutAlign="start stretch" [fxShow]="true" [fxHide]="false" class="outer">
+    <div fxLayout="row wrap" class="header" fxFlex="100" fxLayoutAlign="space-between center" [fxShow]="true" [fxHide]="false">
+      <div style="margin-left: 1em;">
+        {{data.listHeader}}
+      </div>
+      <mat-icon class="header-icon" (click)="dialogRef.close()">highlight_off</mat-icon>
+    </div>
+    <div class="body-div">
+      <div class="list-div" fxLayout="row" fxLayoutAlign="space-between center" *ngFor="let item of listArr">
+        <div *ngIf="data.msg != 'user' && data.msg != 'privilegeListUserGroup'"  class="text-ellipsis displayName">
+          {{item.displayName}}
+        </div>
+        <div *ngIf="data.msg != 'user' && data.msg != 'privilegeListUserGroup'"  style="width: 50%;">
+          <div class="text-ellipsis mail">
+            ({{item.userPrincipalName}})
+          </div>
+        </div>
+        <div *ngIf="data.msg == 'user' || data.msg == 'privilegeListUserGroup'" class="text-ellipsis from-uesr">
+          {{item}}
+        </div>
+      </div>
+    </div>
+  </div>

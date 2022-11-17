@@ -1,0 +1,68 @@
+<div class="row">
+  <div style="margin-left: 15px;margin-top: 15px;" class="fw title">
+    Access Control
+  </div>
+</div>
+<div fxLayout="row" fxLayoutAlign="space-between center" class="box-header">
+  <div style="margin-left: 2%;" class="">
+   
+  </div>
+  <div class="srch-box">
+    <mat-form-field appearance='outline'>
+      <input matInput placeholder="Search Here" [(ngModel)]="searchValue" />
+      <button mat-button matSuffix (click)="searchUser(searchValue)" class="srch-btn">
+        <mat-icon>search</mat-icon>
+      </button>
+    </mat-form-field>
+  </div>
+</div>
+<div fxLayout="column wrap" style="padding:16px;" fxLayoutGap="20px" fxLayoutAlign="start stretch">
+  <div style="width:100%" class="mat-elevation-z8">
+    <table mat-table [dataSource]="dataSource" class="privilege-grp-table" style="width:100%">
+
+      <ng-container matColumnDef="displayName">
+        <th mat-header-cell *matHeaderCellDef class="table-header">
+          User Name 
+        </th>
+        <td mat-cell *matCellDef="let element" class="displayName"> 
+          {{element.displayName}} 
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="mail">
+        <th mat-header-cell *matHeaderCellDef class="table-header"> 
+          Mail Id 
+        </th>
+        <td mat-cell *matCellDef="let element" class="mail"> {{element.userPrincipalName}} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="userGroups">
+        <th style="text-align:center" mat-header-cell *matHeaderCellDef class="table-header"> 
+          User Groups 
+        </th>
+        <td [ngClass]="{'positive' : element.userGroups.length > 0,'negative' : !element.userGroups.length > 0}" style="text-align:center" mat-cell *matCellDef="let element" (click)="showuserGroups(element,'user')">
+          {{element.userGroups.length}}
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="groups">
+        <th style="text-align:center" mat-header-cell *matHeaderCellDef class="table-header"> 
+          Privilege Groups 
+        </th>
+        <td [ngClass]="{'positive' : element.groups.length > 0,'negative' : !element.groups.length > 0}" style="text-align:center" mat-cell *matCellDef="let element" (click)="showuserGroups(element,'privilege')">
+          {{element.groups.length}}
+        </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+    </table>
+    <div fxLayout="row wrap" fxLayoutAlign="end center" style="margin-top: 2em; margin-bottom: 1em; margin-right: 1em;" [fxShow]="true" [fxHide]="false">
+      <mat-icon *ngIf="pageNumber > 1" style="cursor: pointer;" (click)="onArrowLeft()">keyboard_arrow_left</mat-icon>
+      <ul class="pagination" style="display: flex;">
+        <span class="pagenumber">{{pageNumber}}</span>
+      </ul>
+      <mat-icon *ngIf="enableLoadMore" style="cursor: pointer;" (click)="onArrowRight()">keyboard_arrow_right</mat-icon>
+    </div>
+  </div>
+</div>

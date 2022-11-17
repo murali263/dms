@@ -1,0 +1,109 @@
+
+<div fxLayout="column wrap" class="height-100 configdetails linkdetails" fxLayoutAlign="start stretch" [fxShow]="true" [fxHide]="false">
+  <div fxLayout="column " fxFlex="100" fxLayoutAlign="start stretch" [fxShow]="true" [fxHide]="false">
+  <div fxLayout="row wrap" class="maintitle" fxLayoutAlign="space-between center" [fxShow]="true" [fxHide]="false">
+    <div fxFlex="40" class="title newtitle">
+      {{title}}
+    </div>
+    <div fxLayout="row wrap" class="padding-horiz-20px  m-30" fxLayoutGap="30px" fxLayoutAlign="end end" [fxShow]="true" [fxHide]="false">
+      <button mat-raised-button class="confirm" *ngIf="action !== &apos;VIEW&apos;" (click)="submit()" type="submit">{{submitAction}}</button>
+      <button mat-raised-button class="white-btn m-r-20" [routerLink]="[&apos;/home/configuration/configDetails/&apos;, this.configId]"    type="button">{{closeAction}}</button>
+    </div>
+  </div>
+<!-- routerLink="/home/configuration" -->
+  <form [formGroup]="linkDetailsForm" class="config-form border_style_top">
+    <div fxLayout="column " fxLayoutGap="20px" fxLayoutAlign="start stretch" [fxShow]="true" [fxHide]="false">
+      <div fxLayout="column "  class="config-content" fxLayoutGap="25px" fxLayoutAlign="start stretch" [fxShow]="true" [fxHide]="false">
+        <div fxLayout="row " class="padding-horiz-30px" fxLayoutAlign="start center" [fxShow]="true" [fxHide]="false" fxLayout.lt-md="column">
+          <div class="width-50">
+            <mat-form-field appearance="outline" floatLabel="auto" class="width-100">
+              <mat-label>{{config.name}}</mat-label>
+              <mat-select formControlName="configValueId" required>
+                <mat-option *ngFor="let el of valuesMap[config.configId]" [value]="el.valueId" [disabled]="el.linkDetailsAdded">{{el.value}}</mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+        </div>
+        <div fxLayout="column " class="padding-horiz-30px" fxLayoutGap="20px" fxLayoutAlign="start stretch" [fxShow]="true" [fxHide]="false" formArrayName="mapping">
+          <div class="dynamo">
+          <div fxLayout="row " fxLayoutAlign="start stretch" [fxShow]="true" [fxHide]="false" *ngFor="let field of linkDetailsForm.get(&apos;mapping&apos;)[&apos;controls&apos;]; let inputIndex=index;" [formGroupName]="inputIndex">
+
+            <div fxLayout="row wrap" class="width-100" fxLayoutAlign="start stretch" [fxShow]="true" [fxHide]="false" *ngIf="field.value[&apos;fieldType&apos;] === &apos;DDL&apos;">
+              <div *ngIf="field.value[&apos;multiSelect&apos;] === true" fxLayout="column" class="width-100">
+                <div class="multi-select">
+                  <label>{{field.value[&apos;fieldName&apos;]}}</label>
+                  <div class="selection-content" fxLayout="row" fxLayout.lt-md="column">
+                    <div *ngIf="action !== &apos;VIEW&apos;" class="section" fxLayout="column" fxLayoutAlign="space-between center" fxLayoutGap="10px" fxFlex="47">
+                      <div *ngIf="valuesMapFiltered[field.value[&apos;linkTo&apos;]] &amp;&amp; valuesMapFiltered[field.value[&apos;linkTo&apos;]].length &gt; 0; else noData" class="width-100 options" fxLayout="column">
+                        <div class="option" fxLayout="row" fxLayoutAlign="space-between center" *ngFor="let option of valuesMapFiltered[field.value[&apos;linkTo&apos;]]">
+                          <span [ngClass]="option.disabled || !enableMultiSelect ? &apos;disabled-option&apos; : &apos;&apos;">{{option.value}}</span>
+                          <button mat-icon-button [disabled]="option.disabled || !enableMultiSelect" (click)="option.selected=!option.selected">
+                            <mat-icon [ngClass]="option.selected ? &apos;primary-color&apos; : &apos;&apos;">{{option.selected ? &apos;check_circle&apos; : &apos;check_circle_outline&apos;}}</mat-icon>
+                          </button>
+                        </div>
+                      </div>
+                      <div fxLayoutAlign="center" *ngIf="action !== &apos;VIEW&apos;">
+                        <button mat-raised-button class="confirm" (click)="add(inputIndex, field.value[&apos;linkTo&apos;])">Add</button>
+                      </div>
+                    </div>
+                    <div *ngIf="action !== &apos;VIEW&apos;" class="middle-icon" fxFlex="6" fxLayoutAlign="center" fxHide.lt-md="true">
+                      <div fxLayout="column" fxLayoutAlign="center">
+                        <mat-icon class="primary-color">arrow_right_alt</mat-icon>
+                        <mat-icon class="danger-color" style="transform: rotate(180deg);">arrow_right_alt</mat-icon>
+                      </div>
+                    </div>
+                    <div class="section" fxLayout="column" fxFlex="45" fxLayoutGap="10px" fxLayoutAlign="space-between center">
+                      <div *ngIf="multiSelectMap[field.value[&apos;linkTo&apos;]] &amp;&amp; multiSelectMap[field.value[&apos;linkTo&apos;]].length &gt; 0; else noData" class="width-100 options" fxLayout="column">
+                        <div class="option" fxLayout="row" fxLayoutAlign="space-between center" *ngFor="let option of multiSelectMap[field.value[&apos;linkTo&apos;]]">
+                          <span [ngClass]="option.disabled || !enableMultiSelect ? &apos;disabled-option&apos; : &apos;&apos;">{{option.value}}</span>
+                          <button mat-icon-button [disabled]="option.disabled || !enableMultiSelect" (click)="option.selected=!option.selected">
+                            <mat-icon [ngClass]="option.selected ? &apos;danger-color&apos; : &apos;&apos;">{{option.selected ? &apos;cancel&apos; : &apos;highlight_off&apos;}}</mat-icon>
+                          </button>
+                        </div>
+                      </div>
+                      <div fxLayoutAlign="center" *ngIf="action !== &apos;VIEW&apos;">
+                        <button mat-raised-button class="delete-btn color-white" (click)="remove(inputIndex, field.value[&apos;linkTo&apos;])">Remove</button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <ng-template #noData>
+                  <label>No Data Available</label>
+                </ng-template>
+              </div>
+              <div *ngIf="!field.value[&apos;multiSelect&apos;]" class="width-80">
+                <mat-form-field appearance="outline" floatLabel="auto" class="width-100">
+                  <mat-label>{{field.value[&apos;fieldName&apos;]}}</mat-label>
+                  <mat-select formControlName="values">
+                    <mat-option *ngFor="let el of valuesMapFiltered[field.value[&apos;linkTo&apos;]]" [value]="el.valueId">{{el.value}}
+                    </mat-option>
+                  </mat-select>
+                </mat-form-field>
+              </div>
+            </div>
+
+            <div *ngIf="field.value[&apos;fieldType&apos;] === &apos;FT&apos;" class="width-80">
+              <!-- <mat-radio-group *ngIf="field.value['fieldType'] === 'RB'" formControlName="values">
+	<mat-radio-button value="YES">YES</mat-radio-button>
+	<mat-radio-button value="NO">NO</mat-radio-button>
+</mat-radio-group> -->
+
+              <mat-form-field appearance="outline" floatLabel="auto" class="width-100">
+                <mat-label>{{field.value[&apos;fieldName&apos;]}}</mat-label>
+                <input matInput formControlName="values">
+              </mat-form-field>
+            </div>
+          </div>
+          </div>
+        </div>
+      </div>
+      <!-- <div fxLayout="row wrap" class="padding-horiz-20px  m-30" fxLayoutGap="30px" fxLayoutAlign="center center" [fxShow]="true" [fxHide]="false">
+        <button mat-raised-button class="white-btn" (click)="close()" type="button">{{closeAction}}</button>
+        <button mat-raised-button class="confirm" *ngIf="action !== &apos;VIEW&apos;" (click)="submit()" type="submit">{{submitAction}}</button>
+      </div> -->
+    </div>
+  </form>
+</div>
+
+</div>

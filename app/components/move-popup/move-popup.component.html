@@ -1,0 +1,112 @@
+<div fxLayout="column wrap" class="movePopup" *ngIf="action == 'MOVE' && !isMoved" fxLayoutAlign="start stretch"
+    [fxShow]="true" [fxHide]="false">
+    <div fxLayout="row " class="moveTitle" [fxShow]="true" [fxHide]="false">
+        <div class="title">
+            Move To</div>
+        <div><img src="assets/Web/Move to.png"></div>
+        <div style="margin-left: 280px;" class="pointer"><img src="assets/Web/Close Icon.png" (click)="close()"></div>
+    </div>
+    <div fxLayout="row wrap">
+        <span class="listFolders" mat-dialog-title>List Of Folders</span>
+    </div>
+    <div fxLayout="column wrap" class="scrollM">
+        <mat-dialog-content class="dialogScroll">
+            <mat-tree [dataSource]="dataSource" [treeControl]="treeControl">
+                <mat-tree-node *matTreeNodeDef="let node" matTreeNodeToggle matTreeNodePadding
+                    [fxShow]="node.item.type == &apos;Folder&apos;">
+                    <div class="pointer" *ngIf="node.item.type == &apos;Folder&apos;" fxLayout="row"
+                        fxLayoutAlign="start center" fxLayoutGap="6px">
+                        <button style="cursor: pointer !important;" mat-icon-button disabled>
+                            <img *ngIf="genericService.getFolderChildrenCount(node.item.content).DR_Arr.length &gt; 0 "
+                                src="assets/Web/Plus.png">
+                            <img src="assets/Web/Minus.png"
+                                *ngIf="genericService.getFolderChildrenCount(node.item.content).DR_Arr.length == 0">
+                        </button>
+                        <button style="cursor: pointer !important;" mat-icon-button disabled><img
+                                src="assets/Web/Folder Icon.png"></button>
+
+                        <span matTooltip="{{node.item.name}}" class="folder-privilege-ellipsis"
+                            (click)="folderSelection(node.checked = !node.checked , node)"
+                            [class]="node.checked ? &apos;folder-select pointer&apos; : &apos;folder-unselect pointer&apos;">{{node.item.name}}</span>
+                    </div>
+                </mat-tree-node>
+            </mat-tree>
+        </mat-dialog-content>
+    </div>
+    <div>
+        <mat-dialog-actions align="center" style="padding-bottom: 38px;">
+            <button mat-raised-button class="confirm" (click)="MoveFile()" type="submit">{{action}}</button>
+            <button mat-raised-button class="cancel-button" (click)="close()" type="button">CANCEL</button>
+        </mat-dialog-actions>
+
+    </div>
+</div>
+
+<div fxLayout="column wrap" class="movePopup" *ngIf="action == 'COPY'&& !isCopied" fxLayoutAlign="start stretch"
+    [fxShow]="true" [fxHide]="false">
+    <div fxLayout="row " class="moveTitle" [fxShow]="true" [fxHide]="false">
+        <div class="title">
+            Copy To</div>
+        <div><img src="assets/Web/Move to.png"></div>
+        <div style="margin-left: 280px;" class="pointer"><img src="assets/Web/Close Icon.png" (click)="close()"></div>
+    </div>
+    <div fxLayout="row wrap">
+        <span class="listFolders" mat-dialog-title>List Of Folders</span>
+    </div>
+    <div fxLayout="column wrap" class="scrollM">
+        <mat-dialog-content class="dialogScroll">
+            <mat-tree [dataSource]="dataSource" [treeControl]="treeControl">
+                <mat-tree-node *matTreeNodeDef="let node" matTreeNodeToggle matTreeNodePadding
+                    [fxShow]="node.item.type == &apos;Folder&apos;">
+                    <div class="pointer" *ngIf="node.item.type == &apos;Folder&apos;" fxLayout="row"
+                        fxLayoutAlign="start center" fxLayoutGap="6px">
+                        <button style="cursor: pointer !important;" mat-icon-button disabled>
+                            <img *ngIf="genericService.getFolderChildrenCount(node.item.content).DR_Arr.length &gt; 0 "
+                                src="assets/Web/Plus.png">
+                            <img src="assets/Web/Minus.png"
+                                *ngIf="genericService.getFolderChildrenCount(node.item.content).DR_Arr.length == 0">
+                        </button>
+                        <button style="cursor: pointer !important;" mat-icon-button disabled><img
+                                src="assets/Web/Folder Icon.png"></button>
+                        <span matTooltip="{{node.item.name}}" class="folder-privilege-ellipsis"
+                            (click)="folderSelection(node.checked = !node.checked , node)"
+                            [class]="node.checked ? &apos;folder-select pointer&apos; : &apos;folder-unselect pointer&apos;">{{node.item.name}}</span>
+
+                        <!-- <span matTooltip="{{node.item.name}}" class="folder-privilege-ellipsis">{{node.item.name}}</span> -->
+                    </div>
+                </mat-tree-node>
+            </mat-tree>
+        </mat-dialog-content>
+    </div>
+    <div>
+        <mat-dialog-actions align="center" style="padding-bottom: 38px;">
+            <button mat-raised-button class="confirm" (click)="CopyFile()" type="submit">{{action}}</button>
+            <button mat-raised-button class="cancel-button" (click)="close()" type="button">CANCEL</button>
+        </mat-dialog-actions>
+
+    </div>
+</div>
+
+<div *ngIf="isCopied">
+    <div fxLayout="column" class="successMessage " fxFlex="100" fxLayoutAlign="space-between stretch" [fxShow]="true"
+        [fxHide]="false" *ngIf="!data.loader">
+        <div class="moveTitle">
+            <div fxLayout="row wrap" class="title" fxLayoutAlign="space-around center" [fxShow]="true" [fxHide]="false">                
+                File Successfully Copied <img class="successIcon" src="assets/Web/success.png">               
+                <div style="margin-left: 5px;" class="pointer"><img class="closeIcon" src="assets/Web/Close Icon.png" (click)="close()"></div>
+            </div>
+        </div>  
+    </div>
+</div>
+
+<div *ngIf="isMoved">
+    <div fxLayout="column" class="successMessage " fxFlex="100" fxLayoutAlign="space-between stretch" [fxShow]="true"
+        [fxHide]="false" *ngIf="!data.loader">
+        <div class="moveTitle">
+            <div fxLayout="row wrap" class="title" fxLayoutAlign="space-around center" [fxShow]="true" [fxHide]="false">              
+                File Successfully Moved <img class="successIcon" src="assets/Web/success.png">
+                <div style="margin-left: 5px;" class="pointer" (click)="closeDialog(true)"><img class="closeIcon" src="assets/Web/Close Icon.png"></div>                
+            </div>
+        </div>      
+    </div>
+</div>

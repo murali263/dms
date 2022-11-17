@@ -1,0 +1,144 @@
+@import "../../../../src/styles.scss";
+.outer{
+  padding: 1rem;
+  background: white;
+  border-radius: 2rem;
+  .top{
+    width: 100%;
+    display: flex;
+    align-items: center;
+    height: max-content;
+    span{
+      margin-right: 1rem;
+      height: 100%;
+      font-weight: bold;
+      font-size: medium;
+    }
+    .userListIcon{
+      width: 2.5rem;
+      margin-right: 1rem;
+    }
+  }
+
+  .inputBox{
+    margin-top: 1rem;
+    width: 100%;
+    input{
+      width: 100%;
+    }
+    margin-bottom: 1rem;
+  }
+}
+
+.icon{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  cursor: pointer;
+  width: max-content;
+  img{
+    height: 100%;
+  }
+}
+.divider{
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+  background-color: #0072C6;
+}
+
+.userListSearch{
+  height:1rem
+}
+
+.tableOuter{
+  height: 15rem;
+  width: 100%;
+  overflow-y: scroll;
+  table.mat-table{
+    width: 100%;
+  }
+}
+
+.upperNames {
+  display:flex;
+  height: 100%;
+  align-items: center;
+  .icon{
+    height: 2rem;
+    margin-right: 0.5rem;
+  }
+  div{
+    display: flex;
+    flex-direction: column;
+    .email{
+      font-size: 0.7rem;
+      color: #c5c5c5;
+    }
+
+  }
+
+}
+
+.textInList{
+  font-size: 0.8rem;
+}
+
+.textEllipsis{
+  max-width: 14rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.btn-div{
+  width: 100%;
+  display: flex;
+  justify-content:center;
+  button{
+    background-color: #0072C6;
+    font-weight: bold;
+    color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+}
+
+.bottom{
+  padding-left: 0.5rem;
+  padding-right: 0.5rem;
+}
+
+
+.columnHeader {
+  color:black ;
+  background-color:#ADD8E6;
+  font-weight: bold;
+  font-size: medium;
+}
+
+
+
+::-webkit-scrollbar {
+  width: 15px;
+  background-color: #e5e5e5;
+  height: 4px;
+}
+
+::-webkit-scrollbar-track {
+  box-shadow: inset 0 0 5px #857f7f;
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+  //background: url("assets/Web/scroll.png");
+  background: url(assets/Web/scroll.png);
+  background-repeat: no-repeat;
+  border-radius: 10px;
+}
+
+:root {
+  scrollbar-color: $toolbar-background #e5e5e5 !important;
+  scrollbar-shadow-color: inset 0 0 5px #888888 !important;
+}

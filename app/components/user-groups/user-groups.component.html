@@ -1,0 +1,120 @@
+<div fxLayout="column">
+    <mat-card class="heading">
+        <div style="margin-top: 1em;">Create New User Group</div>
+    </mat-card>
+    <div class="user-group">
+        <mat-horizontal-stepper [linear]="false" [selectedIndex]="stepperIndex" #stepper class="stepper">
+            <mat-step label="Create New" optional="false" editable="true">
+               <mat-card style="min-height: 20em; width: 90%; border-top: 1px solid #dce0dd;" [class.mat-elevation-z6]="true">
+                    <mat-card-content fxLayout="row" fxLayoutAlign="start center"  fxLayoutGap="60px">
+                        <mat-label>Name</mat-label>
+                        <mat-form-field [appearance]="&apos;outline&apos;" [floatLabel]="&apos;never&apos;" style="width: 35%;">
+                            <input matInput [(ngModel)]="groupName" placeholder="Group Name" required>
+                        </mat-form-field>
+                    </mat-card-content>
+                    <div *ngIf="isValid" class="err-msg">
+                        Enter a Valid User Group Name
+                    </div>
+                    <div *ngIf="isExist" class="err-msg">
+                        User Group Name already exist
+                    </div>
+                    <mat-card-content fxLayout="row" fxLayoutAlign="start start"  fxLayoutGap="30px">
+                        <mat-label style="margin-top: 1.1em;">Category</mat-label>
+                        <mat-radio-group class="example-radio-group" [(ngModel)]="category">
+                            <mat-radio-button class="example-radio-button" *ngFor="let category of categories"
+                                [value]="category.categoryId" [disabled]="!category.isActive">
+                                {{category.categoryName}}
+                            </mat-radio-button>
+                        </mat-radio-group>
+                    </mat-card-content>
+                    <mat-card-actions fxLayoutAlign="end center" class="pos-btn">
+                        <button mat-raised-button class="cancel-btn" (click)="onCancel()">Cancel</button>
+                        <button mat-raised-button class="create-btn" (click)="nextStep(stepperIndex)" [disabled]="!(groupName && category)">Next</button>
+                  </mat-card-actions>
+               </mat-card>
+            </mat-step>
+            <mat-step label="User" optional="false" editable="true">
+                <mat-card fxLayout="column" class="box-step2">
+                    <mat-label>Assign User</mat-label>
+                    <div>
+                        <mat-divider></mat-divider>
+                    </div>
+                    <div fxLayout="row wrap" class="users" style="margin-top: 1em;" fxLayoutAlign="space-between center" [fxShow]="true" [fxHide]="false">
+                        <div style="width: 48%;" fxLayout="column">
+                            <mat-card [class.mat-elevation-z6]="true">
+                                <mat-card-title>Users</mat-card-title>
+                                <div fxLayout="row">
+                                    <div style="border: 1px solid; width: 90%;">
+                                        <input style="font-size: 0.8em; padding-left: 0.5em;" matInput [(ngModel)]="searchUserVal" (keyup.enter)="_searchUser()" placeholder="Search Here" />
+                                    </div> 
+                                    <button mat-raised-button class="btn-srch" (click)="_searchUser()">
+                                        <mat-icon>search</mat-icon>
+                                    </button>
+                                </div>
+                                <mat-card-content [style.overflow]="'auto'" [style.height.px]="'140'">
+                                    <div *ngFor="let cat of userData; let i = index" fxLayout="row" fxLayoutAlign="space-between center" style="border-bottom: 1px solid #dfe5f0;">
+                                        <mat-checkbox (change)="userChecked($event,cat)" [checked]= "cat.AlreadyAdded" [disabled]="cat.AlreadyAdded" style="margin-left: 0.5em;">
+                                            <div style="font-size: 0.7em;" class="spandiv">
+                                                <span  class="namespan" >{{cat.displayName}}</span>
+                                                &nbsp;
+                                                <span class="mailspan" style="color: grey;">
+                                                    ({{cat.userPrincipalName}})
+                                                </span>
+                                            </div>
+                                        </mat-checkbox>
+                                        <div>
+                                            <button mat-icon-button [disabled]="cat.AlreadyAdded" (click)="onSingleAdd(i)" >
+                                                <mat-icon style="cursor: pointer;"  >add_circle_outline</mat-icon>
+                                             </button>                                            
+                                        </div>
+                                    </div>
+                                </mat-card-content>
+                            </mat-card>
+                            <mat-card fxLayoutAlign="center center" [class.mat-elevation-z6]="true">
+                                <button mat-raised-button class="btn-add" (click)="onAdd()">Add</button>
+                            </mat-card>
+                        </div>
+                        <div style="width: 48%;" fxLayout="column">
+                            <mat-card [class.mat-elevation-z6]="true">
+                                <mat-card-title>Selected Users</mat-card-title>
+                                <div fxLayout="row">
+                                    <div style="border: 1px solid; width: 90%;">
+                                        <input style="font-size: 0.8em; padding-left: 0.5em;" matInput [(ngModel)]="selectedUserVal" placeholder="Search Here" />
+                                    </div> 
+                                    <button mat-raised-button class="btn-srch" (click)="_searchSelectedUser()">
+                                        <mat-icon>search</mat-icon>
+                                    </button>
+                                </div>
+                                <mat-card-content [style.overflow]="'auto'" [style.height.px]="'140'">
+                                    <div *ngFor="let cat of selectedUserData; let i = index" fxLayout="row" fxLayoutAlign="space-between center" style="border-bottom: 1px solid #dfe5f0;">
+                                        <mat-checkbox (change)="selectedUserChecked($event,cat)" style="margin-left: 0.5em;">
+                                            <div style="font-size: 0.7em;" class="spandiv">
+                                                <span  class="namespan" >{{cat.displayName}}</span>
+                                                &nbsp;
+                                                <span class="mailspan" style="color: grey;">
+                                                    ({{cat.userPrincipalName}})
+                                                </span>
+                                            </div>
+                                        </mat-checkbox>
+                                        <div>
+                                            <mat-icon style="cursor: pointer;" (click)="onSingleRemove(i)" >highlight_off</mat-icon>
+                                        </div>
+                                    </div>
+                                </mat-card-content>
+                            </mat-card>
+                            <mat-card fxLayoutAlign="center center" [class.mat-elevation-z6]="true">
+                                <button mat-raised-button class="btn-remove" (click)="onRemove()">Remove</button>
+                            </mat-card>
+                        </div>
+                    </div>
+                    <mat-card-actions fxLayoutAlign="end center" class="pos-btn">
+                        <button mat-raised-button class="prv-btn" (click)="nextStep(stepperIndex)">Previous</button>
+                        <button mat-raised-button class="cancel-btn" (click)="onCancel()">Cancel</button>
+                        <button *ngIf="!isEdit" mat-raised-button class="create-btn" (click)="onCreate()" [disabled]="selectedUserData.length == 0" >Create</button>
+                        <button *ngIf="isEdit" mat-raised-button class="create-btn" (click)="onCreate()" [disabled]="selectedUserData.length == 0" >Update</button>
+                  </mat-card-actions>
+                </mat-card>
+            </mat-step>
+        </mat-horizontal-stepper>
+    </div>
+</div>

@@ -1,0 +1,34 @@
+<div class="spborder">
+  <div fxLayout="column wrap" class="configpopup" fxLayoutGap="10px" fxLayoutAlign="start stretch" [fxShow]="true" [fxHide]="false">
+    <div fxLayout="row " class="padding-horiz-30px popuptitle" fxLayoutAlign="space-between center" [fxShow]="true" [fxHide]="false">
+      <div class="title">
+        {{title}}</div>
+      <mat-icon class="pointer" (click)="close()">close</mat-icon>
+    </div>
+    <div fxLayout="column wrap" class="config-content padding-30px" fxLayoutGap="20px" fxLayoutAlign="start stretch" [fxShow]="true" [fxHide]="false">
+      <div [innerHTML]="messageContent">
+      </div>
+    </div>
+    <div fxLayout="row wrap" class="padding-horiz-20px m-30" fxLayoutGap="30px" fxLayoutAlign="center center" [fxShow]="true" [fxHide]="false">
+      <button mat-raised-button class="confirm" (click)="confirmDelete()" type="submit">{{confirmActLabel}}</button>
+      <button mat-raised-button class="white-btn" (click)="close()" type="button">{{cancelActLabel}}</button>
+    </div>
+  </div>
+</div>
+
+
+<!-- <div fxLayout="column wrap" fxLayoutGap="20px" fxLayoutAlign="start stretch" [fxShow]="true" [fxHide]="false">
+  <div fxLayout="row " class="padding-horiz-30px" fxLayoutAlign="space-between center" [fxShow]="true" [fxHide]="false">
+    <div class="title">
+      {{title}}</div>
+    <mat-icon class="pointer" (click)="close()">close</mat-icon>
+  </div>
+  <div fxLayout="column wrap" class="config-content padding-30px" fxLayoutGap="20px" fxLayoutAlign="start stretch" [fxShow]="true" [fxHide]="false">
+    <div [innerHTML]="messageContent">
+    </div>
+  </div>
+  <div fxLayout="row wrap" class="padding-horiz-20px" fxLayoutGap="30px" fxLayoutAlign="center center" [fxShow]="true" [fxHide]="false">
+    <button mat-raised-button class="white-btn" (click)="close()" type="button">{{cancelActLabel}}</button>
+    <button mat-raised-button class="confirm" (click)="confirmDelete()" type="submit">{{confirmActLabel}}</button>
+  </div>
+</div> -->

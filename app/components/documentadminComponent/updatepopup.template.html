@@ -1,0 +1,89 @@
+<div class="spborder" *ngIf="!alert">
+    <div fxLayout="column wrap" class="configpopup" fxLayoutGap="10px" fxLayoutAlign="start stretch" [fxShow]="true" [fxHide]="false">
+        <div fxLayout="row " class="padding-horiz-30px popuptitle2" fxLayoutAlign="space-between center" [fxShow]="true" [fxHide]="false">
+            <div class="title">
+                Bulk Update</div>
+            <mat-icon class="pointer" (click)="close()">close</mat-icon>
+        </div>
+            
+        <div fxLayout="row "  fxLayoutAlign="center center" >
+            <div *ngIf="atrrTypselected == 'DDL'" class="popat">
+              <!-- <div > Document Owner </div><br> -->
+              <div fxLayout="row " fxLayoutAlign="center center" class="padbot">{{attributename}}</div>
+                <mat-form-field  class="attrparent" style="width:100%;" [appearance]="&apos;outline&apos;"
+                 [floatLabel]="&apos;always&apos;">
+                 <mat-select [(ngModel)]="ddlArray" placeholder="-select-" ngDefaultControl multiple>
+                   <mat-select-filter [array]="attrValuearray" [displayMember]="'value'" (filteredReturn)="filteredList=$event"
+                     [displayMember]="'value'">                      
+                   </mat-select-filter>
+                   <mat-option class="custom-color attroption" *ngFor="let att of filteredList" [value]="att?.valueId">
+                     {{att?.value}}
+                   </mat-option>
+                 </mat-select>
+               </mat-form-field>
+             </div>
+        </div>
+            
+        <div *ngIf="atrrTypselected == 'search'"  fxLayout="column"  fxLayoutAlign="center center"  >
+          <!-- <div> Document Owner </div><br> -->
+          <div fxLayout="row" fxLayoutAlign="center center" class="popat2">{{attributename}}</div>
+          <input fxLayout="row " *ngIf="atrrTypselected == 'search'"  [(ngModel)]="attruser"  (keypress)="onApproverSearch( 4 , $event)"
+          #autoTriggerLvl4="matAutocompleteTrigger" placeholder="Search"   
+          class="dashboard-input3 addocfont2 mar-bot40"  [matAutocomplete]="auto4" type="text" >
+          <mat-autocomplete #auto4="matAutocomplete" class="autocomplete" (optionSelected)="levelOptionSelected(4)"
+          [displayWith]="displayFnUserList">
+            <div *ngIf="userList4.length == 0 ">
+              <mat-option (click)="searchUsers(4)"
+                [value]="attruser"  >
+                <div fxLayout="row" fxLayoutAlign="space-between center">
+                  <span>Search</span>
+                  <mat-icon style="margin:0px">search</mat-icon>
+                </div>
+              </mat-option>
+            </div>
+
+            <div
+              *ngIf="userList4.length &gt; 0 ">
+              <div *ngFor="let user of userList4" >
+                <mat-option *ngIf="user.mail !=null" [value]="user" [matTooltip]="user.displayName+' ('+user.mail+')'"  (click)="onselectattrUser(user.mail)">
+                  {{user.displayName}}
+                </mat-option>
+              </div>
+             </div>
+
+          </mat-autocomplete>
+        </div>
+
+
+        <div *ngIf="atrrTypselected == 'FT'"  fxLayout="column"  fxLayoutAlign="center center"  >
+          <!-- <div> Document Owner </div><br> -->
+          <div fxLayout="row" fxLayoutAlign="center center" class="popat2" >{{attributename}}</div>
+          <input fxLayout="row "  [(ngModel)]="fttext" placeholder="Search"  class="dashboard-input3 addocfont2 mar-bot40" type="text" >
+        </div>
+
+        <div class="bobrderblack"></div>
+
+        <div fxLayout="column wrap" fxLayoutGap="20px" fxLayoutAlign="start stretch" [fxShow]="true" [fxHide]="false">
+            
+            <div fxLayout="row wrap" class="padding-horiz-20px m-30" fxLayoutGap="30px" fxLayoutAlign="center center" [fxShow]="true" [fxHide]="false">
+            <button mat-raised-button class="confirm2"  (click)="submit()" type="submit">Update All</button>
+            <button mat-raised-button class="white-btn2" (click)="close()" type="button">Cancel</button>
+            </div>
+        </div>
+      <!-- </form> -->
+    </div>
+</div>
+    
+
+<div class="spborder" *ngIf="alert">
+  <div fxLayout="column wrap" class="configpopup2" fxLayoutGap="10px" fxLayoutAlign="start stretch" [fxShow]="true" [fxHide]="false">
+    <div fxLayout="row " class="padding-horiz-30px popuptitle2" fxLayoutAlign="space-between center" [fxShow]="true" [fxHide]="false">
+        <div class="sptitle" >
+            Attribute value updated successfully for all selected document  
+            <!-- <mat-icon class="pointer" >thumb_up</mat-icon> -->
+        </div>
+        <div> <img src="../../../assets/Web/success.png" height="40px" alt=""></div>
+        <mat-icon class="pointer cross"  (click)="close()">close</mat-icon>
+    </div>
+  </div>
+</div>

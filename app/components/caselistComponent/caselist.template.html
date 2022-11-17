@@ -1,0 +1,55 @@
+<div fxLayout="column " style="padding: 16px;" fxFlex="100" fxLayoutGap="1em" fxLayoutAlign="start stretch" [fxShow]="true" [fxHide]="false">
+  <div class="title">
+    Awaiting Review</div>
+  <div fxLayout="column " fxFlex="100" fxLayoutAlign="start stretch" [fxShow]="true" [fxHide]="false">
+    <mat-card style="height: unset;padding: 16px 0px 0px;">
+      <mat-card-content style="height:100%;">
+        <div fxLayout="row wrap" style="width:100%;" fxLayoutAlign="start stretch" [fxShow]="true" [fxHide]="false">
+          <div style="width:100%;" class="case-list">
+            <div style="width:100%;justify-content: space-between;">
+              <div fxLayout="column wrap" fxFlex="23" fxLayoutAlign="start start" [fxShow]="true" [fxHide]="false">
+                <span>Case Number </span>
+              </div>
+              <div fxLayout="column wrap" fxFlex="23" fxLayoutAlign="start start" [fxShow]="true" [fxHide]="false">
+                <span> Company Name</span>
+              </div>
+              <div fxLayout="column wrap" fxFlex="23" fxLayoutAlign="start start" [fxShow]="true" [fxHide]="false">
+                <span>Industry</span>
+              </div>
+              <div fxLayout="column wrap" fxFlex="23" fxLayoutAlign="start start" [fxShow]="true" [fxHide]="false">
+                <span>Contact Name</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div fxLayout="row wrap" style="overflow:auto;" fxLayoutAlign="start stretch" [fxShow]="true" [fxHide]="false">
+          <div fxLayout="row wrap" style="width:100%;height: fit-content;min-height: 50px;" fxLayoutAlign="start stretch" [fxShow]="true" [fxHide]="false" *ngFor="let case of caseList" (click)="redirectToCaseDetails(case)">
+            <div class="case-list list-hover">
+              <div fxLayout="column wrap" fxFlex="23" fxLayoutAlign="start start" [fxShow]="true" [fxHide]="false">
+
+
+                <span style="word-break:" class="ellipsis-text" matTooltip="{{case.caseId}}"> {{case.caseId}} </span>
+
+
+              </div>
+              <div fxLayout="column wrap" fxFlex="23" fxLayoutAlign="start start" [fxShow]="true" [fxHide]="false">
+
+                <span class="spancolor ellipsis-text" style="max-width: 80%;" matTooltip="{{case.companyName}}"> {{case.companyName}}</span>
+              </div>
+              <div fxLayout="column wrap" fxFlex="23" fxLayoutAlign="start start" [fxShow]="true" [fxHide]="false">
+
+                <span class="spancolor ellipsis-text" style="max-width: 80%;" matTooltip="{{case.industry}}">{{case.industry}}</span>
+              </div>
+              <div fxLayout="column wrap" fxFlex="23" fxLayoutAlign="start start" [fxShow]="true" [fxHide]="false">
+
+                <span class="spancolor ellipsis-text" style="max-width: 80%;" matTooltip="{{case.firstName}}"> by &#xA0;{{case.firstName}}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div fxLayout="row wrap" style="min-height: 400px;" fxLayoutAlign="center center" [fxShow]="true" [fxHide]="false" *ngIf="caseList.length == 0"><img imgSrc="Web/No_records_found.svg" [fxShow]="dataFound" width="200"></div>
+        <div fxLayout="row wrap" style="margin-bottom:20px;" fxLayoutAlign="end end" [fxShow]="showloadmore"><button mat-button class="success-btn" (click)=" loadCaseList() ">Load more</button></div>
+      </mat-card-content>
+    </mat-card>
+  </div>
+</div>

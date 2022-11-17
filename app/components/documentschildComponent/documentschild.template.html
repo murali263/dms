@@ -1,0 +1,209 @@
+<div fxLayout="column " fxLayoutAlign="start stretch" [fxShow]="true" [fxHide]="false">
+  <div fxLayout="row " class="sort-border sort-padding" fxLayoutAlign="space-between center" [fxShow]="true"
+    [fxHide]="false">
+    <div fxFlex="50">
+      <div fxLayout="row" fxLayoutGap="10px" fxLayoutAlign="start center">
+        <span class="font-12">Sort By </span>
+        <select class="sort-select" [(ngModel)]="sortKey" (change)="filterSort(sortKey)">
+          <option *ngFor="let f of filterArray" [value]="f.key">{{f.description}}</option>
+        </select>
+      </div>
+    </div>
+    <div fxLayoutGap="0.5em" class="pointer">
+      <!-- <mat-icon (click)="FSchange=false" [style.color]="FSchange ? '#c7c7c7':'black' ">dashboard</mat-icon> -->
+      <!-- <mat-icon (click)="FSchange=true" [style.color]="FSchange ? 'black':'#c7c7c7' ">menu</mat-icon> -->
+      <img src="assets/Web/dashboard.png" height="20px" width="20px" (click)="FSchange=false" alt="">  
+      <img src="assets/Web/menu.png" height="20px" width="20px" (click)="FSchange=true" alt="">
+    </div>
+  </div>
+  <div fxLayout="column " class="docFolder scrool" style="margin-bottom: 15px;" fxLayoutGap="1em" fxLayoutAlign="start stretch" [fxShow]="true"
+    [fxHide]="false">
+    <div fxLayout="row wrap" fxLayoutAlign="start stretch" [fxShow]="true" [fxHide]="false"
+      *ngIf="folderArr && folderArr.length > 0" id="folderContent">
+      <div>
+        <span style="text-decoration:underline" class="font-12">Folders</span>
+      </div>
+    </div>
+    <div fxLayout="row wrap" fxLayoutAlign="start stretch" [fxShow]="true" [fxHide]="false"
+      *ngIf="folderArr && folderArr.length > 0" [fxLayoutGap]="FSchange ? '':'10px'">
+      <div *ngFor="let fd of folderArr;let i=index" (contextmenu)="onContextMenu($event , fd)"
+        [class]="FSchange ?  currentSelectedFolderIndex==i && isFocusedFolder ? 'file-unit1 active':'file-unit1':currentSelectedFolderIndex==i && isFocusedFolder? 'folder-unit active':'folder-unit' "
+        [fxHide]="FolderPermision(folderArr[i]) == 'N'" style="outline:none;">
+        <div fxLayout="column" [fxLayoutAlign]="FSchange ? 'center center':''" fxFlex="100"
+          class="pointer" [matTooltip]="fd.name"
+          (dblclick)="onDoubleClick($event , fd , i);isFocusedFolder=false;isFocusedFile=false;"
+          (click)="onSingleClick(fd);$event.stopPropagation();currentSelectedFolderIndex=i;isFocusedFolder=true;isFocusedFile=false;">
+          <div fxLayout="row" fxLayoutAlign="space-between start'" style="width:100%;height:60%;">
+            <!-- <mat-icon class="primary-color">folder_open</mat-icon> -->
+            <div [fxFlex]="FSchange ? '100':'70'"
+              [fxLayoutAlign]="FSchange ? 'space-between center':'end'">
+              <img src="assets/Web/newfolder.png" [height]="FSchange ? '30':'60'"
+                [class]="FSchange ? 'folderIcon1':'folderIcon'">
+              <div *ngIf="FSchange" fxFlex="90">
+                <div class="font-color-new font-14"
+                  *ngIf="!((fd.action == 'rename' ) || (fd.action == 'create'))">{{fd.name}}</div>
+              </div>
+            </div>
+            <div [fxFlex]="FSchange ? '10':'20'" fxLayoutAlign="end"
+              [fxShow]="checkFolderPermission(fd) == 'RW' || backendService.currentUserObj.su">
+              <mat-icon class="font-color-new " [matMenuTriggerFor]="contextMenu">
+                more_horiz</mat-icon>
+            </div>
+          </div>
+          <div *ngIf="!FSchange" style="word-break:break-all;height: fit-content;"
+            [fxLayoutAlign]="FSchange ? 'start start':'center center'">
+
+            <span class="font-color-new font-14"
+              *ngIf="!((fd.action == 'rename' ) || (fd.action == 'create'))">{{fd.name}}</span>
+
+          </div>
+        </div>
+
+
+
+    <mat-menu #contextMenu="matMenu" class="docs-action-menu" >
+      <ng-template matMenuContent let-item="item">
+        <button [fxShow]="checkFolderPermission(fd) == &apos;RW&apos; || backendService.currentUserObj.su"
+          mat-menu-item class="font-12" (click)="createFolderPop(i);fd.action =&apos;rename&apos;">
+          <mat-icon>edit</mat-icon>
+          <span>Rename</span>
+        </button>
+
+        <button [fxShow]="checkFolderPermission(fd) == &apos;RW&apos; || backendService.currentUserObj.su"
+          mat-menu-item class="font-12" (click)="deleteFilesPopup(fd, i)"
+          *ngIf="backendService.getAccessAction().includes(&apos;delete_document&apos;) || backendService.currentUserObj.su">
+          <mat-icon>delete_outline</mat-icon>
+          <span>Delete</span>
+        </button>
+        <button [fxShow]="checkFolderPermission(fd) == &apos;RW&apos; || backendService.currentUserObj.su"
+          mat-menu-item class="font-12" (click)="DownloadFolder(fd)">
+          <mat-icon>save_alt</mat-icon>
+          <span>Download</span>
+        </button>
+        <button  [fxShow]="checkFolderPermission(fd) == &apos;RW&apos; || backendService.currentUserObj.su" mat-menu-item class="font-12" (click)="showUserList(fd)">
+          <mat-icon>people</mat-icon>
+          <span>User List</span>
+        </button>
+      </ng-template>
+    </mat-menu>
+  </div>
+</div>
+<div [fxShow]="true" [fxHide]="false" *ngIf="filesArr.length &gt; 0" id="fileContent">
+  <div>
+    <span style="text-decoration:underline" class="font-12">Files</span>
+  </div>
+  <div style="float:right;border-bottom: 1px #f3f3f3 dashed;"   (click)="downloadMultipleFiles()"><button mat-raised-button [disabled]="selectedFileList.length &lt; 2" class="downloadAll">
+      <mat-icon>save_alt</mat-icon>Download ALL
+    </button></div>
+</div>
+<div fxLayout="row wrap" fxLayoutAlign="start stretch" [fxShow]="true" class="scrool" [fxHide]="false" *ngIf="filesArr.length > 0"
+  [fxLayoutGap]="FSchange ? &apos;&apos;:&apos;10px&apos;">
+  <div *ngFor="let fileItem of filesArr;let i=index"
+    [class]="FSchange ? currentSelectedFileIndex== i &amp;&amp; isFocusedFile ? &apos;file-unit1 active&apos;:&apos;file-unit1&apos; :  currentSelectedFileIndex== i &amp;&amp; isFocusedFile ? &apos;file-unit active&apos; :&apos;file-unit&apos;">
+    <div class="">
+
+      <div [fxLayout]="FSchange ? &apos;row&apos;:&apos;column&apos;"
+        [fxFlex]="FSchange ? &apos;100&apos;:&apos;100&apos;" class="pointer"
+        [fxLayoutAlign]=" FSchange ? &apos;space-between center&apos;:&apos;space-around&apos;"
+        (click)="onSingleClick(fileItem);$event.stopPropagation();currentSelectedFileIndex = i;isFocusedFile = true;isFocusedFolder=false;"
+        (dblclick)="onDoubleClick($event , fileItem , i);isFocusedFile = true;isFocusedFolder=false;"
+        [matTooltip]="fileItem.name" style="max-width: 132px;">
+        <mat-checkbox [checked]="fileItem.selected"
+          (change)="selectFiles(fileItem.checked = !fileItem.checked , fileItem)"
+          (click)="$event.stopPropagation()" [class] = "FSchange ? &apos;checkbox1&apos;:&apos;checkbox&apos;"></mat-checkbox>
+
+        <div fxLayout="row wrap" fxLayoutAlign="start stretch">
+          <div fxFlex="80" fxLayoutAlign="center">
+            <span style="text-align: center;padding: 6px;">
+              <svg [attr.width.px]="FSchange == true ? &apos;32&apos; : &apos;70&apos;"
+                [attr.height.px]="FSchange == true ? &apos;46&apos; : &apos;70&apos;" viewBox="0 0 71 70"
+                fill="none">
+                <path
+                  d="M18.1934 0C15.7871 0 13.8184 1.96875 13.8184 4.375V65.625C13.8184 68.0312 15.7871 70 18.1934 70H61.9434C64.3496 70 66.3184 68.0312 66.3184 65.625V17.5L48.8184 0H18.1934Z"
+                  fill="#c0c0c0" />
+                <path d="M53.1934 17.5H66.3184L48.8184 0V13.125C48.8184 15.5312 50.7871 17.5 53.1934 17.5Z"
+                  fill="#B0B7BD" />
+                <path d="M66.3184 30.625L53.1934 17.5H66.3184V30.625Z" fill="#CAD1D8" />
+                <path
+                  d="M57.5684 56.875C57.5684 58.0781 56.584 59.0625 55.3809 59.0625H7.25586C6.05273 59.0625 5.06836 58.0781 5.06836 56.875V35C5.06836 33.7969 6.05273 32.8125 7.25586 32.8125H55.3809C56.584 32.8125 57.5684 33.7969 57.5684 35V56.875Z"
+                  fill="#3E6F27" />
+                <text x="10" y="50" fill="white" style="font-weight: bold;letter-spacing: 1pt;">{{fileItem.extension
+                  |
+                  uppercase}}</text>
+                <path
+                  d="M55.3809 59.0625H13.8184V61.25H55.3809C56.584 61.25 57.5684 60.2656 57.5684 59.0625V56.875C57.5684 58.0781 56.584 59.0625 55.3809 59.0625Z"
+                  fill="#CAD1D8" />
+              </svg>
+            </span>
+          </div>
+          <mat-icon *ngIf="!FSchange" [matMenuTriggerFor]="menuF"  class="dotIcon"
+            (click)="$event.stopPropagation();currentSelectedFileIndex=i; isFocusedFile=true;">more_horiz
+          </mat-icon>
+        </div>
+
+        <div fxLayout="row" [class]="FSchange ? &apos;width-93&apos;:&apos;font-color-new font-12 filestyle&apos;">
+          {{fileItem.name}}
+        </div>
+        <mat-icon *ngIf="FSchange" [matMenuTriggerFor]="menuF"
+          (click)="$event.stopPropagation();currentSelectedFileIndex=i; isFocusedFile=true;">more_horiz</mat-icon>
+      </div>
+    </div>
+  
+
+
+  <mat-menu #menuF="matMenu" class="docs-action-menu" >
+    <ng-template matMenuContent>
+      <button class="nmenu pointer" matTooltip="Download"
+        (click)="downloadFile(fileItem.fileName, fileItem.name, fileItem.fsuuid , fileItem.clientContainerName);isFocusedFile=false;">
+        <span><img src="assets/Web/Download.png"> Download</span>
+      </button>
+      <button class="nmenu pointer" matTooltip="View" (click)="onDoubleClick($event , fileItem , index)">
+        <span><img src="assets/Web/View.png"> View</span>
+      </button>
+      <button class="nmenu pointer" matTooltip="Edit"
+        [fxShow]="checkFolderPermission(currentFolder) == &apos;RW&apos;"
+        (click)="redirectToEditUploadFile(fileItem);"
+        *ngIf="backendService.getAccessAction().includes(&apos;document_revision_status&apos;)">
+        <span><img src="assets/Web/Edit.png"> Edit</span>
+      </button>
+      <button class="nmenu pointer" matTooltip="Copy" (click)="copyFile(fileItem)">
+        <span><img src="assets/Web/Copy.png"> Copy</span>
+      </button>
+      <button class="nmenu pointer" matTooltip="Move" (click)="moveFile(fileItem, i)">
+        <span><img src="assets/Web/Move.png"> Move</span>
+      </button>
+      <button class="nmenu pointer" matTooltip="Version History" (click)="viewVersionHistory(fileItem)"
+        *ngIf="backendService.getAccessAction().includes(&apos;document_history&apos;)">
+        <span><img src="assets/Web/Version History.png"> Version History</span>
+      </button>
+      <button class="nmenu pointer" matTooltip="Delete"
+        [fxShow]="checkFolderPermission(currentFolder) == &apos;RW&apos;" (click)="deleteFilesPopup(fileItem, i)"
+        *ngIf="backendService.getAccessAction().includes(&apos;delete_document&apos;)">
+        <span><img src="assets/Web/Delete.png"> Delete</span>
+      </button>
+    </ng-template>
+  </mat-menu>
+  <div class="docs-action-menu">
+    <mat-menu #propertiesMenu="matMenu">
+      <button mat-menu-item class="font-12" (click)="onSingleClick(fileItem, 0)">
+        <mat-icon>description</mat-icon>
+        <span>Details</span>
+      </button>
+      <button mat-menu-item class="font-12" (click)="onSingleClick(fileItem, 1)">
+        <mat-icon>list</mat-icon>
+        <span>Logs</span>
+      </button>
+    </mat-menu>
+  </div>
+</div>
+
+</div>
+  </div>
+</div>
+
+<!-- <div fxLayout="row wrap" fxLayoutAlign="end end" [fxShow]="true" [fxHide]="false">
+  <button mat-mini-fab color="accent" (click)="scrollToTop()">
+    <mat-icon>keyboard_arrow_up</mat-icon>
+  </button>
+</div> -->
+

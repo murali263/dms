@@ -1,0 +1,50 @@
+@import "../../../../src/styles.scss";
+
+.card-class {
+  height: 100% !important;
+}
+.h6{
+    margin: 0;
+    font-weight: 500;
+    font-size: 18px;
+    line-height: 16px;
+    letter-spacing: 0.2px;
+    color: #A1A4B1;
+}
+.example-tree-invisible {
+  display: none;
+}
+.example-tree ul,
+.example-tree li {
+  margin-top     : 0;
+  margin-bottom  : 0;
+  list-style-type: none;
+}
+.folder-header{
+  padding: 12px 17px 14px 40px;
+}
+.folder-structure {
+  height  : 500px;
+  overflow: auto;
+  width   : 100%;
+  padding-left: 40px;
+}
+.folder-list {
+  width : 80%;
+}
+.folder-checkbox {
+   display: flex;
+}
+.folder-structure .mat-tree-node{
+  min-height: 40px !important;
+}
+.checklist-leaf-node{
+  margin: 0 90px 0 10px;
+}
+.folder-privilege-ellipsis{
+  white-space: nowrap;
+  width: 120px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  cursor: pointer;
+}

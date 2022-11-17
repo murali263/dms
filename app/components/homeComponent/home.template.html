@@ -1,0 +1,214 @@
+<div fxLayout="column wrap" style="height:100%" fxLayoutAlign="start stretch" [fxShow]="true" [fxHide]="false"
+  [class]="spinner ? &apos;disablepointer&apos;:&apos;enablepointer&apos;">
+  <div fxLayout="row wrap" fxLayoutAlign="start stretch" [fxShow]="true" [fxHide]="false">
+    <div *ngIf="spinner">
+      <!-- <mat-spinner class="spin"
+	style="position: fixed;z-index: 999; height: 2em;  width: 2em;overflow: show;   margin: auto; top: 0; left: 0;  bottom: 0; right: 0;">
+</mat-spinner> -->
+
+      <div class="loader">
+        <div class="loader--dot"></div>
+        <div class="loader--dot"></div>
+        <div class="loader--dot"></div>
+        <div class="loader--dot"></div>
+        <div class="loader--dot"></div>
+        <div class="loader--dot"></div>
+        <div class="loader--text"></div>
+      </div>
+    </div>
+  </div>
+  <div fxLayout="row " fxLayoutAlign="start stretch" [fxShow]="true" [fxHide]="false" fxFill
+    [ngStyle]="{&apos;opacity&apos; : spinner ? &apos;0.5&apos; : &apos;1.0&apos;}">
+    <div fxLayout="column " class="side-nav" fxLayoutAlign="space-between start" [fxShow]="true" [fxHide]="false"
+      [class]="!expandNav ? &apos;expand-nav side-nav&apos; : &apos;compress-nav side-nav&apos;">
+      <div fxLayout="column wrap" style="width: 100%;" fxLayoutAlign="start stretch" [fxShow]="true" [fxHide]="false">
+        <div fxLayout="column wrap" style="width:100%" fxLayoutAlign="start stretch" [fxShow]="true" [fxHide]="false">
+          <div fxLayout="row " style="height : 64px ; border-bottom: 1px solid gray; background-color:#26374b"
+            fxLayoutAlign="space-between center" [fxShow]="true" [fxHide]="false">
+            <div fxLayout="row wrap" style="padding-left:15px;" fxLayoutAlign="center center" [fxShow]="true"
+              [fxHide]="false">
+              <img imgSrc="Web/logo-icon.png" [fxHide]="!expandNav" [fxShow.lt-sm]="true" width="25">
+              <img imgSrc="Web/ingredio-logo.png" height="30" [fxShow.lt-sm]="false" *ngIf="!expandNav"
+                [@simpleFadeAnimation]="&apos;in&apos;" width="125">
+            </div>
+            <div fxLayout="row wrap" style="background:#26374b; height:100%;" fxLayoutAlign="center center"
+              [fxShow]="true" [fxHide]="false" [fxShow.lt-md]="false">
+              <mat-icon style="color:  #838487;" class="pointer" (click)="expandSideNav()"
+                [ngClass]="{&apos;rotate180&apos; : expandNav , &apos;rotate-back&apos; : !expandNav } ">chevron_left
+              </mat-icon>
+            </div>
+          </div>
+        </div>
+
+        <!-- <div class="toolbar2" style="background-color: #F5F5F5;"
+          *ngIf="activeChildRoute==&apos;#/home/documents&apos; || &apos;#/home/dashboard&apos; || activeChildRoute == &apos;#/home/approval&apos; || activeChildRoute == &apos;#/home/trash&apos;|| activeChildRoute== &apos;#/home/version-history&apos;">
+        </div> -->
+        <!-- ....... -->
+       <div fxLayout="column " style="width:100%" class="font-12" fxLayoutAlign="start stretch" [fxShow]="true"
+          [fxHide]="false">
+          <div fxLayout="row wrap" style="width:100%;height:50px;" class="pointer sidenav-list"
+            fxLayoutAlign="start stretch" [fxShow]="true" [fxHide]="false" routerLinkActive="active-side-navlist"
+            routerLinkActiveOptions="{exact: false}">
+            <div fxLayout="column wrap" style="outline:none" fxFlex="{{expandNav ? 100 : 20}}"
+              fxLayoutAlign="center center" [fxShow]="true" [fxHide]="false" [routerLink]="&apos;/home/dashboard&apos;">
+              <!-- <mat-icon>description</mat-icon> -->
+              <mat-icon style="color: black;">home</mat-icon>
+            </div>
+            <div fxLayout="column wrap" style="outline: none;" fxFlex="70" fxLayoutAlign="center start" [fxShow]="true"
+              [routerLink]="&apos;/home/dashboard&apos;" *ngIf="!expandNav" [@simpleFadeAnimation]="&apos;in&apos;"
+              (click)="clearSearch()"><span>
+                Home</span></div>
+          </div>
+        </div>
+        <!-- ..... -->
+        <div fxLayout="column " style="width:100%" class="font-12" fxLayoutAlign="start stretch" [fxShow]="true"
+          [fxHide]="false">
+          <div fxLayout="row wrap" style="width:100%;height:50px;" class="pointer sidenav-list"
+            fxLayoutAlign="start stretch" [fxShow]="true" [fxHide]="false" routerLinkActive="active-side-navlist"
+            routerLinkActiveOptions="{exact: false}" >
+            <div fxLayout="column wrap" style="outline:none" fxFlex="{{expandNav ? 100 : 20}}"
+              fxLayoutAlign="center center" [fxShow]="true" [fxHide]="false" [routerLink]="&apos;/home/documents&apos;">
+              <!-- <mat-icon>description</mat-icon> -->
+              <img src="../../../assets/Web/navicon/document.png" alt="">
+            </div>
+            <div fxLayout="column wrap" style="outline: none;" fxFlex="70" fxLayoutAlign="center start" [fxShow]="true"
+              [routerLink]="&apos;/home/documents&apos;" *ngIf="!expandNav" [@simpleFadeAnimation]="&apos;in&apos;"
+              (click)="clearSearch()"><span>
+                Documents</span></div>
+          </div>
+        </div>
+        <div fxLayout="row wrap" style="min-height:50px;" class="pointer sidenav-list font-12"
+          fxLayoutAlign="start stretch" [fxShow]="sidenavList[i].sidenav" *ngFor="let sd of sidenavList;let i = index;"
+          [routerLinkActiveOptions]="{exact: false}" routerLinkActive="active-side-navlist">
+          <div fxLayout="column wrap" style="width:100%" fxLayoutAlign="start stretch" [fxShow]="true" [fxHide]="false">
+            <div fxLayout="row wrap" style="width:100%;min-height:50px;" fxLayoutAlign="start stretch" [fxShow]="true"
+              [fxHide]="false" *ngIf="sd.sidenav">
+              <div fxLayout="column wrap" style="outline:none" fxFlex="{{expandNav ? 100 : 20}}"
+                fxLayoutAlign="center center" [fxShow]="true" [fxHide]="false" [routerLink]="sd.link">
+                <div fxLayout="row wrap" fxLayoutAlign="start stretch" [fxShow]="true" [fxHide]="false" *ngIf="sd.icon">
+                  <mat-icon>{{sd.icon}}</mat-icon>
+                  <!-- <img src={{sd.icon}}  alt="sd.icon"> -->
+                </div>
+                <div fxLayout="row wrap" fxLayoutAlign="start stretch" [fxShow]="true" [fxHide]="false"
+                  *ngIf="!sd.icon"><img imgSrc="{{sd.image}}" sizes="20"></div>
+              </div>
+              <div fxLayout="column wrap" style="outline: none;" fxFlex="70" fxLayoutAlign="center start"
+                [fxShow]="true" [fxHide]="expandNav" [routerLink]="sd.link" (click)="clearSearch()"><span>
+                  {{sd.label || &apos;&apos;}}</span></div>
+              <div fxLayout="column wrap" fxFlex="5" fxLayoutAlign="center center" [fxShow]="true" [fxHide]="expandNav"
+                *ngIf="sd.hasChildren &amp;&amp; sd.children.length &gt; 0">
+                <mat-icon (click)="onExpand(i)" [fxHide]="sd.expandStatus">keyboard_arrow_down</mat-icon>
+                <mat-icon (click)="onExpand(i)" [fxHide]="!sd.expandStatus">keyboard_arrow_up</mat-icon>
+              </div>
+            </div>
+            <div fxLayout="row wrap" fxLayoutAlign="center center" [fxShow]="sd.expandStatus" [fxHide]="!sd.expandStatus"
+              *ngIf="sd.hasChildren &amp;&amp; sd.children.length &gt; 0">
+              <div *ngFor="let childNav of sd.children; let childIndex = index ;" fxLayoutAlign="center center"
+                [class]="!activeChildRoute.includes(sd.children[childIndex ].link) ? &apos;in-activelist&apos; : &apos;active-child-list&apos;"
+                style="width: 100%;min-height:50px;" class="child-nav-list">
+                <div fxLayout="column" fxLayoutAlign="center center" style="width:100%">
+                  <div class="child-name" fxLayout="row" style="width:100%" [routerLink]="childNav.link">
+                    <p style="color: black; margin-left: 3.1em;">{{childNav.childHeader}}</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div fxLayout="column " style="border-top: 1px solid #D0D0D0; background-color: #26374b;"
+        fxLayoutAlign="space-between stretch" [fxShow]="false" [fxHide]="false">
+        <div fxLayout="row " fxLayoutAlign="center stretch" [fxShow]="true" [fxHide]="false">
+          <div fxLayoutAlign="center center" fxFlex="90" fxLayout="column">
+            <p class="font-9" style="color:#d0d0d0;text-align:center;">Terms and Conditions | Privacy and Policies</p>
+            <p class="font-9" style="color:#8B90A0;text-align:center;">Copyright &#xA9; 2020 The INGREDION and INGREDION
+              IDEA LABS <br>{{version || &apos;&apos;}}</p>
+
+          </div>
+        </div>
+      </div>
+    </div>
+    <div fxLayout="column " class="toolbar " fxLayoutAlign="start stretch" [fxShow]="true" [fxHide]="false"
+      [class]="!expandNav ? &apos;expand-toolbar &apos; : &apos;compress-toolbar &apos;">
+      <div fxLayout="row wrap" fxLayoutAlign="start stretch" [fxShow]="true" [fxHide]="false">
+        <mat-toolbar class="toolbar">
+          <div fxLayout="row " style="width:100%" fxLayoutGap="10px" fxLayoutAlign="space-between center"
+            [fxShow]="true" [fxHide]="false">
+            <div fxFlex="50" class="searchfolder searchfeild">
+              <!-- <div *ngIf="activeChildRoute==&apos;#/home/documents&apos; || activeChildRoute == &apos;#/home/approval&apos; || activeChildRoute == &apos;#/home/status&apos; || activeChildRoute == &apos;#/home/trash&apos;">
+                <mat-form-field appearance="outline" style="width:100%;">
+                  <div class="search" fxLayout="row">
+                    <div class="search-bar font-12" fxLayoutAlign="center center">
+                      <mat-icon matPrefix>search</mat-icon>
+
+                      <input matInput placeholder="Search" [(ngModel)]="searchVal" (keyup.enter)="searchFiles()">
+
+                    </div>
+                    <mat-icon class="pointer" (click)="isdropdown=!isdropdown" *ngIf="activeChildRoute==&apos;#/home/documents&apos; || activeChildRoute == &apos;#/home/approval&apos;">
+                      {{isdropdown? &apos;keyboard_arrow_up&apos;:&apos;keyboard_arrow_down&apos;}}</mat-icon>
+                  </div>
+                </mat-form-field>
+                <bh-search #searchComp class="dropdown" *ngIf="isdropdown" (searchCloseEvent)="closeSearchDropdown($event)" (searchEvent)="searchFiles($event)"></bh-search>
+              </div> -->
+            </div>
+            <div fxLayout="row " fxLayoutGap="1em" fxLayoutAlign="space-around center" [fxShow]="true" [fxHide]="false">
+              <div fxLayout="column wrap" fxLayoutAlign="start stretch" [fxShow]="true" [fxHide]="false"
+                *ngIf="currentUser">
+                <!-- <div fxLayoutAlign="center center" class="userIcon">
+                  {{userChars || &apos;&apos;}}</div> -->
+
+                <div fxLayoutAlign="center center" class="userIcon">
+                  <img src="../../../assets/Web/avtar.png" height="40px" alt="">
+                </div>
+
+              </div>
+              <div fxLayout="column wrap" fxLayoutAlign="start stretch" [fxShow]="true" [fxHide]="false"><span
+                  class="font-14">
+                  {{currentUser||&quot;Login&quot;}}</span></div>
+              <div fxLayout="column wrap" class="white-color" fxLayoutAlign="start stretch" [fxShow]="true"
+                [fxHide]="false" *ngIf="currentUser">
+                <mat-icon class="pointer" matTooltip="Logout" (click)="logoutUser()">input</mat-icon>
+              </div>
+              <!-- <mat-icon class="pointer" (click)="issearch=!issearch" *ngIf="activeChildRoute==&apos;#/home/documents&apos; || activeChildRoute == &apos;#/home/approval&apos;">
+                {{issearch? &apos;keyboard_arrow_up&apos;:&apos;keyboard_arrow_down&apos;}}</mat-icon> dropdown arrow for dynamic hide and show search tool bar -->
+              <div fxLayout="column wrap" fxFlex="2" fxLayoutAlign="start stretch" [fxShow]="true" [fxHide]="false"
+                *ngIf="!currentUser">
+                <mat-icon class="pointer" matTooltip="Login" (click)="loginUser()">power_settings_new</mat-icon>
+              </div>
+            </div>
+          </div>
+        </mat-toolbar>
+        <!-- new search -->
+
+        <!-- <mat-toolbar class="toolbar2" *ngIf="issearch"> Dynamic hide and show tool bar for search-->
+          <mat-toolbar class="toolbar2" *ngIf="activeChildRoute==&apos;#/home/documents&apos; || activeChildRoute == &apos;#/home/status/approval&apos; || activeChildRoute == &apos;#/home/trash&apos;|| activeChildRoute == &apos;#/home/status/approval&apos;|| activeChildRoute== &apos;#/home/version-history&apos;|| activeChildRoute == &apos;#/home/status/approved&apos; || activeChildRoute == &apos;#/home/status/rejected&apos;">
+            <div fxLayout="row " style="width:100%" fxLayoutGap="10px" fxLayoutAlign="space-between center" [fxShow]="true" [fxHide]="false">
+              <div fxFlex="100" class="searchfolder searchfeild searchpad">
+                <div *ngIf="activeChildRoute==&apos;#/home/documents&apos; || activeChildRoute == &apos;#/home/status/approval&apos; || activeChildRoute == &apos;#/home/status&apos; || activeChildRoute == &apos;#/home/trash&apos; || activeChildRoute == &apos;#/home/status/approval&apos;|| activeChildRoute== &apos;#/home/version-history&apos; || activeChildRoute == &apos;#/home/status/approved&apos; || activeChildRoute == &apos;#/home/status/rejected&apos;">
+                  <mat-form-field class="bordersearch" appearance="none" style="width:100%;">
+                  <div class="search" fxLayout="row">
+                    <div class="search-bar font-12" fxLayoutAlign="center center">
+                      <mat-icon matPrefix>search</mat-icon>
+
+                      <input matInput placeholder="Search" [(ngModel)]="searchVal" (keyup.enter)="searchFiles()">
+
+                    </div>
+                    <mat-icon class="pointer" (click)="isdropdown=!isdropdown"
+                      *ngIf="activeChildRoute==&apos;#/home/documents&apos; || activeChildRoute == &apos;#/home/status/approval&apos; ||  activeChildRoute == &apos;#/home/trash&apos; || activeChildRoute== &apos;#/home/version-history&apos;">
+                      {{isdropdown? &apos;keyboard_arrow_up&apos;:&apos;keyboard_arrow_down&apos;}}</mat-icon>
+                  </div>
+                </mat-form-field>
+                <bh-search #searchComp class="dropdown" *ngIf="isdropdown"
+                  (searchCloseEvent)="closeSearchDropdown($event)" (searchEvent)="searchFiles($event)"></bh-search>
+              </div>
+            </div>
+          </div>
+        </mat-toolbar>
+      </div>
+      <div fxLayout="row " style="overflow:auto; height:100%;" fxLayoutAlign="start stretch" [fxShow]="true"
+        [fxHide]="false">
+        <router-outlet></router-outlet>
+      </div>
+    </div>
+  </div>
+</div>

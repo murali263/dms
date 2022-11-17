@@ -1,0 +1,52 @@
+.folder-case {
+  height       : 60px;
+  width        : 100%;
+  border       : 1.5px solid #80808061;
+  border-radius: 4px;
+}
+
+.details {
+  display   : block !important;
+  overflow  : auto;
+  height    : 25vh;
+  word-break: break-all;
+  padding   : 1.5em 0em 1em 2em;
+
+}
+
+.success-btn:disabled,
+.success-btn[disabled] {
+  border          : none !important;
+  background-color: #cccccced;
+  color           : #fff;
+}
+
+
+.margin {
+  margin-right: 35px;
+}
+
+.download-btn {
+  background-color: white !important;
+  box-shadow      : none !important;
+  color           : #4DCFE0;
+}
+
+.auto-fill {
+  box-shadow      : 1px 0px #3090C7;
+  width           : 1vh;
+  height          : 60px;
+  border-radius   : 2px;
+  background-color: #3090C7;
+}
+
+.icon .mat-icon {
+  justify-content: center;
+  display        : flex;
+  height         : 12px;
+  width          : 12px;
+  align-items    : center;
+  border         : 1.5px solid;
+  border-radius  : 2px;
+  padding        : 2px;
+}

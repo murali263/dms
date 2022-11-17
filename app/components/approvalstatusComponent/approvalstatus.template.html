@@ -1,0 +1,107 @@
+<div fxLayout="column " class="card-padding" fxFlex="100" fxLayoutGap="1em" fxLayoutAlign="start stretch" [fxShow]="true" [fxHide]="false" (click)="isFocused=false"><span class="title">
+                Status</span>
+  <div fxLayout="column " fxFlex="100" fxLayoutAlign="start stretch" [fxShow]="true" [fxHide]="false">
+    <mat-card (click)="isFocused=false">
+      <mat-card-content style="height:100%;" class="tab tabs">
+        <mat-tab-group mat-align-tabs="center" style="height:100%;" [disableRipple]="false" [(selectedIndex)]="selectedIndex" (selectedTabChange)="tabChange($event)">
+          <mat-tab label="Approved">
+            <div fxLayout="column wrap" fxLayoutAlign="start stretch" [fxShow]="true" [fxHide]="false" *ngIf="selectedIndex==0">
+              <div fxLayout="row wrap" class="tabitems" fxFlex="100" fxLayoutAlign="space-evenly center" [fxShow]="true" [fxHide]="false">
+                <div fxFlex="30" class="font-12">
+                  File Name</div>
+                <div fxFlex="30" class="font-12">
+                  Approved by</div>
+              </div>
+              <div fxLayout="column wrap" fxLayoutAlign="  none" [fxShow]="true" [fxHide]="false">
+                <div>
+                  <cdk-virtual-scroll-viewport itemSize="50" style="height:50vh;">
+                    <div *cdkVirtualFor="let file of Filearray">
+                      <div fxLayout="row wrap" class="fileitems selected" fxLayoutAlign="space-evenly center" fxFlex="100" [fxShow]="true" [fxHide]="false" [class.selected]="item ==file.uuid &amp;&amp; isFocused" (click)="item = file.uuid;isFocused=true;$event.stopPropagation()">
+                        <div fxFlex="30">
+                          <p class="font-15 ellipsis-text" style="max-width:200px;" [matTooltip]="file.name">
+                            {{ file?.name}}</p>
+                        </div>
+                        <div fxFlex="30" class="gray font-15" fxLayoutAlign="space-between" fxLayoutGap="1em">
+                          {{computeDate(file)}}
+                          &#xA0;&#xA0;&#xA0;by {{computeApprover(file)}}</div>
+                      </div>
+                    </div>
+                  </cdk-virtual-scroll-viewport>
+                </div>
+              </div>
+            </div>
+          </mat-tab>
+          <mat-tab label="Awaiting Approval">
+            <div fxLayout="column wrap" fxLayoutAlign="start stretch" [fxShow]="true" [fxHide]="false" *ngIf="selectedIndex==1">
+              <div fxLayout="row wrap" class="tabitems" fxFlex="100" fxLayoutAlign="space-evenly center" [fxShow]="true" [fxHide]="false">
+                <div fxFlex="30" class="font-12">
+                  File Name</div>
+                <div fxFlex="30" class="font-12">
+                  Date of Submission</div>
+                <div fxFlex="15" fxLayoutAlign="center" class="font-12">
+                  Actions</div>
+              </div>
+              <div>
+                <div fxLayout="column wrap" fxLayoutAlign="  none" [fxShow]="true" [fxHide]="false">
+                  <cdk-virtual-scroll-viewport itemSize="50" style="height:50vh">
+                    <div *cdkVirtualFor="let file of Filearray" fxLayout="row wrap" class="selected fileitems" fxLayoutAlign="space-evenly center" [fxShow]="true" [fxHide]="false" [class.selected]="item == file.uuid &amp;&amp; isFocused" (click)="item = file.uuid;isFocused=true;$event.stopPropagation();">
+                      <div fxFlex="30">
+                        <p class="font-15 ellipsis-text" style="max-width:200px;" [matTooltip]="file.name">
+                          {{file?.name}}</p>
+                      </div>
+                      <div fxFlex="30" class="gray font-15">
+                        {{file.uploadedBy?.timestamp | date:&apos;MMM d, y, h:mm:ss a&apos;}}</div>
+                      <div fxLayoutAlign="center" fxFlex="15">
+                        <div fxFlex="60" *ngIf="item==file.uuid &amp;&amp; isFocused" fxLayoutAlign="space-around " (click)="$event.stopPropagation();" class="pointer">
+                          <mat-icon (click)="downloadFile(file.fileName, file.name, file.fsuuid , file.clientContainerName, file.uuid,&apos;awaiting&apos;)" matTooltip="Download file">arrow_downward</mat-icon>
+                          <mat-icon (click)="redirectToEditUploadFile(file , &apos;awaiting&apos;)" matTooltip="edit file">edit</mat-icon>
+                          <mat-icon (click)="deleteFS(file, &apos;awaiting&apos;)" matTooltip="Delete file">highlight_off</mat-icon>
+                        </div>
+                      </div>
+                    </div>
+                  </cdk-virtual-scroll-viewport>
+
+                </div>
+              </div>
+            </div>
+          </mat-tab>
+          <mat-tab label="Rejected " class="tabitems">
+            <div fxLayout="column wrap" fxLayoutAlign="start stretch" [fxShow]="true" [fxHide]="false" *ngIf="selectedIndex==2">
+              <div fxLayout="row wrap" class="tabitems" fxFlex="100" fxLayoutAlign="space-evenly center" [fxShow]="true" [fxHide]="false">
+                <div fxFlex="30" class="font-12">
+                  File Name</div>
+                <div fxFlex="30" class="font-12">
+                  Rejected by</div>
+                <div fxFlex="15" fxLayoutAlign="center" class="font-12">
+                  Actions</div>
+              </div>
+              <div fxLayout="column wrap" fxLayoutAlign="  none" [fxShow]="true" [fxHide]="false">
+                <div>
+                  <cdk-virtual-scroll-viewport itemSize="50" style="height:50vh">
+                    <div *cdkVirtualFor="let file of Filearray" fxLayout="row wrap" class="selected fileitems" fxLayoutAlign="space-evenly center" [fxShow]="true" [fxHide]="false" (click)="item = file.uuid;isFocused=true;$event.stopPropagation();" [class.selected]="item ==file.uuid &amp;&amp; isFocused">
+                      <div fxFlex="30">
+                        <p class="font-15 ellipsis-text" style="max-width:200px;" [matTooltip]="file.name">
+                          {{file?.name}}</p>
+                      </div>
+                      <div fxFlex="30" fxLayoutAlign="start" fxLayoutGap="1em" class="gray font-15">
+                        {{lastapprovalRejectDate(file)}} &#xA0;&#xA0;&#xA0;by {{lastapprovalRejectName(file)}}
+                      </div>
+                      <div fxLayoutAlign="center" fxFlex="15">
+                        <div fxFlex="60" *ngIf="item==file.uuid &amp;&amp; isFocused" fxLayoutAlign="space-around" class="pointer" (click)="$event.stopPropagation();">
+                          <mat-icon (click)="downloadFile(file.fileName, file.name,file.fsuuid , file.clientContainerName)" matTooltip="Download file">arrow_downward</mat-icon>
+                          <mat-icon style="transform: rotate(179deg);" *ngIf="file.rejectionReason &amp;&amp; file.rejectionReason.length&gt;0" (click)="triggerPopup(file.rejectionReason)" matTooltip="Reject reason">error_outline</mat-icon>
+                          <mat-icon (click)="redirectToEditUploadFile(file , &apos;rejected&apos;)" matTooltip="edit file">edit</mat-icon>
+                          <mat-icon (click)="deleteFS(file)" matTooltip="delete file">highlight_off</mat-icon>
+                        </div>
+                      </div>
+                    </div>
+                  </cdk-virtual-scroll-viewport>
+                </div>
+              </div>
+            </div>
+          </mat-tab>
+        </mat-tab-group>
+      </mat-card-content>
+    </mat-card>
+  </div>
+</div>

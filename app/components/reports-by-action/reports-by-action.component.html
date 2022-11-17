@@ -1,0 +1,39 @@
+<div class="row">
+    <div class="mtitle ml20">Reports</div>
+  </div>
+<div fxLayout="row" class="reports-header">
+    <div fxLayout="row" class="margin-l-1">
+      
+    </div>
+    <div class="reportsDropdown">
+        Reports By Action
+    </div>
+
+    <button style="height: 26px; line-height: 26px; padding-left: 0 !important;" mat-icon-button
+        [matMenuTriggerFor]="menu" aria-label="Example icon-button with a menu">
+        <mat-icon>expand_more</mat-icon>
+    </button>
+    <mat-menu #menu="matMenu">
+        <button mat-menu-item (click)="onReportsByExpiry()" >
+            <span>Reports By Expiry</span>
+        </button>
+        <button mat-menu-item>
+            <span>Reports By Action</span>
+        </button>
+    </mat-menu>
+</div>
+<div fxLayout="row" fxLayoutAlign="space-between center" class="margin-t-1">
+    <div class="margin-l-1">
+        Status by Actions
+    </div>
+    <select fxFlex="25" class="dashboard-select margin-r-1" [(ngModel)]="chartDuration"
+        (change)="getChartFilteredData(chartDuration)">
+        <option *ngFor="let f of filterArray" [value]="f.value">{{f.description}}</option>
+    </select>
+</div>
+<div *ngIf="enableChart">
+    <ngx-charts-bar-vertical [view]="view" [scheme]="colorScheme" [results]="result" [gradient]="false" [xAxis]="true"
+        [animations]="true" [maxXAxisTickLength]="maxXAxisTickLength" [yAxis]="true" [showXAxisLabel]="true"
+        [trimXAxisTicks]="true" [showYAxisLabel]="true" barPadding="40">
+    </ngx-charts-bar-vertical>
+</div>

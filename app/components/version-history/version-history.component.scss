@@ -1,0 +1,151 @@
+.reports-header {
+  margin-top: 2em;
+  border-bottom: 2px solid #c5c5c5;
+  width: 100%;
+}
+
+.pagenumber {
+  background-color: #0072c6;
+  border-radius: 10px;
+  height: 20px;
+  width: 20px;
+  font-size: 13px;
+  text-align: center;
+  color: white;
+}
+
+.margin-r-1 {
+  margin-right: 1em;
+}
+
+.reportsDropdown {
+  border-bottom: 2px solid blue;
+  color: blue;
+  font-size: 0.8em;
+}
+
+.dashboard-select {
+  padding: 6px 6px 6px 6px;
+  width: 100%;
+  position: relative;
+  color: #9e9e9e;
+  background: #ffffff;
+  border-radius: 4px;
+  outline: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  background-image: url(/assets/Web/down_arrow.svg);
+  background-repeat: no-repeat;
+  background-position: right 10px center;
+}
+
+.table-header {
+  color: black;
+}
+
+.table-data {
+  color: grey;
+}
+
+tr.mat-header-row {
+  // height: 2em;
+  background-color: #add8e6;
+  color: black;
+}
+
+// td.mat-cell,
+// td.mat-footer-cell,
+// th.mat-header-cell {
+//   padding: 0 1% !important;
+// }
+
+.selected {
+  background-color: #e5e5e5 !important;
+}
+.outer {
+  display: flex;
+  justify-content: flex-end;
+}
+.margin-l-1 {
+  margin-left: 1em;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.margin-t-1 {
+  margin-top: 1em;
+  margin-bottom: 1em;
+}
+.newButton {
+  margin-right: 5%;
+  background-color: #0072c6;
+  color: #fff;
+  justify-content: center;
+  display: flex;
+  font-size: 1em;
+  margin-bottom: 0.2em;
+  border-radius: 12px 12px 12px 12px;
+  width: 96px;
+  height: 28px;
+}
+.inputt {
+  width: 23rem;
+  padding-left: 15px;
+  border: 1px solid #000;
+  border-radius: 16px 16px 16px 16px;
+  justify-content: flex-end;
+  place-content: space-between;
+  flex-direction: row;
+  box-sizing: border-box;
+  display: flex;
+  margin-top: 1%;
+  margin-right: 2%;
+  align-items: center;
+}
+input {
+  width: max-content;
+  border: solid #fff;
+}
+::ng-deep
+  .mat-form-field-appearance-outline.mat-focused
+  .mat-form-field-outline-thick {
+  color: #fff !important;
+  background-color: white !important;
+}
+::ng-deep .mat-form-field-appearance-outline .mat-form-field-infix {
+  padding: 0rem 0rem 0rem 0rem;
+  width: 319px;
+  cursor: text;
+  background-color: white !important;
+}
+::ng-deep .mat-form-field-appearance-outline .mat-form-field-flex {
+  padding: 0 0em 0 0em !important;
+}
+.all {
+  float: right;
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 0.5em;
+  margin-right: 0.2em;
+  margin-bottom: 0.5em;
+}
+.downloadAlll {
+  border-radius: 15px !important;
+  color: rgba(0, 0, 0, 0.87);
+  min-width: 130px;
+  font-weight: 600;
+  letter-spacing: 0.2px;
+  border: #040000 2px solid;
+}
+
+.mat-menu-item {
+  line-height: 35px !important;
+  height: 37px;
+}
+.selected{
+  background-color: #e5e5e5!important;
+}
+// tbody{
+//   text-align: center;
+// }

@@ -1,0 +1,314 @@
+@import "../../../../src/styles.scss";
+
+.users .mat-card {
+  padding: 0px !important;
+  // height: 150px;
+  border: 1px solid #cacccf;
+  box-sizing: border-box;
+  border-radius: 4px;
+}
+.users mat-card {
+  height: 20em;
+  overflow: hidden;
+}
+.users mat-card-content {
+  overflow: auto;
+  // height: 150px;
+}
+
+.subheader {
+  background-color: #eee;
+  border-bottom: 1px solid #ddd;
+}
+.h6 {
+  font-weight: 500;
+  font-size: 18px;
+  line-height: 24px;
+  letter-spacing: 0.2px;
+  color: #a1a4b1;
+  margin: 12px 0px 27px 0px;
+}
+.list-item {
+  padding: 20px 20px 0px 20px;
+  display: flex;
+  word-break: break-all;
+}
+.user-list-font {
+  font-size: 12px !important;
+}
+.search {
+  place-content: end space-between;
+  display: flex;
+  align-items: center;
+}
+.search-bar {
+  display: flex;
+  width: 100%;
+}
+.search-bar .mat-icon {
+  color: #4DCFE0;
+}
+.search-menu {
+  background: #0072C6;
+  color: white;
+}
+.users .mat-card-title {
+  font-size: 14px;
+  font-weight: 500;
+  background-color: #eee;
+  border-bottom: 1px solid #ddd;
+  height: 40px;
+  padding-left: 20px;
+  margin-bottom: 0px;
+  color: #a1a4b1;
+  align-items: center;
+  display: flex;
+}
+.checkbox .mat-checkbox-label {
+  font-size: 14px;
+  line-height: 22px;
+  letter-spacing: 0.1px;
+  color: #52575c;
+  mix-blend-mode: normal;
+}
+
+.example-viewport {
+  height: 50vh;
+}
+.search-field {
+  display: flex;
+  margin-bottom: 2em;
+}
+.select {
+  padding-left: 6px;
+  width: 20%;
+  position: relative;
+  color: #fff;
+  background: #0072C6;
+  outline: none;
+  -webkit-appearance: none;
+  appearance: none;
+  background-image: url(/assets/Web/down_arrow.svg);
+  background-repeat: no-repeat;
+  background-position: right 10px center;
+}
+.option {
+  background-image: url("../../../../src/assets/Web/down_arrow.svg");
+  background-color: #fff;
+  color: #000;
+}
+
+
+
+
+
+
+
+.container {
+  display: block;
+  position: relative;
+  padding-left: 35px;
+  // margin-bottom: 12px;
+  cursor: pointer;
+  // font-size: 22px;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+/* Hide the browser's default checkbox */
+.container input {
+  position: absolute;
+  opacity: 0;
+  cursor: pointer;
+  height: 0;
+  width: 0;
+}
+
+/* Create a custom checkbox */
+.checkmark {
+  position: absolute;
+  top: 0px;
+  left: 0;
+  height: 15px;
+  width: 15px;
+  border: 2px solid grey;
+}
+
+/* On mouse-over, add a grey background color */
+.container:hover .unchecked ~ .checkmark {
+  border: 2px solid grey;
+}
+
+/* When the checkbox is checked, add a blue background */
+.container .checked ~ .checkmark {
+  background-color: #4DCFE0;
+  border: 2px solid #4DCFE0;
+}
+
+/* Create the checkmark/indicator (hidden when not checked) */
+.checkmark:after {
+  content: "";
+  position: absolute;
+  display: none;
+}
+
+/* Show the checkmark when checked */
+.container .checked ~ .checkmark:after {
+  display: block;
+}
+
+/* Style the checkmark/indicator */
+.container .checkmark:after {
+  left: 5px;
+  top: 0px;
+  width: 5px;
+  height: 10px;
+  border: solid white;
+  border-width: 0 1px 1px 0;
+  -webkit-transform: rotate(45deg);
+  -ms-transform: rotate(45deg);
+  transform: rotate(45deg);
+}
+.outer{
+  box-sizing: border-box;
+}
+.card{
+  width:48%;
+  padding: 0px;
+  .topTitle{
+    background-color:#abdadb;
+    width: 100%;
+    font-weight: 500;
+    font-size:1rem;
+    padding:0.2rem 0px 0.2rem 0px;
+      span{
+        margin-left: 0.2rem;
+      }
+    }
+
+  .searchBar{
+    width:100%;
+    display: flex;
+    align-items: center;
+    font-size: 0.8em;
+    height: 2rem;
+      input{
+        padding:1em;
+      }
+      button{
+        background-color:#0072c6;
+        height: 100%;
+        width: 2.5rem;
+        min-width: unset;
+        display:flex;
+        justify-content:center;
+        align-items: center;
+      mat-icon{
+        color: white;
+        height: 100%;
+        width: 100%;
+      }
+    }
+  }
+  .listBodyOuter{
+    height: 10rem;
+    width: 100%;
+    overflow-y:auto;
+  }
+  .listBody{
+    width: 100%;
+    border-bottom: 1px solid #ddd;
+  }
+  .bottom{
+    width: 100%;
+    display:flex;
+    justify-content:center;
+    align-items: center;
+  }
+}
+.cardsOuter{
+  display:flex;
+  width: 100%;
+  justify-content:space-between;
+  margin-bottom: 1rem;
+}
+.mat-form-field-appearance-outline .mat-form-field-infix{
+  padding: 0px;
+}
+.btn-add{
+  width: 18%;
+  color: white;
+  background-color: #5ea73e;
+}
+.btn-srch{
+  border-radius: 0px;
+}
+
+.btn-remove{
+  color: white;
+  background-color: red;
+}
+
+.namespan{
+  max-width: 6rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.mailspan{
+  max-width:11rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.spandiv{
+  height: 100%;
+  display: flex;
+  align-items: center;
+}
+.usergroupnamespan{
+
+  max-width: 18rem;
+  white-space: nowrap;
+  overflow: hidden;
+ text-overflow: ellipsis;
+}
+.checkboxouter{
+  display:flex;
+}
+::-webkit-scrollbar {
+  width: 15px;
+  background-color: #e5e5e5;
+  height: 4px;
+}
+
+::-webkit-scrollbar-track {
+  box-shadow: inset 0 0 5px #857f7f;
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+  //background: url("assets/Web/scroll.png");
+  background: url(assets/Web/scroll.png);
+  background-repeat: no-repeat;
+  border-radius: 10px;
+}
+
+:root {
+  scrollbar-color: $toolbar-background #e5e5e5 !important;
+  scrollbar-shadow-color: inset 0 0 5px #888888 !important;
+}
+.btn{
+  height: 2rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.addicon{
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}

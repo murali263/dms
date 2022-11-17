@@ -1,0 +1,135 @@
+@import "../../../../src/styles.scss";
+
+.folder-unit {
+  width        : 134px;
+  border       : 1px solid #757272;
+  min-height   : 135px;
+  border-radius: 4px;
+  margin-bottom: 8px;
+  height       : fit-content;
+}
+
+.folder-unit:hover {
+  border: 1.5px solid $toolbar-background;
+}
+
+.file-unit {
+  width        : 135px;
+  border       : 1px solid #757272;
+  border-radius: 4px;
+  margin-bottom: 8px;
+  min-height   : 145p;
+  height       : fit-content;
+}
+
+.file-unit1 {
+  width        : 100%;
+  height       : fit-content;
+  // border-bottom: 1px solid #757272;
+  word-break: break-all;
+  min-height: 55px;
+  // background-color: #dadee1;
+  background: #e5e5e5;
+    margin-bottom: 10px;
+}
+
+.file-unit1:hover {
+  border: 1.5px solid $toolbar-background;
+}
+
+.file-unit:hover {
+  border: 1.5px solid $toolbar-background;
+}
+
+.folder-input {
+  border : none;
+  outline: none;
+}
+
+.folder-action {
+  animation: blink2 0.5s step-end infinite alternate;
+}
+
+@keyframes blink2 {
+  50% {
+    border      : 1.5px solid blueviolet;
+    border-style: dashed;
+  }
+}
+
+
+.max-width {
+  max-width: 60%;
+}
+
+.width-93 {
+  width     : 93%;
+  word-break: break-all;
+  max-width : 90% !important;
+}
+
+.filestyle {
+  // width     : 134px;
+  border-top: 2px solid #c7c7c7;
+  padding   : 4px;
+  min-height    : 50px;
+  word-break: break-all;
+}
+
+.gray {
+  color: #c7c7c7;
+}
+
+.opacity {
+  opacity: 0.7;
+}
+
+.active {
+  border: 1.5px solid $toolbar-background;
+  ;
+}
+
+.file-img {
+  width  : 100px;
+  height : 80px;
+  padding: 4px;
+}
+
+.file-img1 {
+  width       : 45px;
+  height      : 33px;
+}
+
+.margin-left {
+  margin-left: 14px;
+}
+
+.loaderClass {
+  position: absolute;
+  width   : 45%;
+  z-index : 100;
+  top     : 15%;
+  left    : 15%;
+}
+
+.folderIcon{
+  padding-left: 4px;padding-top: 20px;
+}
+.folderIcon1{
+  padding-left: 12px;
+}
+.checkbox {
+  position: relative;
+  left: 5px;
+  top: 5px;
+}
+
+.checkbox1 {
+  left: 10px;
+  position: relative;
+  margin-right: 13px;
+}
+
+.mat-checkbox-inner-container {
+  background: #ffff;
+}

@@ -1,0 +1,142 @@
+<div fxLayout="column wrap" fxLayoutAlign="start stretch" [fxShow]="true" [fxHide]="false" id="scrollId">
+  <div fxLayout="column wrap" class="scroll-block"  fxLayoutAlign="start stretch" [fxShow]="true" [fxHide]="false">
+    <div fxLayout="row wrap" class="border_style p_15 m-40" fxLayoutAlign="space-between center" [fxShow]="true" [fxHide]="false">
+      <div fxFlex="40" class="mtitle">
+        Configuration</div>
+      <div fxLayout="row wrap" fxLayoutGap="10px" fxLayoutAlign="end center">
+        <button *ngIf="false" mat-button class="white-btn" (click)="importConfigs()">Import</button>
+        <button *ngIf="false" mat-button class="white-btn" (click)="exportConfigs()">Export</button>
+        <button mat-button class="add-new-btn newstyle" id="create-user-btn" (click)="addNewConfig()">Add New Metadata</button></div>
+    </div>
+    <div fxLayout="column wrap" fxLayoutAlign="start stretch" [fxShow]="true" [fxHide]="false">
+      <div fxLayout="row wrap" class="border_style p_15" fxLayoutAlign="start stretch" [fxShow]="true" [fxHide]="false">
+        <div fxLayout="column wrap" fxFlex="100" fxLayoutAlign="start stretch" [fxShow]="true" [fxHide]="false">
+          <div fxFlex="40">
+            <div fxLayoutAlign="space-between center">
+              <h3>Meta Data List</h3>
+
+              <!-- <div fxLayoutAlign="center center" class="width-30" style="height: 48px;">
+                <form [formGroup]="filterDeptForm">
+                  <mat-form-field  class="input-row" appearance="outline">
+                    <mat-select placeholder="Select Business Department" formControlName="filter" multiple>
+                      <mat-option *ngFor="let dept of businessDepartments" [value]="dept.businessid">{{dept.businessDepartmentname}}</mat-option>
+                      <mat-option #allSelected (click)="toggleAllSelection()" >All</mat-option>
+                    </mat-select>
+                  </mat-form-field> 
+                </form>
+                <button mat-button style="color:#5597E3;" color="primary" (click)="applyFilter()">Apply</button>
+                <button mat-button style="color:#5597E3;" color="primary" (click)="reset()">Reset</button>
+              </div> -->
+              <app-department-filter (applyclick)="applyclick($event)" (resetclick)="resetclick()"></app-department-filter>
+            
+              <div fxLayoutAlign="center center" class="width-30 newsearchborder">
+                <input class="input-field-search" (keyup.enter)="searchConfig()" [(ngModel)]="searchText" type="text" placeholder="Search here" name="Search">
+                <span *ngIf="searchText &amp;&amp; searchText.length &gt; 0" id="clear-search" (click)="searchText=&apos;&apos;" class="pointer" style="position: relative;right: 26px;">X</span>
+                <div fxLayout="column" (click)="searchConfig()" fxLayoutAlign="center center" class="prefix-icon" style="width:120px;font-weight: bold;">
+                  <span class="font-14 pointer"><mat-icon>search</mat-icon></span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div style="width:100%" class="m-10">
+        <div class="p_15">
+        <table mat-table [dataSource]="dataSource" class="mat-elevation-z8 " style="width:100%">
+          <!-- Meta Data Name Column -->
+          <ng-container matColumnDef="name">
+            <th mat-header-cell *matHeaderCellDef> Meta Data Name </th>
+            <td mat-cell [attr.id]="element.name" *matCellDef="let element">
+              <a class="pointer" *ngIf="element.fieldType === &apos;DDL&apos;; else elName;" [routerLink]="[&apos;/home/configuration/configDetails/&apos;, element.configId]">{{element.name}}</a>
+              <ng-template #elName>{{element.name}}</ng-template>
+            </td>
+          </ng-container>
+
+          <!-- <ng-container matColumnDef="businessdepartments">
+            <th class="text-center" mat-header-cell *matHeaderCellDef> Business Departments </th>
+            <td class="text-center" mat-cell [id]="element.visible" *matCellDef="let element" > 
+              <ng-container *ngFor="let b of element.businessDepartment">
+                {{b.businessDepartmentname||""}}<br/>
+            </ng-container>
+            </td>
+          </ng-container> -->
+          
+          <!-- <ng-container matColumnDef="businessdepartments">
+            <th class="text-center" mat-header-cell *matHeaderCellDef> Business Departments </th>
+            <td class="text-center" mat-cell [id]="element.visible" *matCellDef="let element"> {{element.businessDepartment}} </td>
+          </ng-container> -->
+
+          <ng-container matColumnDef="businessdepartments">
+            <th class="text-center" mat-header-cell *matHeaderCellDef> Business Departments </th>
+            <td class="text-center" mat-cell [id]="element.visible" *matCellDef="let element" > 
+              <ng-container *ngFor="let b of element.businessDepartment">
+                {{b.businessDepartmentname||""}}<br/>
+            </ng-container>
+            </td>
+          </ng-container>
+
+          <!-- Show in Document Upload Column -->
+          <ng-container matColumnDef="visible">
+            <th class="text-center" mat-header-cell *matHeaderCellDef> Show in Document </th>
+            <td class="text-center" mat-cell [id]="element.visible" *matCellDef="let element"> {{element.visible ? &apos;Yes&apos; : &apos;No&apos;}} </td>
+          </ng-container>
+
+          <!-- Mapping Column -->
+          <ng-container matColumnDef="mapping">
+            <th class="text-center" mat-header-cell *matHeaderCellDef> Mapping </th>
+            <td class="text-center" mat-cell [id]="element.isChildren" *matCellDef="let element"> {{element.isChildren ? &apos;Yes&apos; : &apos;No&apos;}} </td>
+          </ng-container>
+
+          <!-- Created By Column -->
+          <ng-container matColumnDef="createdBy">
+            <th mat-header-cell *matHeaderCellDef> Created By </th>
+            <td mat-cell [id]="element.createdBy" *matCellDef="let element"> {{element.createdBy}} </td>
+          </ng-container>
+
+          <!-- Created On Column -->
+          <ng-container matColumnDef="createdOn">
+            <th mat-header-cell *matHeaderCellDef> Created On </th>
+            <td mat-cell [id]="element.createdOn" *matCellDef="let element">
+              {{element.createdOn | date: &apos;MM-dd-yyyy HH:mm&apos;}} </td>
+          </ng-container>
+
+          <!-- Last Updated On Column -->
+          <ng-container matColumnDef="updatedOn">
+            <th mat-header-cell *matHeaderCellDef> Last Updated On </th>
+            <td mat-cell [id]="element.updatedOn" *matCellDef="let element">
+              {{element.updatedOn | date: &apos;MM-dd-yyyy HH:mm&apos;}} </td>
+          </ng-container>
+
+          <!-- Action Column -->
+          <ng-container matColumnDef="action">
+            <th class="text-center" mat-header-cell *matHeaderCellDef> Action </th>
+            <td class="text-center focused" mat-cell [id]="element" *matCellDef="let element">
+              <button mat-icon-button (click)="viewConfig(element)">
+                <mat-icon>visibility</mat-icon>
+              </button>
+              <button mat-icon-button (click)="editConfig(element)">
+                <mat-icon>edit</mat-icon>
+              </button>
+              <button mat-icon-button (click)="deleteConfig(element)">
+                <mat-icon>delete</mat-icon>
+              </button>
+            </td>
+          </ng-container>
+
+          <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+          <tr mat-row *matRowDef="let row; columns: displayedColumns;">
+          </tr>
+        </table>
+      </div>
+      </div>
+    </div>
+    <div fxLayout="row nowrap" class="p_15 m-10 m-r-5"  fxLayoutAlign="space-between center" [fxShow]="true" [fxHide]="false" *ngIf="totalCount &gt; 0">
+      <div fxLayout="row wrap" fxLayoutAlign="start stretch" [fxShow]="true" [fxHide]="false"></div>
+      <!-- <div fxLayout="row wrap" fxLayoutAlign="end center" [fxShow]="true" [fxHide]="false"><button mat-raised-button id="loadMoreUsers" *ngIf="totalCount &gt;configList.length" (click)="loadMore()">Load More</button></div> -->
+      <div fxLayout="row wrap" fxLayoutAlign="end end" [fxShow]="true" [fxHide]="false">
+        <mat-icon class="myarrow"  *ngIf="isShown"   (click)="loadPrevious()">keyboard_arrow_left</mat-icon>&nbsp;&nbsp;
+        <button mat-mini-fab color="accent" (click)="scrollToTop()">{{pageNumber}}</button>
+        <mat-icon class="myarrow"  *ngIf="isshownnext" (click)="loadNext()">keyboard_arrow_right</mat-icon> </div>
+    </div>
+  </div>
+</div>

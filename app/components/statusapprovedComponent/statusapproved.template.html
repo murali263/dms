@@ -1,0 +1,128 @@
+<div fxLayout="column " class="card-padding awaitingapproval" fxLayoutGap="0.8em" fxLayoutAlign="start stretch" [fxShow]="true" [fxHide]="false">
+  
+
+
+  <div fxLayout="row " class="w100">
+    <div fxLayout="column " class="w100" fxLayoutAlign="start start" fxFlex="70">
+      <div class="title tc">Approved</div>
+    </div>
+    <div fxLayout="column " fxLayoutAlign="center end" class="w100">
+      <div *ngIf="showDocument">
+        <button mat-menu-item class="confirm backbutton" (click)="showawaiting()">
+          <span>
+            <mat-icon>rotate_left</mat-icon> Back
+          </span>
+        </button>
+      </div>
+    </div>
+  </div>
+  
+  <div fxLayout="row wrap" fxLayoutAlign="start stretch" [fxShow]="true" [fxHide]="false">
+    <div style="width:70%">
+      <mat-card *ngIf="showDocument">
+        <mat-card-content>
+          <div fxLayout="column wrap" style="padding-right:30px;padding-left:30px" fxLayoutAlign="start stretch"
+            [fxShow]="true" [fxHide]="false">
+            <div>
+              <span *ngIf="currentDoc &amp;&amp; currentDoc[&apos;name&apos;]">{{currentDoc &amp;&amp; currentDoc.name
+                || &apos; &apos;}}</span>
+              <bh-docviewer [docType]="currentDoc.extension" [src_content]="currentDocView" [auth]="currentDoc.fsuuid"
+                (error)="viewerError($event)"></bh-docviewer>
+            </div>
+          </div>
+        </mat-card-content>
+      </mat-card>
+      <div *ngIf="mainapproval">
+        <div style="height: 45px;border-style: solid none;border-color: #c5c5c5;"></div>
+        <table mat-table [dataSource]="dataSource" class=" pointer etb" style="width:100%; margin-top: 1em">        
+          <ng-container matColumnDef="name">
+            <th mat-header-cell class="tableheader"   *matHeaderCellDef>File Name</th>
+            <td mat-cell *matCellDef="let element" [matTooltip]="element.name">{{element.name}}</td>
+          </ng-container>
+
+        <ng-container matColumnDef="owner">
+          <th mat-header-cell class="tableheader"  *matHeaderCellDef>Document Owner</th>
+          <td mat-cell *matCellDef="let element" ><div *ngFor="let docOwner of element?.documentOwner;  let isLast=last" [matTooltip]="docOwner.displayName">
+            {{docOwner?.displayName}}&nbsp;{{isLast ? '' : ', '}} </div></td>
+        </ng-container>
+
+        
+          <ng-container matColumnDef="rejectedby">   
+            <th mat-header-cell class="tableheader" *matHeaderCellDef>Approved By</th>
+            <td mat-cell  *matCellDef="let element" >{{element.approvalLevels[0]?.displayName}}</td>
+          </ng-container>
+          
+
+          <ng-container matColumnDef="removeddate">   
+            <th mat-header-cell class="tableheader" *matHeaderCellDef>Date of Approval</th>
+            <td mat-cell  *matCellDef="let element" >{{element.approvalLevels[0]?.timestamp | date: &apos;MMM d, y, h:mm:ss a&apos;}}</td>
+          </ng-container>
+          <!-- <ng-container matColumnDef="edit">
+            <th  mat-header-cell *matHeaderCellDef class="tableheader"  style="text-align:center;"> Edit </th>
+            <td mat-cell *matCellDef="let element">
+              <div fxLayout="row" fxLayoutGap="4px" fxLayoutAlign="center center">
+                <img src="../../../assets/Web/navicon/Edit icon.png" (click)="redirectToEditUploadFile(element.uuid , &apos;rejected&apos;)" height="20px" width="20px" alt="">
+              </div>
+            </td>
+          </ng-container> -->
+        
+          <!-- <ng-container matColumnDef="action">
+            <th  mat-header-cell *matHeaderCellDef class="tableheader" style="text-align:center;"> Action </th>
+            <td mat-cell *matCellDef="let element">
+              <div fxLayout="row" fxLayoutGap="4px" fxLayoutAlign="center center" class="icons">
+                <mat-icon matTooltip="Download" class="pointer" *ngIf="element.type == &apos;File&apos;" (click)="downloadFile(element.fileName, element.name, element.fsuuid , element.clientContainerName)">arrow_downward</mat-icon>
+                <img src="../../../assets/Web/navicon/O. Download Icon.png" *ngIf="element.type == &apos;File&apos;" (click)="downloadFile(element.fileName, element.name, element.fsuuid , element.clientContainerName)" height="20px" width="20px" alt="">
+                <div style="width: 10px;"></div>
+                <img src="../../../assets/Web/navicon/P. View Icon.png"  (click)="filterSort(sortKey)"  height="20px" width="20px" alt="">
+              </div>
+            </td>
+          </ng-container> -->
+
+          <ng-container matColumnDef="action">
+            <th mat-header-cell class="tableheader" *matHeaderCellDef style="text-align:center;"> Action </th>
+            <td mat-cell *matCellDef="let element;">
+              <div fxLayout="row" fxLayoutGap="4px" fxLayoutAlign="center center" (click)="checkextention(element)">
+                <img matTooltip="Action" [matMenuTriggerFor]="contextMenu" src="assets/Web/ActionsIcon.png">
+              </div>
+              <mat-menu #contextMenu="matMenu" class="docs-action-menu" xPosition="before">
+                <ng-template matMenuContent let-item="item">
+                  <button mat-menu-item class="nmenu pointer" matTooltip="Download"
+                    (click)="downloadFile(element.fileName, element.name, element.fsuuid , element.clientContainerName);$event.stopPropagation();">
+                    <span><img src="assets/Web/DownloadIcon.png"> Download</span>
+                  </button>
+                  <button mat-menu-item class="nmenu"
+                    [disabled]="!showPreview"
+                    (click)="previewothers(element)">
+                    <span><img matTooltip="Action" src="assets/Web/PreviewIcon.png"> Preview</span>
+                  </button>
+                </ng-template>
+              </mat-menu>
+            </td>
+          </ng-container>
+
+          <!-- <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+          <tr mat-row (click)="onrowclick(row);clickedRows.add(row)" [class.demo-row-is-clicked]="clickedRows.has(row)"  *matRowDef="let row; columns: displayedColumns;"></tr> -->
+          <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+          <tr mat-row  *matRowDef="let row;let i=index; columns: displayedColumns;" style="height:50px;" (click)="rowdataothers(row);currentFileIndex=i;$event.stopPropagation();cuurentFile=true;"
+          [class]="currentFileIndex == i &amp;&amp; cuurentFile ? &apos;selectedfile pointer&apos;: &apos;pointer&apos;"></tr>
+        </table>
+      
+        <div style="padding: 10px;"> 
+          <div fxLayout="row nowrap" class="p_15 m-10 m-r-5"  fxLayoutAlign="end center" [fxShow]="true" [fxHide]="false" *ngIf="totalCount &gt; 0">
+            <div fxLayout="row wrap" fxLayoutAlign="start stretch" [fxShow]="true" [fxHide]="false"></div>
+            <div fxLayout="row wrap" fxLayoutAlign="end end" [fxShow]="true" [fxHide]="false">
+              <mat-icon class="myarrow" *ngIf="currntPageNum != 1"  (click)="loadPrevious(currntPageNum ,pageSize)">keyboard_arrow_left</mat-icon>&nbsp;&nbsp;
+              <button mat-mini-fab color="accent" >{{currntPageNum}}</button>
+              <mat-icon class="myarrow" *ngIf="!blocknext" (click)="loadNext(currntPageNum ,pageSize)">keyboard_arrow_right</mat-icon> 
+            </div>
+          </div>
+
+        </div>
+      </div>
+      
+    </div>
+    <div fxLayout="column" style="width: 30%;border-left: 2px solid #c5c5c5;">
+      <bh-documentdetails #docsChildDetails class=""></bh-documentdetails>
+    </div>
+  </div>
+</div>

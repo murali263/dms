@@ -1,0 +1,71 @@
+.titlee{
+    border-radius: 8px;
+    display: flex;
+    justify-content: space-between;
+    color: #fff;
+    align-items: center;
+    width: 100%;
+    background-color: #0273C6;
+    height: 2.8em;
+}
+
+.inp{
+  display: inline-flex;
+  align-items: center;
+  box-sizing: border-box;
+  width: 100%;
+  
+  font-size: smaller;
+  align-content: center;
+  height: 64%;
+}
+
+.input{
+  align-content: center;
+  background: white;
+  color:#0072C6;
+  width: 64%;
+  justify-content: center;
+  display: inline-flex;
+  align-items: center;
+  box-sizing: border-box;
+}
+  .buttns{
+      justify-content: center;
+      display: flex;
+  }
+  .sub-ttl{
+    width: 68%;
+    justify-content: center;
+    display: flex;
+  }
+ 
+  .inputDiv{
+    align-items: center;
+    width: 100%;
+   flex-direction: column;
+    box-sizing: border-box;
+    display: flex;
+    margin-top: 3rem;
+    margin-bottom: 4.4rem;
+    place-content: stretch center;
+    align-items: stretch;
+    
+  }
+  .success-btnn{
+    margin-top: 5px !important;
+    margin-bottom: 5px !important;
+    width: 100px;
+    border: 1px solid #a1a4b1 !important;
+    border-radius: 12px;
+  }
+  ::ng-deep .mat-form-field-appearance-outline.mat-focused .mat-form-field-outline-thick {
+    color: #0273C6 !important;
+    background-color: white !important;
+}
+::ng-deep .mat-form-field-appearance-outline .mat-form-field-infix{
+  padding: 0.2rem 0 0.2rem 0;
+  
+}
+
+

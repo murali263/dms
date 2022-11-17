@@ -1,0 +1,97 @@
+$toolbar-background: #0072c6;
+
+.heading {
+  height: 2em;
+}
+
+.stepper-container-box.mat-horizontal-stepper-header-container {
+  width: 50%;
+}
+
+.pos-btn{
+    position: absolute;
+    bottom: 1em;
+    right: 1em;
+}
+
+.example-radio-button {
+  margin: 5px;
+}
+
+.example-radio-group {
+  display: flex;
+  flex-direction: column;
+}
+
+.users .mat-card-title {
+    font-size: 14px;
+    font-weight: 500;
+    height: 25px;
+    background-color: #abdadb;
+    padding-left: 10px;
+    margin-bottom: 0px;
+    align-items: center;
+    display: flex;
+}
+
+.users .mat-form-field{
+    height: 20px;
+    width: 100%;
+}
+
+
+.users .mat-card {
+    padding: 0px !important;
+    box-sizing: border-box;
+}
+
+.btn-srch{
+  border-radius: 0;
+    width: 2em;
+    height: 2em;
+    color: white;
+    background-color: #0072c6;
+}
+
+.btn-add{
+  width: 18%;
+  color: white;
+  background-color: #00A600;
+}
+
+.btn-remove{
+  color: white;
+  background-color: red;
+}
+
+.err-msg{
+  margin-left: 10%;
+  margin-bottom: 3%;
+  color: #be1818;
+  font-size: 0.8em;
+}
+
+.namespan{
+  color: black;
+  max-width: 7rem;
+  white-space: nowrap;
+  overflow: hidden;
+ text-overflow: ellipsis;
+}
+.mailspan{
+  max-width:12rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.spandiv{
+  height: 100%;
+  display: flex;
+  align-items: center;
+}
+
+.box-step2{
+  margin-left: -1.4em;
+  margin-right: -1.4em;
+  min-height: 23em;
+}

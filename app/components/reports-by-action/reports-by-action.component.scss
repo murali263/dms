@@ -1,0 +1,39 @@
+.reports-header{
+    margin-top: 1em;
+    border-bottom: 2px solid #c5c5c5;
+    width: 100%;
+}
+
+.margin-l-1{
+    margin-left: 1em;
+}
+
+.margin-t-1{
+    margin-top: 1em;
+}
+
+.margin-r-1{
+    margin-right: 1em;
+}
+
+.reportsDropdown{
+    border-bottom: 2px solid blue;
+    color: blue;
+    font-size: 0.8em;
+}
+
+.dashboard-select {
+    padding: 6px 6px 6px 6px;
+    width: 100%;
+    position: relative;
+    color: #9E9E9E;
+    background: #ffffff;
+    border-radius: 4px;
+    outline: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    background-image: url(/assets/Web/down_arrow.svg);
+    background-repeat: no-repeat;
+    background-position: right 10px center;
+}

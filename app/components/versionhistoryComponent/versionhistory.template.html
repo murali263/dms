@@ -1,0 +1,23 @@
+<div fxLayout="column " fxFlex="100" fxLayoutGap="1em" fxLayoutAlign="space-between stretch" [fxShow]="true" [fxHide]="false">
+  <div fxLayout="row wrap" class="header" fxLayoutAlign="space-between center" [fxShow]="true" [fxHide]="false">
+    <div fxFlex="61">
+      Version History</div>
+    <div fxFlex="5.4">
+      <mat-icon (click)="dialogRef.close()" class="close-icon">close</mat-icon>
+    </div>
+  </div>
+  <div fxLayout="column " style="overflow:auto;padding:20px;height:20em;" class="container" fxLayoutAlign="start stretch" [fxShow]="true" [fxHide]="false">
+    <div fxLayout="row wrap" fxFlex="50" fxLayoutAlign="space-between center" [fxShow]="true" [fxHide]="false" *ngFor="let data of versionData">
+      <div class="title">
+        {{data.lastModified | date:&apos;dd-MM-yyyy,&#xA0; h:mm a&apos;}}, <label class="bold">by {{data.uploadedBy.displayName}}</label></div>
+      <div fxLayout="row" fxLayoutAlign="end center" fxLayoutGap="1em">
+        <label class="bold font-14  " style="font-weight:600;">Version : {{data.version |  number : &apos;0.0-2&apos;}} </label>
+        <span class="translate-icons"> <mat-icon (click)="downloadFile(data.fileName, data.name, data.fsuuid , data.clientContainerName)">arrow_downward</mat-icon></span></div>
+      <div fxLayout="row wrap" fxFlex="100" fxLayoutAlign="start stretch" [fxShow]="true" [fxHide]="false">
+        <div fxFlex="100" class="dialog-textarea">
+          {{data.notes ? data.notes : &quot;No Notes to Display&quot;}}</div>
+      </div>
+    </div>
+  </div>
+  <div fxLayout="row wrap" class="access-action-btn margin-top" fxLayoutAlign="center center" [fxShow]="true" [fxHide]="false"><button mat-button style="background: #0072C6;" mat-dialog-close (click)="dialogRef.close()">OK</button></div>
+</div>

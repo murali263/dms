@@ -1,0 +1,17 @@
+
+<div fxLayout="column wrap" fxLayoutAlign="start center" [fxShow]="true" [fxHide]="false">
+  <div fxLayout="row wrap"  class="signIn" fxFlex="70" fxLayoutAlign="start stretch" [fxShow]="true" [fxHide]="false">
+    <div fxLayout="row wrap" style="padding-left:12%" fxFlex="42" fxLayoutAlign="start start" [fxShow]="true" [fxHide]="false"><img Src="assets/Web/navicon/logo.png"></div>
+    <div fxLayout="row wrap"   fxFlex="53" fxLayoutAlign="space-around center" [fxShow]="true" [fxHide]="false">
+          <!-- <span>DOCUMENT MANAGEMENT SYSTEM</span></div>      -->
+          <img imgSrc="Web/DMS A4.PNG" height="90" style="padding-right:48%">
+      <div fxLayout="row wrap" class="fitDigital" fxFlex="27" fxLayoutAlign="end start" [fxShow]="true" [fxHide]="false"><img src="assets/Web/navicon/FIT_4_DIGITAL_ICON.png"></div>
+  </div>
+    <div fxLayout="column wrap" class="centerImage" fxLayoutAlign="start center" [fxShow]="true" [fxHide]="false"><img src="assets/Web/navicon/CENTER SCREEN.png"></div> 
+    <div class="bottomBtn">
+      <div class="loadingdiv" *ngIf="showSpinner">
+        <div class="loading-ring"></div>
+      </div>
+      <button  *ngIf="!showSpinner" mat-raised-button (click)="login()">Sign In</button>
+    </div>
+</div>

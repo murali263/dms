@@ -1,0 +1,416 @@
+<div fxLayout="column " class="card-padding ddl awaitingapproval" fxLayoutGap="0.8em" fxLayoutAlign="start stretch" [fxShow]="true" [fxHide]="false">
+  <div fxLayout="row " class="w100">
+    <div fxLayout="column " class="w100" fxLayoutAlign="start start" fxFlex="70">
+      <div class="title tc">All Documents</div>
+    </div>
+    <div fxLayout="column " fxLayoutAlign="center end" class="w100">
+      <div *ngIf="showDocument">
+        <button mat-menu-item class="confirm backbutton" (click)="showawaiting()">
+          <span>
+            <mat-icon>rotate_left</mat-icon> Back
+          </span>
+        </button>
+      </div>
+    </div>
+  </div>
+  
+  <div class="row" style="width: 100%;">      
+    <div class="column" fxFlex="70" >
+      <mat-card *ngIf="showDocument">
+        <mat-card-content>
+          <div fxLayout="column wrap" style="padding-right:30px;padding-left:30px" fxLayoutAlign="start stretch"
+            [fxShow]="true" [fxHide]="false">
+            <div>
+              <span *ngIf="currentDoc &amp;&amp; currentDoc[&apos;name&apos;]">{{currentDoc &amp;&amp; currentDoc.name
+                || &apos; &apos;}}</span>
+              <bh-docviewer [docType]="currentDoc.extension" [src_content]="currentDocView" [auth]="currentDoc.fsuuid"
+                (error)="viewerError($event)"></bh-docviewer>
+            </div>
+          </div>
+        </mat-card-content>
+      </mat-card>
+      <div class="dochead" style="width: 100%;" *ngIf="mainapproval">
+        <div class="docheadsub"></div>
+        <div class="updatesec ">
+          <div>
+            <button mat-button class="titlebutton mar-10">Bulk Update</button>
+            <div>
+              <div fxLayout="row" >
+                <div fxLayout="row" class="mt-4" fxFlex="70">
+                  <div  class="pad-left  addocfont">
+                    Status &nbsp;
+                    <select class="dashboard-select selectpad  addocfont" [(ngModel)]="selectedStatus1"  (change)="onStatuschange1()">
+                      <option value="">- Select -</option>
+                      <option value="awaiting"> Awaiting Approval <div>&nbsp;</div></option>
+                      <option value="rejected"> Rejected </option>
+                      <option value="approved"> Approved </option>
+                    </select>
+                  </div>&nbsp;&nbsp;&nbsp;&nbsp;
+                  <div  class="pad-left">
+                    <div fxLayout="row">
+                      <div class="addocfont mt-4" >Attribute</div> &nbsp;
+                      <select  [(ngModel)]="attributeselected" (change)="onattributeselection()" class="attrselect addocfont" >
+                        <option value="0" >- Select -</option>
+                        <option  *ngFor="let attribute of attributeList" [id]="attribute.fieldType" [value]="attribute.configId">{{attribute.name}}</option>
+                      </select> &nbsp;&nbsp;
+                      <!-- //search  -->
+                      <input *ngIf="atrrTypselected == 'search'"  [(ngModel)]="attruser"  (keypress)="onApproverSearch( 4 , $event)"
+                      #autoTriggerLvl4="matAutocompleteTrigger" placeholder="Search"   
+                      class="dashboard-input3 addocfont"  [matAutocomplete]="auto4" type="text" >
+                      <mat-autocomplete #auto4="matAutocomplete" class="autocomplete" (optionSelected)="levelOptionSelected(4)"
+                      [displayWith]="displayFnUserList">
+                        <div *ngIf="userList4.length == 0 ">
+                          <mat-option (click)="searchUsers(4)"
+                            [value]="attruser"  >
+                            <div fxLayout="row" fxLayoutAlign="space-between center">
+                              <span>Search</span>
+                              <mat-icon style="margin:0px">search</mat-icon>
+                            </div>
+                          </mat-option>
+                        </div>
+    
+                        <div
+                          *ngIf="userList4.length &gt; 0 ">
+                          <div *ngFor="let user of userList4" >
+                            <mat-option *ngIf="user.mail !=null" [value]="user" [matTooltip]="user.displayName+' ('+user.mail+')'"  (click)="onselectattrUser(user.mail)">
+                              {{user.displayName + "("+user.mail+")"}}
+                            </mat-option>
+                          </div>
+                         </div>
+    
+                      </mat-autocomplete>
+                    <!-- //search end-->
+                      <!-- //drop down start  -->
+                      <div *ngIf="atrrTypselected == 'DDL'"  >
+                         <mat-form-field  class="attrparent " style="width:82%;" [appearance]="&apos;outline&apos;"
+                          [floatLabel]="&apos;always&apos;">
+                          <!-- <mat-label>{{m.name}}</mat-label> -->
+                          <mat-select [(ngModel)]="ddlArray" placeholder="-select-" ngDefaultControl multiple>
+                            <mat-select-filter [array]="attrValuearray" [displayMember]="'value'" (filteredReturn)="filteredList=$event"
+                              [displayMember]="'value'">                      
+                            </mat-select-filter>
+                            <mat-option class="custom-color attroption" *ngFor="let data of filteredList" [matTooltip]="data?.value"
+                             [value]="data?.valueId">
+                              {{data?.value}}
+                            </mat-option>
+                          </mat-select>
+                        </mat-form-field>
+                      </div>
+                      <!-- //dropdown end  -->
+                      <!-- // text  -->
+                      <input *ngIf="atrrTypselected == 'FT'"  [(ngModel)]="fttext" class="dashboard-input3 addocfont"   type="text" >
+                    </div>
+                  </div>
+                </div>
+                <div class="pad-left" fxFlex="30">
+                  <div fxLayout="row">
+                    <button fxLayoutAlign="start center" mat-button class="titlebutton2 addocfont" (click)="onBulksearch();cuurentFile=false;">Search</button>&nbsp;&nbsp;
+                    <button fxLayoutAlign="start center" mat-button class="titlebutton2 addocfont" (click)="onUpdateAll()">Update All</button>
+                  </div> 
+              </div>
+              </div>
+            </div>
+          </div>
+  
+          <div class="mar-10">
+            <button mat-button class="titlebutton mar-10">Document Search</button>
+            <div>
+              <div fxLayout="row" >
+                <div fxLayout="row" class="mt-4" fxLayoutAlign="start center" fxFlex="2"></div>
+                <div fxLayout="row" class="mt-4" fxLayoutAlign="start center" fxFlex="17">
+                  <div class="addocfont">
+                    Status 
+                    <select class="dashboard-select selectpad2 addocfont" [(ngModel)]="selectedStatus2"  (change)="onStatuschange2()" >
+                        <option value="">- Select -</option>
+                        <option value="awaiting" style="overflow:hidden"> Awaiting Approval<div>&nbsp;</div></option>
+                        <option value="rejected"> Rejected </option>
+                        <option value="approved"> Approved </option>
+                    </select>
+                  </div>
+                </div>
+                <div fxLayout="row" class="mt-4" fxLayoutAlign="start center" fxFlex="25">
+                  <div class="addocfont">Document Owner </div>&nbsp;
+                  <input [(ngModel)]="docowner"  (keypress)="onApproverSearch( 3 , $event)"
+                  #autoTriggerLvl3="matAutocompleteTrigger" placeholder="Search"   
+                  class="dashboard-input2 addocfont"  [matAutocomplete]="auto3" type="text">
+  
+                  <mat-autocomplete #auto3="matAutocomplete" class="autocomplete" (optionSelected)="levelOptionSelected(3)"
+                    [displayWith]="displayFnUserList">
+                      <div *ngIf="userList3.length == 0 ">
+                        <mat-option class="attroption" (click)="searchUsers(3)"
+                          [value]="docowner"  >
+                          <div fxLayout="row" fxLayoutAlign="space-between center">
+                            <span>Search</span>
+                            <mat-icon style="margin:0px">search</mat-icon>
+                          </div>
+                        </mat-option>
+                      </div>
+  
+                      <div
+                        *ngIf="userList3.length &gt; 0 ">
+                        <div *ngFor="let user of userList3" >
+                          <mat-option *ngIf="user.mail !=null" class="attroption" [value]="user" [matTooltip]="user.displayName+' ('+user.mail+')'"  (click)="onselectowner(user.mail)">
+                            {{user.displayName + "("+user.mail+")"}}
+                          </mat-option>
+                        </div>
+                       </div>
+  
+                  </mat-autocomplete>
+  
+                </div>
+                <div fxLayout="row" class="mt-4" fxLayoutAlign="start center" fxFlex="20">
+                  <div class="addocfont">Approver 1 </div>&nbsp;
+                  <input [(ngModel)]="approver1"  (keypress)="onApproverSearch( 1 , $event)"
+                    #autoTriggerLvl1="matAutocompleteTrigger" placeholder="Search"   
+                    class="dashboard-input2 addocfont"  [matAutocomplete]="auto1" type="text">
+  
+  
+                    <mat-autocomplete #auto1="matAutocomplete" class="autocomplete" (optionSelected)="levelOptionSelected(1)"
+                    [displayWith]="displayFnUserList">
+                      <div *ngIf="userList1.length == 0 ">
+                        <mat-option class="attroption" (click)="searchUsers(1)"
+                          [value]="approver1"  >
+                          <div fxLayout="row" fxLayoutAlign="space-between center">
+                            <span>Search</span>
+                            <mat-icon style="margin:0px">search</mat-icon>
+                          </div>
+                        </mat-option>
+                      </div>
+  
+                      <div
+                        *ngIf="userList1.length &gt; 0 ">
+                        <div *ngFor="let user of userList1" >
+                          <mat-option class="attroption" *ngIf="user.mail !=null" [value]="user" [matTooltip]="user.displayName+' ('+user.mail+')'"  (click)="onselectapp1(user.mail)">
+                            {{user.displayName + "("+user.mail+")"}}
+                          </mat-option>
+                        </div>
+                       </div>
+  
+                  </mat-autocomplete>
+  
+                </div>
+                <div fxLayout="row" class="mt-4" fxLayoutAlign="start center" fxFlex="21">
+                  <div class="addocfont" >Approver 2 </div>&nbsp;
+                  <input [(ngModel)]="approver2"  (keypress)="onApproverSearch( 2 , $event)"
+                    #autoTriggerLvl2="matAutocompleteTrigger" placeholder="Search"   
+                    class="dashboard-input2 addocfont"  [matAutocomplete]="auto2" type="text" [matTooltip]="approver2">
+  
+  
+                    <mat-autocomplete #auto2="matAutocomplete" class="autocomplete" (optionSelected)="levelOptionSelected(2)"
+                    [displayWith]="displayFnUserList">
+                      <div *ngIf="userList2.length == 0 ">
+                        <mat-option class="attroption" (click)="searchUsers(2)"
+                          [value]="approver2"  >
+                          <div fxLayout="row" fxLayoutAlign="space-between center">
+                            <span>Search</span>
+                            <mat-icon style="margin:0px">search</mat-icon>
+                          </div>
+                        </mat-option>
+                      </div>
+  
+                      <div
+                        *ngIf="userList2.length &gt; 0 ">
+                        <div *ngFor="let user of userList2" >
+                          <mat-option class="attroption" *ngIf="user.mail !=null" [value]="user" [matTooltip]="user.displayName+' ('+user.mail+')'"  (click)="onselectapp2(user.mail)">
+                            {{user.displayName + "("+user.mail+")"}}
+                          </mat-option>
+                        </div>
+                       </div>
+  
+                  </mat-autocomplete>
+                </div>
+                <div fxLayout="row" fxLayoutAlign="start center" fxFlex="10" >
+                    <button mat-button (click)="onSinglesearch();cuurentFile=false;" class="titlebutton2 addocfont">Search </button>
+                </div>
+              </div>
+            </div>
+          </div>
+  
+        </div>
+        <!-- //for single  -->
+        <table *ngIf="!bulksearchflag" mat-table [dataSource]="dataSource" class="table-data mat-elevation-z8 " style="width:100%;"> 
+  
+          <ng-container matColumnDef="name">
+            <th mat-header-cell class="tableheader"   *matHeaderCellDef>File Name</th>
+            <td mat-cell *matCellDef="let element" [matTooltip]="element.name">{{element.name}}</td>
+          </ng-container>
+  
+          <ng-container matColumnDef="owner">
+            <th mat-header-cell class="tableheader"  *matHeaderCellDef>Document Owner</th>
+            <td mat-cell *matCellDef="let element" ><div *ngFor="let docOwner of element?.documentOwner;  let isLast=last" [matTooltip]="docOwner.displayName">
+              {{docOwner?.displayName}}&nbsp;{{isLast ? '' : ', '}} </div></td>
+          </ng-container>
+  
+          <!-- Name Column -->
+          <ng-container matColumnDef="rejectedby">   
+            <th mat-header-cell class="tableheader" *matHeaderCellDef>Approver 1</th>
+            <td mat-cell *matCellDef="let element"  [matTooltip]="element?.approvalLevels[0]?.displayName">{{element?.approvalLevels[0]?.displayName}}</td>
+          </ng-container>
+          
+  
+          <ng-container matColumnDef="removeddate">   
+            <th mat-header-cell class="tableheader" *matHeaderCellDef>Approver 2</th>
+            <td mat-cell *matCellDef="let element"  [matTooltip]="element?.approvalLevels[1]?.displayName">{{element?.approvalLevels[1]?.displayName}}</td>
+          </ng-container>
+  
+          <ng-container matColumnDef="edit">
+            <th  mat-header-cell *matHeaderCellDef class="tableheader align-center"  > Edit </th>
+            <td mat-cell *matCellDef="let element">
+              <div fxLayout="row" fxLayoutGap="4px" fxLayoutAlign="center center">
+                <img src="../../../assets/Web/navicon/Edit icon.png" (click)="redirectToEditUploadFile(element.uuid , &apos;documentad&apos;)" height="20px" width="20px" alt="">
+              </div>
+            </td>
+          </ng-container>
+          <!-- Weight Column -->
+          <!-- <ng-container matColumnDef="action">
+            <th  mat-header-cell *matHeaderCellDef class="tableheader align-center" > Action </th>
+            <td mat-cell *matCellDef="let element">
+              <div fxLayout="row" fxLayoutGap="4px" fxLayoutAlign="center center" class="icons" >
+                <mat-icon matTooltip="Download" class="pointer" *ngIf="element.type == &apos;File&apos;" (click)="downloadFile(element.fileName, element.name, element.fsuuid , element.clientContainerName)">arrow_downward</mat-icon>
+                <img src="../../../assets/Web/navicon/W. Actions Icon.png" *ngIf="element.type == &apos;File&apos;" [matMenuTriggerFor]="actionmenu" height="20px" width="20px" alt="">
+                <mat-menu #actionmenu="matMenu" xPosition="before" class="docadmenu">
+                    <div fxLayout="row" class="borderPop">
+                      <div fxFlex="20" class="mar-left5"><img 
+                        src="../../../assets/Web/navicon/O. Download Icon.png" *ngIf="element.type == &apos;File&apos;" 
+                        (click)="downloadFile(element.fileName, element.name, element.fsuuid , element.clientContainerName)" 
+                        height="18px" width="18px" alt=""></div>&nbsp;<div fxFlex="80" class="docsrcicon">Download</div>
+                    </div>
+                    <div fxLayout="row" class="borderPop">
+                      <div fxFlex="20" class="mar-left5"><img 
+                        src="../../../assets/Web/navicon/P. View Icon.png" *ngIf="element.type == &apos;File&apos;" 
+                        (click)="downloadFile(element.fileName, element.name, element.fsuuid , element.clientContainerName)" 
+                        height="18px" width="18px" alt=""></div>&nbsp;<div fxFlex="80" class="docsrcicon">Preview</div>
+                    </div>
+                </mat-menu>
+              </div>
+            </td>
+          </ng-container> -->
+          <ng-container matColumnDef="action">
+            <th mat-header-cell class="tableheader" *matHeaderCellDef style="text-align:center;"> Action </th>
+            <td mat-cell *matCellDef="let element;">
+              <div fxLayout="row" fxLayoutGap="4px" fxLayoutAlign="center center" (click)="checkextention(element)">
+                <img matTooltip="Action" [matMenuTriggerFor]="contextMenu" src="assets/Web/ActionsIcon.png">
+              </div>
+              <mat-menu #contextMenu="matMenu" class="docs-action-menu" xPosition="before">
+                <ng-template matMenuContent let-item="item">
+                  <button mat-menu-item class="nmenu pointer" matTooltip="Download"
+                    (click)="downloadFile(element.fileName, element.name, element.fsuuid , element.clientContainerName);$event.stopPropagation();">
+                    <span><img src="assets/Web/DownloadIcon.png"> Download</span>
+                  </button>
+                  <button mat-menu-item class="nmenu"
+                    [disabled]="!showPreview"
+                    (click)="previewothers(element)">
+                    <span><img matTooltip="Action" src="assets/Web/PreviewIcon.png"> Preview</span>
+                  </button>
+                </ng-template>
+              </mat-menu>
+            </td>
+          </ng-container>
+  
+          <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+          <!-- <tr mat-row (click)="onrowclick(row);clickedRows.add(row)" [class.demo-row-is-clicked]="clickedRows.has(row)"  *matRowDef="let row; columns: displayedColumns;"></tr> -->
+          <tr mat-row  *matRowDef="let row;let i=index; columns: displayedColumns;" style="height:50px;" (click)="rowdataothers(row);currentFileIndex=i;$event.stopPropagation();cuurentFile=true;"
+          [class]="currentFileIndex == i &amp;&amp; cuurentFile ? &apos;selectedfile pointer&apos;: &apos;pointer&apos;"></tr>
+        </table>
+        <!-- for bulk  -->
+        <table *ngIf="bulktable" mat-table [dataSource]="dataSource" class="table-data2 mat-elevation-z8 bulktable"> 
+  
+          <!--- Note that these columns can be defined in any order.
+          The actual rendered columns are set as a property on the row definition" --> 
+  
+          <!-- Checkbox Column -->
+            <ng-container matColumnDef="select">
+              <th mat-header-cell class="tableheader align-left" *matHeaderCellDef >
+                <mat-checkbox (change)="$event ? masterToggle() : null"
+                              [checked]="selection.hasValue() && isAllSelected()">
+                </mat-checkbox>
+              </th>
+              <td mat-cell *matCellDef="let row" class="align-left">
+                <mat-checkbox (click)="$event.stopPropagation()"
+                              (change)="$event ? selection.toggle(row) : null"
+                              [checked]="selection.isSelected(row)">
+                </mat-checkbox>
+              </td>
+            </ng-container>
+  
+          <ng-container matColumnDef="name">
+            <th mat-header-cell class="tableheader"   *matHeaderCellDef>Folder/File</th>
+            <td mat-cell *matCellDef="let element" [matTooltip]="element.name">{{element.name}}</td>
+          </ng-container>
+  
+          <ng-container matColumnDef="owner">
+            <th mat-header-cell class="tableheader"  *matHeaderCellDef>Document Owner</th>
+            <td mat-cell *matCellDef="let element" ><div *ngFor="let docOwner of element?.documentOwner;  let isLast=last" [matTooltip]="docOwner.displayName">
+              {{docOwner.displayName}}&nbsp;{{isLast ? '' : ', '}} </div></td>
+          </ng-container>
+  
+          <!-- Name Column -->
+          <ng-container matColumnDef="rejectedby">   
+            <th mat-header-cell class="tableheader" *matHeaderCellDef>Approver 1</th>
+            <td mat-cell *matCellDef="let element"  [matTooltip]="element?.approvalLevels[0]?.displayName">{{element?.approvalLevels[0]?.displayName}}</td>
+          </ng-container>
+          
+  
+          <ng-container matColumnDef="removeddate">   
+            <th mat-header-cell class="tableheader" *matHeaderCellDef>Approver 2</th>
+            <td mat-cell *matCellDef="let element"  [matTooltip]="element?.approvalLevels[1]?.displayName">{{element?.approvalLevels[1]?.displayName}}</td>
+          </ng-container>
+  
+          <ng-container matColumnDef="edit">
+            <th  mat-header-cell *matHeaderCellDef class="tableheader align-center"  > Edit </th>
+            <td mat-cell *matCellDef="let element">
+              <div fxLayout="row" fxLayoutGap="4px" fxLayoutAlign="center center">
+                <img src="../../../assets/Web/navicon/Edit icon.png" (click)="redirectToEditUploadFile(element.uuid , &apos;rejected&apos;)" height="20px" width="20px" alt="">
+              </div>
+            </td>
+          </ng-container>
+          <!-- Weight Column -->
+          <ng-container matColumnDef="action">
+            <th  mat-header-cell *matHeaderCellDef class="tableheader align-center"> Action </th>
+            <td mat-cell *matCellDef="let element">
+              <div fxLayout="row" fxLayoutGap="4px" fxLayoutAlign="center center" class="icons" >
+                <!-- <mat-icon matTooltip="Download" class="pointer" *ngIf="element.type == &apos;File&apos;" (click)="downloadFile(element.fileName, element.name, element.fsuuid , element.clientContainerName)">arrow_downward</mat-icon> -->
+                <img src="../../../assets/Web/navicon/W. Actions Icon.png" *ngIf="element.type == &apos;File&apos;" [matMenuTriggerFor]="actionmenu" height="20px" width="20px" alt="">
+                <mat-menu #actionmenu="matMenu" xPosition="before" class="docadmenu">
+                    <div fxLayout="row" class="borderPop">
+                      <div fxFlex="20" class="mar-left5"><img 
+                        src="../../../assets/Web/navicon/O. Download Icon.png" *ngIf="element.type == &apos;File&apos;" 
+                        (click)="downloadFile(element.fileName, element.name, element.fsuuid , element.clientContainerName)" 
+                        height="18px" width="18px" alt=""></div>&nbsp;<div fxFlex="80" class="docsrcicon">Download</div>
+                    </div>
+                    <div fxLayout="row" class="borderPop">
+                      <div fxFlex="20" class="mar-left5"><img 
+                        src="../../../assets/Web/navicon/P. View Icon.png" *ngIf="element.type == &apos;File&apos;" 
+                        (click)="downloadFile(element.fileName, element.name, element.fsuuid , element.clientContainerName)" 
+                        height="18px" width="18px" alt=""></div>&nbsp;<div fxFlex="80" class="docsrcicon">Preview</div>
+                    </div>
+                </mat-menu>
+              </div>
+            </td>
+          </ng-container>
+  
+          <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+          <!-- <tr mat-row (click)="onrowclick(row);clickedRows.add(row)" [class.demo-row-is-clicked]="clickedRows.has(row)"  *matRowDef="let row; columns: displayedColumns;"></tr> -->
+          <tr mat-row  *matRowDef="let row;let i=index; columns: displayedColumns;" style="height:50px;" (click)="rowdataothers(row);currentFileIndex=i;$event.stopPropagation();cuurentFile=true;"
+          [class]="currentFileIndex == i &amp;&amp; cuurentFile ? &apos;selectedfile pointer&apos;: &apos;pointer&apos;"></tr>
+        </table>
+  
+  
+        <div class="pad-10"> 
+          <div fxLayout="row nowrap" class="p_15 m-10 m-r-5"  fxLayoutAlign="end center" [fxShow]="true" [fxHide]="false" *ngIf="totalCount &gt; 0">
+            <div fxLayout="row wrap" fxLayoutAlign="start stretch" [fxShow]="true" [fxHide]="false"></div>
+            <div fxLayout="row wrap" fxLayoutAlign="end end" [fxShow]="true" [fxHide]="false">
+              <mat-icon class="myarrow" *ngIf="currntPageNum != 1"  (click)="loadPrevious(currntPageNum ,pageSize)">keyboard_arrow_left</mat-icon>&nbsp;&nbsp;
+              <button mat-mini-fab color="accent" >{{currntPageNum}}</button>
+              <mat-icon class="myarrow" *ngIf="!blocknext" (click)="loadNext(currntPageNum ,pageSize)">keyboard_arrow_right</mat-icon> 
+            </div>
+          </div>
+  
+        </div>
+      </div>
+    </div>
+    <div class="column" style="width: 30%;">
+      <bh-documentdetails #docsChildDetails class=""></bh-documentdetails>
+    </div>
+  </div>  
+</div>

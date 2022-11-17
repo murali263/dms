@@ -1,0 +1,18 @@
+<div fxLayout="column wrap" fxLayoutAlign="start stretch" [fxShow]="true" [fxHide]="false">
+  <h6 style="padding: 0px 0px 0px 50px;" class="font-color-new font-16">
+    Select Features</h6>
+  <div fxLayout="row wrap" style="text-decoration: underline;" class="checkbox form-content" fxLayoutAlign="start stretch" [fxShow]="true" [fxHide]="true">
+    <div>
+      <mat-checkbox [(ngModel)]="selectAll" (change)="selectAllAction(selectAll)">
+        <h3>Select all features</h3>
+      </mat-checkbox>
+    </div>
+  </div>
+  <div fxLayout="row wrap" class="list-item checkbox form-content" fxLayoutGap="1em" fxLayoutAlign="start stretch" [fxShow]="true" [fxHide]="false" *ngFor="let feature of features ; let i = index">
+    <mat-checkbox (change)="onChange($event , i)" [checked]="feature.checked" value="{{feature.key}}" required [disabled]="feature.disabled">{{feature.function}}</mat-checkbox>
+  </div>
+  <div fxLayout="row wrap" class="list-item checkbox form-content" fxLayoutAlign="start stretch" [fxShow]="true" [fxHide]="false">
+    <div>
+      <span style="font-weight:600">NOTE :</span> All the privilege groups will have the documents page as a default permission.</div>
+  </div>
+</div>

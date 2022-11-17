@@ -1,0 +1,146 @@
+<div class="spborder">
+  <div *ngIf="!data.loader">
+    <div *ngIf="data.msg == 'restore' " fxLayout="row wrap" class="restore-header" fxLayoutAlign="space-between start">
+      <div fxFlex="95" style="height: 100%;" class="font-18 color-wh" fxLayout="row" fxLayoutAlign="center center">
+        Restoration Reason
+      </div>
+      <div fxFlex="5">
+        <mat-icon (click)="dialogRef.close()" class="pointer color-wh" style="font-size: 0.9em;">
+          highlight_off
+        </mat-icon>
+      </div>
+    </div>
+    <div *ngIf="data.msg == 'restore' " class="dilogue-textarea font-14 border-rad" style="border-radius: 0.25em;">
+      <textarea [class.mat-elevation-z4]="true" class="margin-t-2 txt-area-bg" matInput placeholder="Write a comment"
+        [(ngModel)]="restore_reason" rows="5">
+      </textarea>
+    </div>
+    <div *ngIf="data.msg == 'restore' " fxLayout="row wrap" class="btn_box restore-btn-div" fxLayoutGap="1.8em"
+      fxLayoutAlign="center center">
+      <button mat-button class="restore-btn btn-color" mat-dialog-close (click)="closeRestoreDialog(true)"
+        [disabled]="hasWhiteSpace(restore_reason)">
+        OK
+      </button>
+      <button mat-raised-button class="restore-btn" mat-dialog-close [disabled]="false">
+        Cancel
+      </button>
+    </div>
+  </div>
+  <div *ngIf="ispreview">
+    <div fxLayout="column" class="successMessage " fxFlex="100" fxLayoutAlign="space-between stretch" [fxShow]="true"
+      [fxHide]="false" *ngIf="!data.loader">
+      <div class="moveTitle">
+        <div fxLayout="row wrap" class="title" fxLayoutAlign="space-around center" [fxShow]="true" [fxHide]="false">
+          {{filename.path}}<br>
+          <img [src]="mainlink">
+          <div style="margin-left: 5px;" class="pointer"><img class="closeIcon" src="assets/Web/Close Icon.png"
+              (click)="dialogRef.close()"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div *ngIf="isreject">
+    <div fxLayout="column" class="Approvepopup" fxFlex="100" fxLayoutAlign="space-between stretch" [fxShow]="true"
+      [fxHide]="false" *ngIf="!data.loader">
+      <div fxLayout="row wrap" class="popuptitle" fxLayoutAlign="space-around center" [fxShow]="true" [fxHide]="false">
+        <div fxFlex="" class="title">
+          Rejection Reason</div>
+        <div class="pointer" (click)="close()"><img class="closeIcon" src="assets/Web/Close Icon.png"></div>
+        <!-- <div fxFlex="5">
+      <mat-icon (click)="dialogRef.close()" class="pointer">close</mat-icon>
+    </div> -->
+      </div>
+      <div fxLayout="column " class="line" fxFlex="50" fxLayoutAlign="center stretch" [fxShow]="true" [fxHide]="false">
+        <div class="dilogue-textarea font-14">
+          <mat-form-field [appearance]="&apos;outline&apos;">
+            <textarea matInput style="width:100%;height:15%;color:#828282;" placeholder="Write a comment"
+              [(ngModel)]="rejected_reason" [disabled]="disableTextArea" rows="5"></textarea>
+          </mat-form-field>
+        </div>
+      </div>
+      <div fxLayout="row wrap" class="btn_box" fxLayoutGap="1.8em" fxLayoutAlign="center center" [fxShow]="true"
+        [fxHide]="false">
+        <button mat-raised-button class="confirm" (click)="reject()" type="submit">OK</button>
+        <button mat-raised-button class="cancel-button" (click)="close()" type="button">CANCEL</button>
+      </div>
+    </div>
+  </div>
+  <div *ngIf="isrejectmsg">
+    <div fxLayout="column" class="approveSuccessMessage " fxFlex="100" fxLayoutAlign="space-between stretch"
+      [fxShow]="true" [fxHide]="false" *ngIf="!data.loader">
+      <div class="moveTitle">
+        <div fxLayout="row wrap" class="title" fxLayoutAlign="space-around center" [fxShow]="true" [fxHide]="false">
+          Document Rejected <img class="successIcon" src="assets/Web/ri.png">
+          <div style="margin-left: 5px;" class="pointer"><img class="closeIcon1" src="assets/Web/Close Icon.png"
+              (click)="dialogRef.close()"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div *ngIf="isApprovemsg">
+    <div fxLayout="column" class="approveSuccessMessage " fxFlex="100" fxLayoutAlign="space-between stretch"
+      [fxShow]="true" [fxHide]="false" *ngIf="!data.loader">
+      <div class="moveTitle">
+        <div fxLayout="row wrap" class="title" fxLayoutAlign="space-around center" [fxShow]="true" [fxHide]="false">
+          Document Approved Successfully <img class="successIcon" src="assets/Web/success.png">
+          <div style="margin-left: 5px;" class="pointer"><img class="closeIcon" src="assets/Web/Close Icon.png"
+              (click)="close()"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div *ngIf="isApprove">
+    <div fxLayout="column" class="Approvepopup" fxFlex="100" fxLayoutAlign="space-between stretch" [fxShow]="true"
+      [fxHide]="false" *ngIf="!data.loader">
+      <div fxLayout="row wrap" class="popuptitle" fxLayoutAlign="space-around center" [fxShow]="true" [fxHide]="false">
+        <div fxFlex="" class="title">
+          Approval Reason</div>
+        <div class="pointer" (click)="close()"><img class="closeIcon" src="assets/Web/Close Icon.png"></div>
+      </div>
+      <div fxLayout="column " class="line" fxFlex="50" fxLayoutAlign="center stretch" [fxShow]="true" [fxHide]="false">
+        <div class="dilogue-textarea font-14">
+          <mat-form-field [appearance]="&apos;outline&apos;">
+            <textarea matInput style="width:100%;height:15%;color:#828282;" placeholder="Write a comment"
+              [(ngModel)]="Approve_reason" [disabled]="disableTextArea" rows="5"></textarea>
+          </mat-form-field>
+        </div>
+      </div>
+      <div fxLayout="row wrap" class="btn_box" fxLayoutGap="1.8em" fxLayoutAlign="center center" [fxShow]="true"
+        [fxHide]="false">
+        <button mat-raised-button class="confirm" (click)="approve()" type="submit">OK</button>
+        <button mat-raised-button class="cancel-button" (click)="close()" type="button">CANCEL</button>
+      </div>
+    </div>
+  </div>
+  <div fxLayout="column wrap" fxLayoutAlign="start stretch" [fxShow]="true" [fxHide]="false" *ngIf="data.loader">
+    <div class="pointer" (click)="cancelDownload()" *ngIf="this.backendService.folderDownloadCount&gt;=0">
+      <mat-icon style="position: relative;left: 95%;">highlight_off</mat-icon>
+
+      <div fxLayout="column wrap" fxLayoutAlign="center center" class="downloadDialog" [fxShow]="true" [fxHide]="false"
+        *ngIf="this.backendService.folderDownloadCount&gt;=0">
+
+        <div fxLayout="row wrap" fxLayoutAlign="center center" [fxShow]="true" [fxHide]="false">
+
+          <mat-progress-spinner [mode]="&apos;determinate&apos;"
+            [value]="(this.backendService.DownloadCurrCount/this.backendService.folderDownloadCount)*100">
+          </mat-progress-spinner>
+        </div>
+        <div *ngIf="this.backendService.folderDownloadCount!==0">
+          Downloaded {{this.backendService.DownloadCurrCount}} of {{this.backendService.folderDownloadCount}}</div>
+      </div>
+    </div>
+
+    <div fxLayout="column" class="successMessage " fxFlex="100" fxLayoutAlign="space-between stretch" [fxShow]="true"
+      [fxHide]="false" *ngIf="this.backendService.folderDownloadCount&lt;0">
+      <div class="moveTitle">
+        <div fxLayout="row wrap" class="title" fxLayoutAlign="space-around center" [fxShow]="true" [fxHide]="false">
+          <div *ngIf="data.Files">Files Downloaded Successfully</div>
+          <div *ngIf="data.Folder">Folder Downloaded Successfully</div><img class="successIcon"
+            src="assets/Web/success.png">
+          <div style="margin-left: 5px;" class="pointer" (click)="dialogRef.close()"><img class="crossIcon"
+              src="assets/Web/Close Icon.png"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

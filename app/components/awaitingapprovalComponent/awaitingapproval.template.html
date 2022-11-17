@@ -1,0 +1,86 @@
+<div fxLayout="column " class="card-padding doc-card" fxLayoutGap="1em" fxLayoutAlign="start stretch" [fxShow]="true" [fxHide]="false" (click)="isFocused=false">
+  <div class="title">
+    Awaiting Approval</div>
+  <mat-card>
+    <mat-card-content>
+      <div (click)="cuurentFile=false;filedetails=null" fxLayoutGap="1em" fxLayout="column" fxLayoutAlign="space-between" style="width:100%">
+        <table mat-table [dataSource]="dataSource" class="table-data" style="width:100%;max-height:100%">
+
+          <!--- Note that these columns can be defined in any order.
+        The actual rendered columns are set as a property on the row definition" -->
+
+          <ng-container matColumnDef="name">
+            <th mat-header-cell *matHeaderCellDef> Folder/File </th>
+            <td mat-cell *matCellDef="let element" class="ellipsis-text" [matTooltip]="element.data.name"> {{element.data?.name}}
+            </td>
+          </ng-container>
+
+          <!-- Name Column -->
+          <ng-container matColumnDef="timestamp">
+            <th mat-header-cell *matHeaderCellDef> Submited By </th>
+            <td mat-cell *matCellDef="let element"> {{element.data?.uploadedBy?.timestamp | date: &apos;MMM d, y, h:mm:ss a&apos;}} &#xA0;by &#xA0;
+              {{element.data?.uploadedBy?.displayName || &apos;&apos;}} </td>
+          </ng-container>
+
+          <!-- Weight Column -->
+          <ng-container matColumnDef="action">
+            <th mat-header-cell *matHeaderCellDef style="text-align:center;"> Action </th>
+            <td mat-cell *matCellDef="let element;">
+              <div fxLayout="row" fxLayoutGap="4px" fxLayoutAlign="center center">
+                <mat-icon matTooltip="Download" class="pointer" (click)="downloadFile(element.data.fileName, element.data.name, element.data.fsuuid , element.data.clientContainerName);$event.stopPropagation();">arrow_downward</mat-icon>
+                <mat-icon matTooltip="Approve" class="pointer" (click)="fsAction(element[&apos;data&apos;] , &apos;A&apos;);$event.stopPropagation();">check</mat-icon>
+                <mat-icon matTooltip="Reject" class="pointer" (click)="rejectDialog(element[&apos;data&apos;] , &apos;R&apos;);$event.stopPropagation();">cancel</mat-icon>
+              </div>
+
+
+            </td>
+          </ng-container>
+
+          <tr mat-header-row style="height:36px;" *matHeaderRowDef="displayedColumns"></tr>
+          <tr mat-row *matRowDef="let row;let i=index; columns: displayedColumns;" style="height:50px;" [class]="currentFileIndex == i &amp;&amp; cuurentFile ? &apos;selectedfile pointer&apos;: &apos;pointer&apos;" (click)="rowdata(row);currentFileIndex=i;$event.stopPropagation();cuurentFile=true;"></tr>
+        </table>
+        <div fxLayout="row nowrap" class="font-weight600 margin_bottom20" fxLayoutAlign="end center" [fxShow]="true" [fxHide]="false" fxShow="true" fxHide="false" *ngIf="totalCount &gt;0">
+          <div fxLayout="row wrap" class="pagination-arrow" fxLayoutAlign="center center" [fxShow]="true" [fxHide]="false" fxShow="true" fxHide="false" (click)="setPagination(paginationIndex-1)">
+            <mat-icon>keyboard_arrow_left</mat-icon>
+          </div>
+          <ul class="pagination" style="display: flex;">
+            <li class="cursor-pointer" *ngFor="let page of pager" (click)="pageItem(page ,pageSize)" [ngClass]="{&apos;pagination-active&apos;:currntPageNum === page}"><span>{{page}}</span>
+            </li>
+          </ul>
+          <div fxLayout="row wrap" class="pagination-arrow" fxLayoutAlign="center center" [fxShow]="true" [fxHide]="false" fxShow="true" fxHide="false" (click)="setPagination(paginationIndex+1) ">
+            <mat-icon>keyboard_arrow_right</mat-icon>
+          </div>
+        </div>
+      </div>
+      <div fxLayout="column wrap" class="detail" fxFlex="25" fxLayoutAlign="start stretch" [fxShow]="true" [fxHide]="false" *ngIf="filedetails">
+        <mat-tab-group mat-align-tabs="start" style="width:100%;">
+          <mat-tab label="Detail">
+            <div fxLayout="column " style="height:40em;overflow:auto;" fxFlex="100" fxLayoutAlign="  none" [fxShow]="true" [fxHide]="false">
+              <div fxLayout="column wrap" class="folder-detail" fxLayoutGap="0.2em" fxLayoutAlign="start stretch" [fxShow]="true" [fxHide]="false"><span style="word-wrap:wrap;" class="primary-color font-13">
+                Created By</span><span class="font-13 word-break">
+                {{filedetails?.uploadedBy?.displayName}}</span></div>
+              <div fxLayout="column wrap" class="folder-detail" fxLayoutGap="0.2em" fxLayoutAlign="start stretch" [fxShow]="true" [fxHide]="false"><span class="primary-color font-13">
+                Updated on </span><span class="font-13 word-break">
+                {{filedetails?.lastModified | date: &apos;MMM d, y, h:mm:ss a&apos;}}</span></div>
+              <div fxLayout="column wrap" class="folder-detail" fxLayoutGap="0.2em" fxLayoutAlign="start stretch" [fxShow]="true" [fxHide]="false"><span class="primary-color font-13">
+                Current Version</span><span class="font-13 word-break">
+                {{filedetails?.version}}</span></div>
+              <div fxLayout="column wrap" fxLayoutGap="0.2em" fxLayoutAlign="start stretch" [fxShow]="true" [fxHide]="false">
+                <div>
+                  <!-- {{filedetails?.configData | json}} -->
+                  <div fxLayout="column wrap" class="folder-detail" fxLayoutGap="0.2em" fxLayoutAlign="start stretch" [fxShow]="true" *ngFor="let m of metadata; let i=index" [fxHide]="false">
+                    <span class="primary-color font-13">{{m._id}}</span>
+                    <span class="font-13 word-break">{{m.value}}</span>
+                  </div>
+                </div>
+              </div>
+              <div fxLayout="column wrap" class="folder-detail" fxLayoutGap="0.2em" fxLayoutAlign="start stretch" [fxShow]="true" [fxHide]="false"><span style="color:#ff751a;" class="font-13">
+                Expires on</span><span class="font-13 word-break">
+                {{filedetails?.expiryDate | date: &apos;MMM d, y, h:mm:ss a&apos;}}</span></div>
+            </div>
+          </mat-tab>
+        </mat-tab-group>
+      </div>
+    </mat-card-content>
+  </mat-card>
+</div>

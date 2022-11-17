@@ -1,0 +1,237 @@
+@import "../../../../src/styles.scss";
+
+.side-nav {
+  background-color: $sidenav-background;
+  color           : $white-color;
+}
+
+.toolbar {
+  background-color: $toolbar-background1;
+  color           : $white-color;
+}
+
+.expand-nav {
+  width     : 14%;
+  transition: width 150ms ease-out, height 0ms linear;
+  overflow-y: hidden;
+}
+
+.compress-nav {
+  width     : 5%;
+  transition: width 150ms ease-out, height 0ms linear;
+}
+
+.expand-toolbar {
+  width     : 86% !important;
+  transition: width 150ms ease-out, height 0ms linear;
+}
+
+.compress-toolbar {
+  width     : 95% !important;
+  transition: width 150ms ease-out, height 0ms linear;
+}
+
+.sidenav-list {
+  color: gray;
+}
+
+.sidenav-list:focus {
+  outline: none;
+}
+
+.active-side-navlist {
+  width      : 100%;
+  background : #E5E5E5;
+  border-left: 2px solid $toolbar-background;
+  color      : black !important;
+}
+
+
+
+.active-side-navlist span {
+  color: black !important;
+}
+
+// .active-side-navlist img {
+//   //filter: contrast(0) sepia(100%) hue-rotate(75deg) saturate(2);
+//   filter: invert(57%) sepia(67%) saturate(409%) hue-rotate(53deg) brightness(95%) contrast(88%);
+// }
+
+.rotate180 {
+  -webkit-transform : rotate(180deg);
+  transform         : rotate(-180deg);
+  -webkit-transition: all linear 150ms;
+  transition        : all linear 150ms;
+  cursor            : pointer;
+}
+
+.rotate-back {
+  -webkit-transform : rotate(0deg);
+  transform         : rotate(0deg);
+  -webkit-transition: all linear 150ms;
+  transition        : all linear 150ms;
+  cursor            : pointer;
+}
+
+.userIcon {
+  height       : 40px;
+  width        : 40px;
+  background   :white;
+  border-radius: 50%;
+  font-size    : 14px;
+}
+
+.userIcon2 {
+  height       : 40px;
+  width        : 40px;
+  background   : #788c6c;
+  border-radius: 50%;
+  font-size    : 14px;
+}
+
+
+.loader {
+  height  : 20px;
+  width   : 250px;
+  position: absolute;
+  top     : 0;
+  bottom  : 0;
+  left    : 0;
+  right   : 0;
+  margin  : auto;
+  z-index : 9999;
+}
+
+.disablepointer {
+  pointer-events: none;
+}
+
+.enablepointer {
+  pointer-events: auto;
+}
+
+.loader--dot {
+  animation-name           : loader;
+  animation-timing-function: ease-in-out;
+  animation-duration       : 3s;
+  animation-iteration-count: infinite;
+  height                   : 15px;
+  width                    : 15px;
+  border-radius            : 100%;
+  background-color         : black;
+  position                 : absolute;
+  border                   : 2px solid white;
+}
+
+.loader--dot:first-child {
+  background-color: #8cc759;
+  animation-delay : 0.5s;
+}
+
+.loader--dot:nth-child(2) {
+  background-color: #8c6daf;
+  animation-delay : 0.4s;
+}
+
+.loader--dot:nth-child(3) {
+  background-color: #ef5d74;
+  animation-delay : 0.3s;
+}
+
+.loader--dot:nth-child(4) {
+  background-color: #f9a74b;
+  animation-delay : 0.2s;
+}
+
+.loader--dot:nth-child(5) {
+  background-color: #60beeb;
+  animation-delay : 0.1s;
+}
+
+.loader--dot:nth-child(6) {
+  background-color: #fbef5a;
+  animation-delay : 0s;
+}
+
+.loader--text {
+  position: absolute;
+  top     : 200%;
+  left    : 0;
+  right   : 0;
+  width   : 6rem;
+  margin  : auto;
+}
+
+.loader--text:after {
+  content                  : "Loading";
+  font-weight              : bold;
+  color                    : #30343e;
+  animation-name           : loading-text;
+  animation-duration       : 3s;
+  animation-iteration-count: infinite;
+}
+
+@keyframes loader {
+  15% {
+    transform: translateX(0);
+  }
+
+  45% {
+    transform: translateX(230px);
+  }
+
+  65% {
+    transform: translateX(230px);
+  }
+
+  95% {
+    transform: translateX(0);
+  }
+}
+
+@keyframes loading-text {
+  0% {
+    content: "Loading ";
+  }
+
+  25% {
+    content: "Loading .";
+  }
+
+  50% {
+    content: "Loading . .";
+  }
+
+  75% {
+    content: "Loading . . .";
+  }
+}
+
+//searchbox
+.search-bar {
+  display: flex;
+  width  : 100%;
+}
+
+.dropdown {
+  position  : absolute;
+  left      : -1px;
+  top       : 45px;
+  right     : -0.9px;
+  border    : 1px solid #a1a4b1;
+  box-shadow: 0px 9px 12px #30343e;
+  z-index   : 2;
+}
+
+.child-nav-list {
+  border-top: 2px solid gray;
+  min-height: 50px;
+}
+
+.child-name:focus {
+  outline: none;
+}
+
+.active-child-list {
+  border-left: 2px solid $toolbar-background;
+}

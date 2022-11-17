@@ -1,0 +1,45 @@
+.header {
+    font-size  : 16px !important;
+    font-weight: bold;
+}
+
+.container {
+    overflow-y   : auto;
+    border-top   : 1.50301px solid #EEEEEE;
+    border-bottom: 1.50301px solid #EEEEEE;
+}
+
+.dialog-textarea {
+    border       : 1px solid #bdbdbd;
+    border-radius: 2px;
+    font-size    : 12px;
+    margin       : 0;
+    padding      : 12px;
+    color        : #828282;
+    overflow     : auto;
+    height       : 20vh;
+    word-wrap: break-word;
+}
+
+.dialog-description {
+    padding: 8px 26px;
+}
+
+.close-icon {
+    font-size: 30px;
+    color    : rgba(0, 0, 0, 0.87);
+    cursor   : pointer;
+}
+
+.btn-class {
+    place-content : center;
+    font-weight   : 600;
+    font-size     : 14px;
+    line-height   : 18px;
+    letter-spacing: 0.2px;
+    color         : #52575C;
+    width         : 120px;
+    height        : 36px;
+    border-radius : 2px;
+    border        : 1px solid rgba(0, 0, 0, 0.26)
+}

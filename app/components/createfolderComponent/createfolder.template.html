@@ -1,0 +1,29 @@
+<div fxLayout="column " fxLayoutAlign="start stretch" [fxShow]="true" [fxHide]="false">
+  <div class="titlee">
+    <span></span>
+    <span>Create New Folder</span>
+    <mat-icon style="cursor:pointer; margin-right: 2px; " (click)="closeDialog(false)">highlight_off</mat-icon>
+  </div>
+ 
+  <div class="inputDiv">
+    <div class="sub-ttl">
+    <span style="color: rgb(141, 141, 141);font-size: smaller;">Folder name</span>
+      <span style="color: red; font-size: smaller;"> *</span>
+    </div>
+    <div fxLayout="center" style="justify-content: center;height: 32px;" class=" outinput">
+      <mat-form-field class="input" appearance="outline">
+        
+        <input matInput placeholder="Enter Folder name" class="inp" [(ngModel)]="FSname" (keyup.enter)="closeDialog(true)">
+        
+      </mat-form-field>
+    </div>
+  </div>
+  <mat-divider style="border: .02px solid;color: rgb(107 107 107 / 45%);"></mat-divider>
+  <div class="buttns" >
+    <button mat-button class="success-btnn" style="margin-right: 3px;background: #0072C6;color: white;"
+      (click)="closeDialog(true)">{{data.action == &apos;create&apos; ? &apos;Create&apos; :
+      &apos;Rename&apos;}}</button>
+    <button mat-button style="background: white;color:#0072C6;margin-left: 3px;" class="success-btnn"
+      (click)="closeDialog(false)">Cancel</button>
+      </div>
+</div>

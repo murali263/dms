@@ -1,0 +1,42 @@
+
+.gray{
+    color:#A1A4B1;
+}
+.boxsize{
+    padding:40px 0px;
+}
+
+.border{
+    border-bottom: 1px solid  #CACCCF ; 
+ }
+ .border-left{
+     border-left:1px solid #E8E8E8;
+ }
+ .detail-margin{
+    margin:5%;
+ }
+ .details-box{
+    width:100%;
+    border-bottom:1px solid #E8E8E8;
+ }
+
+.word-break{
+    word-break: break-all;
+}
+.border-btm{
+    border-bottom:1px solid  #ddd;
+}
+//detail
+.detail{
+    border-left:1px solid #A1A4B1;
+}
+
+.folder-detail{
+    border-bottom: 1px solid rgb(196, 192, 192);
+    padding:12px 15px;
+}
+
+.selectedfile{
+    opacity: 0.8;
+    background-color:rgba(243, 243, 243, 0.724);
+  }

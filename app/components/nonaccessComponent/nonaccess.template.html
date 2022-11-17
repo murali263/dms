@@ -1,0 +1,13 @@
+<div fxLayout="column wrap" style="height: 100vh;     background: gainsboro;" fxLayoutAlign="center center" [fxShow]="true" [fxHide]="false">
+  <div fxLayout="row wrap" fxLayoutAlign="start stretch" [fxShow]="true" [fxHide]="false">
+    <div>
+      <p>Sorry the user doesn&apos;t have access to this application</p>
+      <p style="text-align:center"> Click here to <a href="{{loginUrl}}">Login</a></p>
+    </div>
+  </div>
+  <div fxLayout="row wrap" fxLayoutAlign="start stretch" [fxShow]="true" [fxHide]="false">
+    <div>
+      <p>Redirecting you to login page in {{counter}} seconds . . . </p>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,71 @@
+<div fxLayout="column wrap" style="padding:15px; min-width: 100%;" fxLayoutAlign="start stretch" [fxShow]="true"
+  [fxHide]="false">
+  <!-- button -->
+  <div fxLayout="row wrap" fxLayoutAlign="space-between start" [fxShow]="true" [fxHide]="false">
+    <div fxFlex="40" class="title">
+      Access Control</div>
+    <div fxLayout="row wrap" class="access-action-btn " fxLayoutGap="10px" fxLayoutAlign="end center" [fxShow]="true"
+      [fxHide]="false"><button mat-button class="edit-btn"
+        [ngClass]="{&apos;disabled-btn&apos; : selection[&apos;selected&apos;].length === 0 || selection[&apos;selected&apos;].length &gt; 1 }"
+        (click)="editResource()"
+        [disabled]="selection[&apos;selected&apos;].length === 0 || selection[&apos;selected&apos;].length &gt; 1">Edit</button><button
+        mat-button class="delete-btn"
+        [ngClass]="{&apos;disabled-btn&apos; : selection[&apos;selected&apos;].length === 0 }"
+        (click)=" deleteGrpDilogue()" [disabled]="selection[&apos;selected&apos;].length === 0">Delete</button><button
+        mat-button class="create-btn" routerLink="/home/user-groups/create">Create New</button></div>
+  </div>
+  <!-- button -->
+  <mat-divider></mat-divider>
+  <div class="mat-elevation-z8">
+  <table mat-table [dataSource]="dataSource">
+    <!-- Checkbox Column -->
+    <ng-container matColumnDef="select">
+      <th mat-header-cell *matHeaderCellDef style="background-color:#ADD8E6;">
+      </th>
+      <td mat-cell *matCellDef="let row">
+        <mat-checkbox (click)="$event.stopPropagation()"
+                      (change)="$event ? selection.toggle(row) : null"
+                      [checked]="selection.isSelected(row)">
+        </mat-checkbox>
+      </td>
+    </ng-container>
+  
+    <!-- Name Column -->
+    <ng-container matColumnDef="name">
+      <th mat-header-cell  *matHeaderCellDef style="color:black ; background-color:#ADD8E6; font-size: large;">User Groups</th>
+      <td mat-cell *matCellDef="let element">{{element.groupName}}</td>
+    </ng-container>
+    <!-- *ngIf="!element.users.length==0" -->
+    <!-- users Column -->
+    <ng-container matColumnDef="users">
+      <th mat-header-cell *matHeaderCellDef style="text-align: center;color:black ; background-color:#ADD8E6;font-size: large;">Users</th>
+      <td style="text-align: center" [ngClass]="{'positive' : element.users.length > 0,'negative' : !element.users.length > 0}" mat-cell *matCellDef="let element" (click)="userNameList(element.users || []);$event.stopPropagation()">{{element.users.length}}</td>
+    </ng-container>
+
+    <!-- Symbol Column -->
+    <ng-container matColumnDef="createdBy">
+      <th mat-header-cell *matHeaderCellDef style="text-align: center;color:black ; background-color:#ADD8E6;font-size: large;">Created By</th>
+      <td mat-cell style="text-align: center" *matCellDef="let element">{{element.createdByEmail}}</td>
+    </ng-container>
+  
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;"
+        (click)="selection.toggle(row)">
+    </tr>
+  </table>
+   <!-- pagination -->
+   <div fxLayout="row wrap" fxLayoutAlign="end center" style="margin-top: 2em; margin-bottom: 1em; margin-right: 1em;" [fxShow]="true" [fxHide]="false">
+    <mat-icon *ngIf="page_Index > 1" style="cursor: pointer;"  (click)="onArrowLeft()">keyboard_arrow_left</mat-icon>
+    <ul class="pagination" style="display: flex;">
+      <span class="pagenumber" style="background-color: #0072C6;
+      border-radius: 10px;
+      height: 20px;
+      width: 20px;
+      font-size: 13px;
+      text-align: center;
+      color: white;">{{page_Index}}</span>
+    </ul>
+    <mat-icon *ngIf="enableLoadMore" style="cursor: pointer;" (click)="onArrowRight()">keyboard_arrow_right</mat-icon>
+  </div>
+  </div>
+</div>

@@ -1,0 +1,64 @@
+.centerImage{
+  width: 100%;
+  display: flex;
+  justify-content:center;
+}
+.centerImage img{
+  width: 30rem;
+}
+.bottomBtn{
+  margin-top: 3rem;
+  width: 100%;
+  display: flex;
+  justify-content:center;
+}
+.bottomBtn button{
+  border-radius: 14px;
+  width:15rem;
+  color: white;
+  background-color:rgb(0, 124, 173);
+  box-shadow:5px 6px 1px -2px rgba(0,0,0,.2),0 2px 2px 0 rgba(0,0,0,.14),0 1px 5px 0 rgba(0,0,0,.12)
+}
+
+.loadingdiv{
+  padding: 1rem;
+  height: 1.5rem;
+  width: 5rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.loading-ring {
+  width: 1.5rem !important;
+  height: 1.5rem !important;
+  animation: loadingring 1s infinite;
+  border: 4px solid rgb(0, 124, 173);
+  border-radius: 50%;
+  border-bottom:4px solid white;
+  border-top: 4px solid white;
+}
+@keyframes loadingring {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+.signIn {
+  padding-top: 1em;
+  height: 100vh;
+  width: 100vw; 
+  span {
+    font-size: 1.5rem;
+    font-weight: bold;
+    text-align: center;
+    padding-top: 34px;
+  }
+
+  .fitDigital{
+    padding-left:12%;
+    padding-top: 25px !important;
+  }
+}

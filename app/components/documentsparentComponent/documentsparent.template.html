@@ -1,0 +1,89 @@
+<div fxLayout="column " style="padding:15px;" fxLayoutAlign="center stretch" [fxShow]="true" [fxHide]="false">
+  <div fxLayout="row wrap" fxFlex="100" fxLayoutAlign="space-between start" [fxShow]="true" [fxHide]="false">
+    <div fxLayout="column wrap" fxFlex="80" fxLayoutAlign="start stretch" [fxShow]="true" [fxHide]="false">
+      <div>
+        <div fxLayout="column" fxLayoutGap="2px">
+          <span class="title">Documents</span>
+          <div fxLayout="row" fxLayoutAlign="start center">
+            <mat-icon class="secondary-color pointer" *ngIf="hasScroll" (click)="onNavClick(&apos;P&apos;)" style="transform: rotate(-180deg);">double_arrow
+            </mat-icon>
+            <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="4px" class="masterpath" #navPanel (domChange)="onDomChange($event)">
+              <span class="font-14 doc-nav-links" style="white-space: nowrap;" (click)="openRootFS()">Master &#xA0;</span>
+              <span class="font-14" *ngFor="let childpath of currentLinkArr;let i = index ">
+			<p class="doc-nav-links" style="display:flex;" (click)="linkChange(i)">
+				<span class="doc-nav-links ellipsis-text" [fxHide]="&apos;&apos;==currentLinkArr[i]" [id]="i" [matTooltip]="childpath">{{childpath}}</span>
+              <strong [fxHide]="currentLinkArr.length - 1 == i ">&#xA0;&gt;&#xA0;</strong>
+              </p>
+              </span>
+            </div>
+            <mat-icon class="secondary-color pointer" *ngIf="hasScroll" (click)="onNavClick(&apos;N&apos;)">double_arrow
+            </mat-icon>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+    <div fxLayout="column wrap" fxFlex="20" fxLayoutAlign="end end" [fxShow]="true" [fxHide]="false">
+      <div fxLayout="row wrap" fxFlex="100" fxLayoutAlign="center center" [fxShow]="true" [fxHide]="!showDocument">
+        <div class="access-action-btn">
+          <button mat-button class="create-btn" style="width:162px;" matTooltip="Download file" (click)="downloadFile(currentDoc.fileName, currentDoc.name, currentDoc.fsuuid , currentDoc.clientContainerName)">
+            <mat-icon>save_alt</mat-icon>
+          </button>
+        </div>
+      </div>
+      <div *ngIf="backendService.getAccessAction().includes(&apos;document_upload_status&apos;) || backendService.getAccessAction().includes(&apos;folder_creation&apos;)" [fxHide]="isSearch || showDocument" class="access-action-btn">
+        <button mat-button class="create-btn" [disabled]="isSearch"  [matMenuTriggerFor]="menu" *ngIf="checkhasCUOptions()">New</button>
+        <mat-menu #menu="matMenu" class="docs-action-menu">
+          <button [fxShow]="currentFolder &amp;&amp; checkFolderPermission(currentFolder) == &apos;RW&apos;" mat-menu-item style="width:162px" matTooltip="Upload File" (click)="navigateToUpload()" *ngIf="backendService.getAccessAction().includes(&apos;document_upload_status&apos;) &amp;&amp; currentFolder">
+            <mat-icon>cloud_upload</mat-icon>
+            <span>Upload File</span>
+          </button>
+          <button mat-menu-item style="width:162px" matTooltip="Create Folder" (click)=" createFolder()" *ngIf="checkFolderCreatePermission()">
+            <mat-icon class="font-18">library_add</mat-icon>
+            <span class="font-14">Create Folder</span>
+          </button>
+        </mat-menu>
+      </div>
+    </div>
+
+
+    
+  </div>
+  <div fxLayout="column " class="doc-card" fxFlex="100" fxLayoutAlign="start stretch" [fxShow]="true" [fxHide]="false">
+    <mat-card [fxHide]="showDocument" style="height:100%;">
+      <mat-card-content fxLayout="row " fxFlex="100">
+        <div (click)="childSingleclickFSDetail(null);docsChild.isFocusedFolder=false;docsChild.isFocusedFile=false;" fxLayout="column" style="width:70%;" class="doc-child-border">
+          <bh-documentschild class="height-100" #docsChild [(currentFsDataObj)]="currentFsDataObj" (folderActionEvent)="childFSAction($event)" (singleclickFolderActionEvent)="childSingleclickFSDetail($event)" (singleclickFolderActionPositionEvent)="childSingleclickFSDetailPosition($event)" [(currentFolder)]="currentFolder">
+          </bh-documentschild>
+
+          <div style="padding-bottom: 15px;padding-top: 15px;" fxLayout="row wrap" fxLayoutAlign="center" *ngIf="showLoadMore">
+            <button mat-raised-button *ngIf="true" (click)="loadMore()">Load More</button>
+          </div>
+        </div>
+        <div style="width:30%;">
+          <bh-documentdetails #docsChildDetails></bh-documentdetails>
+        </div>
+      </mat-card-content>
+    </mat-card>
+    <mat-card *ngIf="showDocument">
+      <div fxLayout="column " fxLayoutAlign="center end" class="w100">
+        <div>
+          <button mat-menu-item class="backb backbutton" (click)="openRootFSback()">
+            <span>
+              <mat-icon>rotate_left</mat-icon> Back
+            </span>
+          </button>
+        </div>
+      </div>
+      <mat-card-content>
+        <div fxLayout="column wrap" style="padding-right:30px;padding-left:30px" fxLayoutAlign="start stretch" [fxShow]="true" [fxHide]="false">
+          <div>
+            <span *ngIf="currentDoc &amp;&amp; currentDoc[&apos;name&apos;]">{{currentDoc &amp;&amp; currentDoc.name || &apos; &apos;}}</span>
+            <bh-docviewer [docType]="currentDoc.extension" [src_content]="currentDocView" [auth]="currentDoc.fsuuid" (error)="viewerError($event)"></bh-docviewer>
+          </div>
+        </div>
+      </mat-card-content>
+    </mat-card>
+  </div>
+</div>

@@ -1,0 +1,12 @@
+<div fxLayoutAlign="center center" class="width-30" style="height: 48px;" >
+    <form [formGroup]="filterDeptForm">
+      <mat-form-field  class="input-row" appearance="outline"  >
+        <mat-select placeholder="Select Business Department" formControlName="filter" multiple  >
+            <mat-option #allSelected (click)="toggleAllSelection()" [value]= "0">Select All</mat-option>
+          <mat-option (click) = "toggleSelectionOne(allSelected.viewValue)" *ngFor="let dept of businessDepartments" [value]="dept.businessid">{{dept.businessDepartmentname}}</mat-option>
+        </mat-select>
+      </mat-form-field> 
+    </form>
+    <button mat-button  (click)="applyFilter()" class="apply" >Apply</button>
+    <button mat-button class="reset" (click)="reset()">Reset</button>
+</div>

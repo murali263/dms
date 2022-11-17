@@ -1,0 +1,17 @@
+<div fxLayout="column wrap" fxLayoutGap="1.5em" fxLayoutAlign="start stretch" [fxShow]="true" [fxHide]="false">
+  <div fxLayout="row wrap" class="header" fxFlex="100" fxLayoutAlign="space-between stretch" [fxShow]="true" [fxHide]="false">
+    <div fxLayout="column wrap" fxLayoutGap="2em" fxLayoutAlign="start stretch" [fxShow]="true" [fxHide]="false">
+      <div>
+        {{data.listHeader}}</div>
+    </div>
+    <div fxLayout="column wrap" fxLayoutAlign="start stretch" [fxShow]="true" [fxHide]="false">
+      <mat-icon style="cursor:pointer" (click)="dialogRef.close()">close</mat-icon>
+    </div>
+  </div>
+  <div fxLayout="row wrap" style="height: 30vH;border: 1.5px solid #9e9e9e8f;overflow-y:auto;padding: 5px;" fxLayoutAlign="start stretch" [fxShow]="true" [fxHide]="false">
+    <div fxLayout="column wrap" fxLayoutAlign="start stretch" [fxShow]="true" [fxHide]="false">
+      <div *ngFor="let item of data.listdata" style="padding:5px; color: #615d5d;font-size: 15px;">
+        <span>{{item}}<span></span></span></div>
+    </div>
+  </div>
+</div>

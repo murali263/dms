@@ -1,0 +1,32 @@
+.outer{
+    background-color:#0072c6;
+    display: flex;
+    height: 4rem;
+    width: max-content;
+    justify-content: center;
+    align-items: center;
+    border-radius: 10px;
+    span{
+      color: white;
+      padding: 1rem;
+    }
+    .thumbsupicon{
+      height:2.5rem;
+      margin-right: 1rem;
+      padding: 1rem;
+      padding-left: 0px;
+    }
+    .closediv{
+      display: flex;
+      align-items: flex-start;
+      justify-content: flex-end;
+      height: 100%;
+      img{
+        height: 1rem;
+        margin-top: 0.15rem;
+        margin-right: 0.15rem;
+        cursor: pointer;
+      }
+    }
+  }
+  

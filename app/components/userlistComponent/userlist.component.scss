@@ -1,0 +1,74 @@
+tr.mat-header-row {
+  height: 2em;
+  background-color: #add8e6;
+  color: black;
+}
+
+
+.table-header{
+  color: black;
+  font-weight: 600;
+}
+
+.displayName{
+  white-space: nowrap; 
+  text-overflow:ellipsis; 
+  overflow: hidden; 
+  max-width:80px;
+}
+
+.mail{
+  white-space: nowrap; 
+  text-overflow:ellipsis; 
+  overflow: hidden; 
+  max-width:100px;
+}
+
+.pagenumber{
+  background-color: #0072C6;
+  border-radius: 10px;
+  height: 20px;
+  width: 20px;
+  font-size: 13px;
+  text-align: center;
+  color: white;
+}
+
+.mat-form-field{
+  font-size: 11px;
+  width: 100%;
+}
+
+.mat-icon{
+  width: unset !important;
+}
+
+.srch-box{
+  width: 38%;
+  margin-right: 3%;
+  border-radius: 11px;
+}
+
+.box-header{
+  margin-top: 1em;
+  border-top: 1px #c6c6c6 solid !important;
+  border-bottom: 1px #c6c6c6 solid !important;
+  height: 3em;
+}
+
+.srch-btn{
+  border: 1px solid #80b8e2;
+  height: 2.75em; 
+  width: 7em; 
+  margin-right: -0.55em;
+}
+.positive{
+  color:blue;
+  cursor: pointer;
+  text-decoration:underline;
+  
+}
+.negative{
+  color:rgb(0, 0, 0);
+  
+}

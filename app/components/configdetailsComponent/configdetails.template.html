@@ -1,0 +1,200 @@
+<div fxLayout="column wrap" class="height-100 configdetails" fxLayoutAlign="start stretch" [fxShow]="true" [fxHide]="false">
+  <div fxLayout="column " fxFlex="100" fxLayoutAlign="start stretch" [fxShow]="true" [fxHide]="false">
+    <div fxLayout="row wrap" fxLayoutAlign="space-between center" [fxShow]="true" [fxHide]="false">
+      <div fxFlex="40" class="title newtitle">
+        Configuration <mat-icon>keyboard_arrow_right</mat-icon>
+        <mat-form-field class="border-s custum-value" appearance='standalone'>
+        <mat-select  [(ngModel)]="selectedTabIndex" (selectionChange)="switchtabs()">
+          <mat-option *ngFor="let item of tablist" [value]='item.index'>{{item.name}}</mat-option>
+        </mat-select>
+      </mat-form-field>
+      </div>
+      <div fxLayout="row wrap" class="mr-15" fxFlex="40" fxLayoutGap="10px" fxLayoutAlign="end center" *ngIf="selectedTabIndex === 2">
+        <button mat-button class="add-new-btn" (click)="linkDetails(&apos;ADD&apos;)">Add Link Details</button>
+      </div>
+      <div fxLayout="row wrap" class="mr-15" *ngIf="isCreatetabShown" fxLayoutGap="20px" fxLayoutAlign="end center" [fxShow]="true" [fxHide]="false">
+        <button mat-raised-button class="confirm" (click)="saveValues()" type="submit">Save</button>
+        <!-- <button mat-raised-button class="white-btn" *ngIf="configValues &amp;&amp; totalCount &gt; configValues.length" (click)="loadMore()" type="button">Load More</button> -->
+        <button mat-raised-button routerLink="/home/configuration" class="white-btn" type="button">Cancel</button>
+      </div>
+      <div fxLayout="row wrap" class="mr-15" *ngIf="isLinkTabShown" fxLayoutGap="20px" fxLayoutAlign="center center" [fxShow]="true" [fxHide]="false">
+        <button mat-raised-button class="confirm" (click)="saveLinks()" type="submit">Save</button>
+        <button mat-raised-button routerLink="/home/configuration" class="white-btn" type="button">Cancel</button>
+
+      </div>
+    </div>
+    <div fxLayout="column wrap" class="height-100" fxLayoutAlign="start stretch" [fxShow]="true" [fxHide]="false">
+      <mat-card class="">
+        <mat-card-content style="height:100%;" class="tab tabs config-tabs">
+          <mat-tab-group mat-align-tabs="center" style="height:100%;" [disableRipple]="false" [(selectedIndex)]="selectedTabIndex" (selectedTabChange)="tabChange($event)">
+            <mat-tab label="Create Values" class="height-100">
+              <div fxLayout="column wrap" class="height-100" fxLayoutAlign="start stretch" [fxShow]="true" [fxHide]="false">
+                <form [formGroup]="configFrom" class="config-form overflowy">
+                  <div fxLayout="column " fxLayoutAlign="space-between stretch" [fxShow]="true" [fxHide]="false" formArrayName="values">
+                    <div fxLayout="column wrap" class="padding-30px" fxLayoutGap="15px" fxLayoutAlign="start stretch" [fxShow]="true" [fxHide]="false">
+
+                      <div *ngIf="config.isChildren">
+                        <mat-form-field  appearance="outline" class="configure-input">
+                          <mat-label>Select {{config.parentName}}</mat-label>
+                          <mat-select [(ngModel)]="parentValueId" name="parent" [ngModelOptions]="{standalone: true}" (selectionChange)="resetValuesTab()" hideRequiredMarker="true">
+                            <mat-option *ngFor="let parent of parentValues" [value]="parent.valueId">
+                              {{parent.value}}
+                            </mat-option>
+                          </mat-select>
+                        </mat-form-field>
+                      </div>
+                      <!-- <cdk-virtual-scroll-viewport itemSize="10" class="example-viewport"> -->
+                      <div class="dynamo scrool">
+                     <div *ngFor="let field of configFrom.get(&apos;values&apos;)[&apos;controls&apos;]; let inputIndex=index;" [formGroupName]="inputIndex" fxLayout="row" fxLayoutGap="10px" >
+                      <mat-form-field fxFlex="90" appearance="outline" class="configure-input">
+                          <input matInput name="field_{{inputIndex}}" formControlName="value" placeholder="Please Enter Value" maxlength="40" required>
+                          <mat-icon matTooltip="Hide config value on upload" *ngIf="configFrom[&apos;controls&apos;][&apos;values&apos;][&apos;controls&apos;][inputIndex].value[&apos;visible&apos;]" matSuffix class="pointer" (click)="toggleConfigValueVisible(inputIndex, false)">visibility
+                          </mat-icon>
+                          <mat-icon matTooltip="Show config value on upload" *ngIf="!configFrom.get(&apos;values&apos;).at(inputIndex).value[&apos;visible&apos;]" matSuffix class="pointer" (click)="toggleConfigValueVisible(inputIndex, true)">visibility_off
+                          </mat-icon>
+                        </mat-form-field>
+                        <div *ngIf="(inputIndex + 1) === configFrom.get(&apos;values&apos;)?.length" fxLayout="column" fxLayoutAlign="center">
+                          <mat-icon class="pointer primary-color greenicon" (click)="addValueFormCtrl()" matTooltip="Add new config value">
+                            add_circle_outline</mat-icon>
+                        </div>
+                      </div>
+                    </div>
+                  <!-- </cdk-virtual-scroll-viewport> -->
+                    </div>
+                    <div fxLayout="row wrap" class="fort1" fxLayoutGap="20px" fxLayoutAlign="center center" [fxShow]="true" [fxHide]="false">
+                      <!-- <button mat-raised-button routerLink="/home/configuration" class="white-btn" type="button">Cancel</button>
+                      <button mat-raised-button class="confirm" (click)="saveValues()" type="submit">Save</button> -->
+                      <button mat-raised-button class="white-btn loadbtn" *ngIf="configValues &amp;&amp; totalCount &gt; configValues.length" (click)="loadMore()" type="button"><mat-icon>refresh</mat-icon> Load More</button>
+                    </div>
+                    <!-- <div fxLayout="row wrap loadbutton" hidden fxLayoutAlign="end end" [fxShow]="true" [fxHide]="false">
+                      <mat-icon class="myarrow"  *ngIf="isShown"   (click)="loadPrevious()">keyboard_arrow_left</mat-icon>&nbsp;&nbsp;
+                      <button mat-mini-fab color="accent" (click)="scrollToTop()">{{pageNumber}}</button>
+                      <mat-icon class="myarrow"  *ngIf="configValues &amp;&amp; totalCount &gt; configValues.length" (click)="loadNext()">keyboard_arrow_right</mat-icon>
+                     </div> -->
+                  </div>
+                </form>
+              </div>
+            </mat-tab>
+            <mat-tab label="Add Links" *ngIf="config.visible">
+              <div fxLayout="column wrap" class="height-100" fxLayoutAlign="start start" [fxShow]="true" [fxHide]="false">
+                <form [formGroup]="configFrom" class="config-form width-100 height-100">
+                  <div fxLayout="column " class="" fxLayoutAlign="start stretch" [fxShow]="true" [fxHide]="false" formArrayName="links">
+                    <div fxLayout="column wrap" class="padding-30px" fxLayoutGap="15px" fxLayoutAlign="start start" [fxShow]="true" [fxHide]="false">
+                      <div class="dynamo">
+                      <div fxLayout="row "  fxLayoutGap="20px" fxLayoutAlign="start center" [fxShow]="true" [fxHide]="false" *ngFor="let field of configFrom[&apos;controls&apos;][&apos;links&apos;][&apos;controls&apos;]; let inputIndex=index;" [formGroupName]="inputIndex">
+                        <div fxFlex="75">
+                          <mat-form-field appearance="outline" class="configure-input width-100">
+                            <mat-label>Select Sub-Attribute {{inputIndex + 1}}</mat-label>
+                            <mat-select (selectionChange)="onLinkSelect($event, inputIndex)" formControlName="linkTo" hideRequiredMarker="true">
+                              <mat-option *ngFor="let c of configList" [value]="c.configId" [disabled]="isConfigSelected(c.configId)">
+                                {{c.name}}
+                              </mat-option>
+                            </mat-select>
+                          </mat-form-field>
+                        </div>
+                        <mat-checkbox formControlName="multiSelect" *ngIf="configFrom.get(&apos;links&apos;).at(inputIndex).get(&apos;multiSelect&apos;)">Multi Select</mat-checkbox>
+                      </div>
+                    </div>
+                      <div fxLayout="column wrap" fxLayoutAlign="center center" [fxShow]="true" [fxHide]="false">
+                        <mat-icon class="pointer primary-color greenicon" matToolTip="Add new config link" (click)="addLinkFormCtrl()">add_circle_outline</mat-icon>
+                      </div>
+                    </div>
+                    <!-- <div fxLayout="row wrap" fxLayoutGap="20px" fxLayoutAlign="center center" [fxShow]="true" [fxHide]="false">
+                      <button mat-raised-button routerLink="/home/configuration" class="white-btn" type="button">Cancel</button>
+                      <button mat-raised-button class="confirm" (click)="saveLinks()" type="submit">Save</button>
+                    </div> -->
+                  </div>
+                </form>
+              </div>
+            </mat-tab>
+            <mat-tab label="Link Details" class="tabitems" *ngIf="config.visible">
+              <div fxLayout="column wrap" class="scroll-block" fxLayoutGap="20px" fxLayoutAlign="start stretch" [fxShow]="true" [fxHide]="false" id="scrollId">
+                <div fxLayout="column wrap" fxLayoutAlign="start stretch" [fxShow]="true" [fxHide]="false">
+                  <div fxLayout="row wrap" class="border_style p_15" fxLayoutGap="20" fxLayoutAlign="start stretch" [fxShow]="true" [fxHide]="false">
+                    <div fxLayout="column wrap" fxFlex="100" fxLayoutAlign="start stretch" [fxShow]="true" [fxHide]="false">
+                      <div fxFlex="40">
+                        <div fxLayoutAlign="space-between center">
+                          <h3 class="l-10">{{config.name}} List</h3>
+                          <div fxLayoutAlign="center center" class="width-30 newsearchborder">
+                            <input class="input-field-search" (keyup.enter)="searchLinkDetails()" [(ngModel)]="searchText" type="text" placeholder="Search" name="Search">
+                            <span *ngIf="searchText &amp;&amp; searchText.length &gt; 0" id="clear-search" (click)="searchText=&apos;&apos;" class="pointer" style="position: relative;right: 26px;">X</span>
+                            <div fxLayout="column" (click)="searchLinkDetails()" fxLayoutAlign="center center" class="prefix-icon" style="width:120px;font-weight: bold;">
+                              <span class="font-14 pointer">Search</span>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div style="width:100%" class="m-10">
+                    <div class="p_18">
+                    <table mat-table [dataSource]="linkDetailSource" class="mat-elevation-z8 width-100">
+                      <!-- Meta Data Name Column -->
+                      <ng-container matColumnDef="value">
+                        <th mat-header-cell *matHeaderCellDef> {{config.name}} </th>
+                        <td mat-cell [attr.id]="element.name" *matCellDef="let element"> {{element.value}} </td>
+                      </ng-container>
+
+                      <!-- Created By Column -->
+                      <ng-container matColumnDef="createdBy">
+                        <th mat-header-cell *matHeaderCellDef> Created By </th>
+                        <td mat-cell [id]="element.createdBy" *matCellDef="let element"> {{element.createdBy}} </td>
+                      </ng-container>
+
+                      <!-- Created On Column -->
+                      <ng-container matColumnDef="createdOn">
+                        <th mat-header-cell *matHeaderCellDef> Created On </th>
+                        <td mat-cell [id]="element.createdOn" *matCellDef="let element">
+                          {{element.createdOn | date: &apos;MM-dd-yyyy HH:mm&apos;}} </td>
+                      </ng-container>
+
+                      <!-- Last Updated On Column -->
+                      <ng-container matColumnDef="updatedOn">
+                        <th mat-header-cell *matHeaderCellDef> Last Updated On </th>
+                        <td mat-cell [id]="element.updatedOn" *matCellDef="let element">
+                          {{element.updatedOn | date: &apos;MM-dd-yyyy HH:mm&apos;}} </td>
+                      </ng-container>
+
+                      <!-- Action Column -->
+                      <ng-container matColumnDef="action">
+                        <th mat-header-cell *matHeaderCellDef> Action </th>
+                        <td class="focused" mat-cell [id]="element" *matCellDef="let element">
+                          <button mat-icon-button (click)="linkDetails(&apos;VIEW&apos;, element)">
+                            <mat-icon>visibility</mat-icon>
+                          </button>
+                          <button mat-icon-button (click)="linkDetails(&apos;EDIT&apos;, element)">
+                            <mat-icon>edit</mat-icon>
+                          </button>
+                          <button mat-icon-button (click)="deleteLinkDetails(element)">
+                            <mat-icon>delete</mat-icon>
+                          </button>
+                        </td>
+                      </ng-container>
+
+                      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                      <tr mat-row *matRowDef="let row; columns: displayedColumns;">
+                      </tr>
+                    </table>
+                    </div>
+                  </div>
+                </div>
+                <div fxLayout="row wrap loadbutton" class="configload" hidden fxLayoutAlign="end end" [fxShow]="true" [fxHide]="false" *ngIf="configDetailTotalCount &gt; 0">
+                      <mat-icon class="myarrow"  *ngIf="isShownLinkDetails"   (click)="loadMoreLinkDetailsPrevious()">keyboard_arrow_left</mat-icon>&nbsp;&nbsp;
+                      <button mat-mini-fab color="accent" (click)="scrollToTop()">{{pageNumber}}</button>
+                      <mat-icon class="myarrow"  *ngIf="linkDetailList &amp;&amp; configDetailTotalCount &gt; linkDetailList.length" (click)="loadMoreLinkDetailsNext()">keyboard_arrow_right</mat-icon>
+                     </div>
+                <!-- <div fxLayout="row nowrap" style="padding-top:10px" fxLayoutAlign="space-between center" [fxShow]="true" [fxHide]="false" *ngIf="configDetailTotalCount &gt; 0">
+                  <div fxLayout="row wrap" fxLayoutAlign="start stretch" [fxShow]="true" [fxHide]="false"></div>
+                  <div fxLayout="row wrap" fxLayoutAlign="end center" [fxShow]="true" [fxHide]="false"><button mat-raised-button *ngIf="linkDetailList &amp;&amp; configDetailTotalCount &gt; linkDetailList.length" (click)="loadMoreLinkDetails()">Load More</button></div>
+                  <div fxLayout="row wrap" fxLayoutAlign="end end" [fxShow]="true" [fxHide]="false"><button mat-mini-fab color="accent" (click)="scrollToTop()">
+                      <mat-icon>keyboard_arrow_up</mat-icon>
+                    </button></div>
+                </div> -->
+              </div>
+            </mat-tab>
+          </mat-tab-group>
+        </mat-card-content>
+      </mat-card>
+    </div>
+  </div>
+</div>

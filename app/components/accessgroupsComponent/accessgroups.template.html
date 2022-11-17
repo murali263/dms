@@ -1,0 +1,129 @@
+<div class="outer" fxLayout="column wrap" style="padding: 0px 1rem 0px 1rem;" fxLayoutAlign="start stretch" [fxShow]="true" [fxHide]="false" ngStyle.sm="padding: 0px 20px 0px 20px;" ngStyle.xs="padding: 0px 10px 0px 10px;" >
+  <h6 class="font-color-new font-18">
+    Assign Users and User Groups
+    <mat-divider></mat-divider>
+  </h6>
+  <div class="cardsOuter">
+    <mat-card class="card" [class.mat-elevation-z6]="true">
+      <div class="topTitle"><span>Users</span></div>
+      <div class="searchBar">
+        <div style="border: 1px solid; width: 100%;">
+          <input style="font-size: 0.8em;" matInput placeholder="Search Here" (keyup.enter)="searchUser()" [(ngModel)]="searchUserName" />
+        </div>
+        <button mat-raised-button class="btn-srch" (click)="searchUser()">
+          <mat-icon>search</mat-icon>
+        </button>
+      </div>
+      <div class="listBodyOuter">
+        <div  class="listBody" *ngFor="let user of searchedUser; index as i"  fxLayout="row" fxLayoutAlign="space-between center" >
+            <mat-checkbox (change)="userChecked($event,user)" [checked]= "user.AlreadyAdded" [disabled]="user.AlreadyAdded" style="margin-left: 0.5em;">
+              <div style="font-size: 0.7em;" class="spandiv">
+                  <span  class="namespan" >{{user.displayName}}</span>
+                  &nbsp;
+                  <span class="mailspan" style="color: grey;">
+                      ({{user.userPrincipalName}})
+                  </span>
+              </div>
+          </mat-checkbox>
+
+          <div class="addicon">
+            <button mat-icon-button [disabled]="user.AlreadyAdded" (click)="onSingleAdd(i)" >
+              <mat-icon style="cursor: pointer;"  >add_circle_outline</mat-icon>
+           </button>
+          </div>
+      </div>
+      </div>
+      <div class="bottom">
+        <button mat-raised-button class="btn btn-add" (click)="onAdd()">Add</button>
+      </div>
+    </mat-card>
+
+    <mat-card class="card" [class.mat-elevation-z6]="true" >
+      <div class="topTitle"><span>Selected Users</span></div>
+      <div class="searchBar">
+        <div style="border: 1px solid; width: 100%;">
+          <input style="font-size: 0.8em;" matInput placeholder="Search Here" (keyup.enter)="searchSelectedUser()" [(ngModel)]="searchSelectedUserName" />
+        </div>
+        <button mat-raised-button class="btn-srch" (click)="searchSelectedUser()">
+          <mat-icon>search</mat-icon>
+        </button>
+      </div>
+      <div class="listBodyOuter">
+        <div class="listBody" *ngFor="let user of selectedSearchedUser; index as i" fxLayout="row" fxLayoutAlign="space-between stretch">
+          <mat-checkbox (change)="selectedUserChecked($event,user)" style="margin-left: 0.5em;">
+              <div style="font-size: 0.7em;" class="spandiv">
+                  <span  class="namespan" >{{user.displayName}}</span>
+                  &nbsp;
+                  <span class="mailspan" style="color: grey;">
+                      ({{user.mail}})
+                  </span>
+              </div>
+          </mat-checkbox>
+          <div class="addicon">
+              <mat-icon style="cursor: pointer;" (click)="onSingleRemove(i)">highlight_off</mat-icon>
+          </div>
+      </div>
+      </div>
+      <div class="bottom">
+        <button mat-raised-button class="btn btn-remove" (click)="onRemove()">Remove</button>
+      </div>
+    </mat-card>
+  </div>
+  <div class="cardsOuter">
+    <mat-card class="card"  [class.mat-elevation-z6]="true">
+      <div class="topTitle"><span>User Groups</span></div>
+      <div class="searchBar">
+        <div style="border: 1px solid; width: 100%;">
+          <input style="font-size: 0.8em;" matInput placeholder="Search Here" (keyup.enter)="searchUserGroupsfunc()" [(ngModel)]="searchUserGroupText" />
+        </div>
+        <button mat-raised-button class="btn-srch" (click)="searchUserGroupsfunc()">
+          <mat-icon>search</mat-icon>
+        </button>
+      </div>
+      <div class="listBodyOuter">
+        <div  class="listBody" *ngFor="let userGroup of searchUserGroups; index as i" fxLayout="row" fxLayoutAlign="space-between center">
+        <mat-checkbox (change)="userGroupChecked($event,i)" style="margin-left: 0.5em;" [checked]= "userGroup.AlreadyAdded" [disabled]="userGroup.AlreadyAdded">
+            <div style="font-size: 0.7em;" class="spandiv">
+                <span  class="usergroupnamespan" >{{userGroup.groupName}}</span>
+            </div>
+        </mat-checkbox>
+          <div class="addicon">
+              <button mat-icon-button [disabled]="userGroup.AlreadyAdded" (click)="onSingleUserGroupAdd(i)" >
+                <mat-icon style="cursor: pointer;">add_circle_outline</mat-icon>
+             </button>
+          </div>
+      </div>
+      </div>
+      <div class="bottom">
+        <button mat-raised-button class="btn btn-add" (click)="onAddUserGroup()">Add</button>
+      </div>
+    </mat-card>
+
+    <mat-card class="card"  [class.mat-elevation-z6]="true">
+      <div class="topTitle"><span>Selected User Groups</span></div>
+      <div class="searchBar">
+        <div style="border: 1px solid; width: 100%;">
+          <input style="font-size: 0.8em;" matInput placeholder="Search Here" (keyup.enter)="searchSelectedUserGroup()" [(ngModel)]="searchSelectedUserGroupName" />
+        </div>
+        <button mat-raised-button class="btn-srch" (click)="searchSelectedUserGroup()">
+          <mat-icon>search</mat-icon>
+        </button>
+      </div>
+      <div class="listBodyOuter" >
+        <div  class="listBody" *ngFor="let userGroup of selectedUserGroup; index as i" fxLayout="row" fxLayoutAlign="space-between stretch">
+          <mat-checkbox (change)="selectedUserGroupChecked($event,userGroup)" style="margin-left: 0.5em;">
+            <div style="font-size: 0.7em;" class="spandiv">
+                <span  class="usergroupnamespan" >{{userGroup.groupName}}</span>
+            </div>
+          </mat-checkbox>
+          <div class="addicon">
+              <mat-icon style="cursor: pointer;" (click)="onSingleRemoveUserGroup(i)">highlight_off</mat-icon>
+          </div>
+      </div>
+      </div>
+      <div class="bottom">
+        <button mat-raised-button class="btn btn-remove" (click)="onRemoveUserGroup()">Remove</button>
+      </div>
+    </mat-card>
+  </div>
+</div>

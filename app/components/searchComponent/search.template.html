@@ -1,0 +1,128 @@
+<div fxLayout="column " style="padding-top: 2%;" class="search-child searchbox" fxFlex="100" fxLayoutGap="0.5em"
+  fxLayoutAlign="start stretch" [fxShow]="true" [fxHide]="false">
+  <div fxLayout="column wrap" style=" overflow: auto; max-height: 25vh;" class="meta-block"
+    fxLayoutAlign="start stretch" [fxShow]="true" [fxHide]="false">
+    <div fxLayout="column" fxLayoutAlign="center center" fxLayoutGap="0.5em">
+      <form [formGroup]="searchForm" style="width: 100%;">
+        <div formArrayName="metadataSearch" class="border"
+          *ngFor="let item of searchForm.get(&apos;metadataSearch&apos;)[&apos;controls&apos;]; let i = index;">
+          <div [formGroupName]="i">
+            <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="5px">
+              <div style="padding:5%;width: 100%;" class="pointer">
+                <mat-form-field style="width: 100%;" [appearance]="&apos;outline&apos;"
+                  [floatLabel]="&apos;always&apos;">
+                  <mat-label class="font-12">Metadata</mat-label>
+                  <div fxLayout="row" fxLayoutAlign="start center">
+                    <div fxFlex="90">
+                        <mat-select class="font-13" formControlName="metaData"
+                          (selectionChange)="resetValuesTab($event,i)" [disabled]="meta">
+                          <ng-container *ngFor="let m of metadata; let i=index">
+                            <mat-option [value]="m.configId" [type]="m.fieldType" [disabled]="isConfigSelected(m.configId)">{{m.name}}
+                            </mat-option>
+                          </ng-container>
+                        </mat-select>
+                    </div>
+                    <div fxFlex="10">
+                      <mat-icon style="margin-top:12px;">keyboard_arrow_down</mat-icon>
+                    </div>
+                  </div>
+                </mat-form-field>
+              </div>
+              
+              <div style="width: 100%;" class="pointer" [ngStyle]="{'padding': (showremove) ? '5% 1% 5% 5%' : '5%'}">
+                <!-- <-------------------------Select start------------------------->
+                <ng-template [ngIf]="!showinput[i]">
+                  <mat-form-field style="width: 100%;" [appearance]="&apos;outline&apos;"
+                  [floatLabel]="&apos;always&apos;">
+                  <mat-label class="font-12">{{getConfigName(i)}}</mat-label>
+                    <div fxLayout="row" fxLayoutAlign="start center">
+                      <div fxFlex="90">
+                        <mat-select class="font-13" formControlName="metaValue" multiple>
+                          <ng-container *ngFor="let data of valuesMapFiltered[i]; let i=index">
+                            <mat-option class="custom-color" [value]="data.valueId">{{data?.value}}</mat-option>
+                          </ng-container>
+                        </mat-select>
+                      </div>
+
+                      <div fxFlex="10">
+                        <mat-icon style="margin-top:12px;">keyboard_arrow_down</mat-icon>
+                      </div>
+                    </div>
+                  </mat-form-field>
+                </ng-template>
+                <!-- <-------------------------Select end------------------------->
+
+                <!-- <-------------------------Input Search start------------------------->
+                <ng-template [ngIf]="showinput[i]">
+                  <mat-form-field appearance="outline" [floatLabel]="&apos;always&apos;" style="margin-bottom: 1.4em;width: 100%;">
+                    <mat-label class="font-12">Search Here</mat-label> 
+                    
+                    <mat-chip-list #chipList>
+                        <mat-chip *ngFor="let value of selectedValue" [removable]="removable" (removed)="remove(value)">
+                          {{value.displayName}}
+                          <mat-icon matChipRemove *ngIf="removable">cancel</mat-icon>
+                        </mat-chip>
+    
+                      <input matInput class="font-13" formControlName="metaValue" style="font-size: 12px;"
+                        [matAutocomplete]="auto1" [ngModel]="inputvalue" (ngModelChange)="valuechange($event)"
+                        [matChipInputFor]="chipList" [matChipInputSeparatorKeyCodes]="separatorKeysCodes" [matChipInputAddOnBlur]="addOnBlur"
+                        (matChipInputTokenEnd)="add($event)">
+                    </mat-chip-list>
+
+                    <mat-autocomplete #auto1="matAutocomplete">
+                      <mat-option *ngFor="let value of searchValues" [value]="value" class="custom-color">
+                        <div (click)="optionClicked($event, value)">
+                          <mat-checkbox [checked]="value.selected" (change)="toggleSelection(value)"
+                            (click)="$event.stopPropagation()">
+                            {{ value.displayName }}<span style="font-size:12px;">({{ value.mail }})</span>
+                          </mat-checkbox>
+                        </div>
+                      </mat-option>
+                    </mat-autocomplete>                      
+                  </mat-form-field>
+                </ng-template>
+                <!-- <-------------------------Input Search end------------------------->
+              </div>
+              <div style="padding:3% 2% 0% 0%;" class="pointer" *ngIf="showremove">
+                <mat-icon class="pointer primary-color" (click)="removeValueFormCtrl(i)" matTooltip="Remove Last added metadata">
+                  remove_circle_outline</mat-icon>
+              </div>
+            </div>
+
+          </div>
+        </div>
+        <div style="margin:2%;display:flex; justify-content:center;align-items:center;">
+          <mat-icon class="pointer primary-color" (click)="addValueFormCtrl()" matTooltip="Add new metadata">
+            add_circle_outline</mat-icon>
+        </div>
+      </form>
+    </div>
+  </div>
+  <div style="padding: 20px 22px; border-top: 1px solid #b0b0b0;" class="font-14">
+    <span style="font-weight:600">Expiration</span>
+    <div fxLayout="row wrap" fxLayoutAlign="space-between center" [fxShow]="true" [fxHide]="false">
+      <div fxLayoutAlign="space-between center" fxLayoutGap="1em" class="font-12 date">
+        <span>From</span>
+        <mat-form-field class="font-14" style="width:125px">
+          <input matInput [matDatepicker]="From" placeholder="Choose a date" [(ngModel)]="search.fromDate"
+            name="fromDate" (click)="From.open()" readonly>
+          <mat-datepicker-toggle matSuffix [for]="From"></mat-datepicker-toggle>
+          <mat-datepicker #From></mat-datepicker>
+        </mat-form-field>
+      </div>
+      <div fxLayoutAlign="space-between center" fxLayoutGap="1em" class="font-12 date">
+        <span>To</span>
+        <mat-form-field class="font-14" style="width:126px">
+          <input matInput [min]="search.fromDate" [matDatepicker]="To" placeholder="Choose a date"
+            [(ngModel)]="search.toDate" (click)="To.open()" readonly>
+          <mat-datepicker-toggle matSuffix [for]="To"></mat-datepicker-toggle>
+          <mat-datepicker #To></mat-datepicker>
+        </mat-form-field>
+      </div>
+    </div>
+    <div fxLayout="row wrap" style="padding-top: 2%;" fxLayoutGap="1em" fxLayoutAlign="center center" [fxShow]="true"
+      [fxHide]="false"><button mat-button class="cancelbtn"
+        (click)="searchCloseEvent.emit(false)">Cancel</button><button mat-button class="search-btn"
+        (click)="triggerSearch()">Apply Filter</button></div>
+  </div>
+</div>

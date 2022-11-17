@@ -1,0 +1,129 @@
+<div fxLayout="row" fxLayoutAlign="space-between center" class="margin-t-1">
+  <div class="margin-l-1" fxLayout="row">
+    <span style="font-size: 1em; font-weight: 700;">Version History</span>
+  </div>
+  <div fxLayout="column " fxLayoutAlign="center end" class="w100">
+    <div *ngIf="viewFile">
+      <button mat-menu-item class="versionBackButton backbutton"  (click)="closeView()">
+        <span> <mat-icon>rotate_left</mat-icon> Back</span>
+      </button>
+    </div>
+  </div>
+</div>
+<mat-card style="padding: 0% !important;">
+  <mat-card-content fxLayout="row " fxFlex="100">
+    <div fxFlex="70" fxLayout="column">
+      <div
+        style="height: 48px; border: 2px solid #c5c5c5; border-left-color: white; border-right-color: white; min-height: 3em;">
+      </div>
+
+      <mat-card *ngIf="viewFile">
+        <mat-card-content>
+          <div fxLayout="column wrap" style="padding-right:30px;padding-left:30px" fxLayoutAlign="start stretch" [fxShow]="true" [fxHide]="false">
+            <div>
+              <span *ngIf="currentDoc &amp;&amp; currentDoc[&apos;name&apos;]">{{currentDoc &amp;&amp; currentDoc.name || &apos; &apos;}}</span>
+              <bh-docviewer [docType]="currentDoc.extension" [src_content]="DocumentView" [auth]="currentDoc.fsuuid" (error)="viewerError($event)"></bh-docviewer>
+            </div>
+          </div>
+        </mat-card-content>
+      </mat-card>
+
+
+      <!-- <div class="all"><button mat-raised-button class="downloadAlll"><mat-icon>save_alt</mat-icon>Download ALL</button></div> -->
+      <div *ngIf = "!viewFile" style="margin: 1em" class="mat-elevation-z6">
+        <table mat-table [dataSource]="dataSource" style="width:100%; text-align: center;" class="etb">         
+          <ng-container matColumnDef="name" class="table-header">
+            <th style="color: black; font-weight: bold;" mat-header-cell *matHeaderCellDef>
+              File Name
+            </th>
+            <td mat-cell *matCellDef="let element" class="table-data" [matTooltip]="element.name">
+              {{element.name}}
+            </td>
+          </ng-container>
+
+          <ng-container matColumnDef="owner" class="table-header">
+            <th style="color: black; font-weight: bold;" mat-header-cell *matHeaderCellDef>
+              Document Owner
+            </th>
+            <td mat-cell *matCellDef="let element" class="table-data">
+              <div *ngFor="let docOwner of element?.documentOwner" [matTooltip]="docOwner.displayName">
+                {{docOwner.displayName}} </div>
+              <div *ngIf="!element?.documentOwner?.length &gt;0" [matTooltip]="element.uploadedBy.displayName">
+                {{element.uploadedBy.displayName}}</div>
+            </td>
+          </ng-container>
+
+          <ng-container matColumnDef="version" class="table-header">
+            <th style="color: black; font-weight: bold; text-align: center !important;" mat-header-cell *matHeaderCellDef>
+              Version Number
+            </th>
+            <td mat-cell *matCellDef="let element" 
+              class="table-data">
+              v {{element.version}}
+            </td>
+          </ng-container>
+
+          <ng-container matColumnDef="creationDate" class="table-header">
+            <th style="color: black; font-weight: bold;" mat-header-cell *matHeaderCellDef>
+              Date of Creation
+            </th>
+            <td mat-cell *matCellDef="let element" class="table-data"
+              [matTooltip]="element.uploadedBy.timestamp | date: &apos;MMM d, y, h:mm:ss a&apos;">
+              {{element.uploadedBy.timestamp | date: &apos;MMM d, y, h:mm:ss a&apos;}}
+            </td>
+          </ng-container>
+
+          <ng-container matColumnDef="expiryDate" class="table-header">
+            <th style="color: black; font-weight: bold;" mat-header-cell *matHeaderCellDef>
+              Date of Expiry
+            </th>
+            <td mat-cell *matCellDef="let element" class="table-data"
+              [matTooltip]="element.expiryDate | date: &apos;MMM d, y, h:mm:ss a&apos;">
+              {{element.expiryDate | date: &apos;MMM d, y, h:mm:ss a&apos;}}
+            </td>
+          </ng-container>
+
+          <ng-container matColumnDef="action" class="table-header">
+            <th style="color: black; font-weight: bold;" mat-header-cell *matHeaderCellDef>
+              Action
+            </th>
+            <td mat-cell *matCellDef="let data" class=" table-data">
+              <div fxLayout="row" fxLayoutGap="4px" fxLayoutAlign="center center">
+                <img matTooltip="Action" [matMenuTriggerFor]="menuF" src="assets/Web/ActionsIcon.png">
+              </div>
+              <mat-menu #menuF="matMenu" class="docs-action-menu" xPosition="before">
+                <ng-template matMenuContent>
+                  <button class="nmenu pointer" matTooltip="Download"
+                    (click)="downloadFile(data.fileName, data.name, data.fsuuid , data.clientContainerName)">
+                    <span><img src="assets/Web/Download.png"> Download</span>
+                  </button>
+                  <button class="nmenu pointer" matTooltip="View" (click)="view(data)">
+                    <span><img src="assets/Web/View.png"> View </span>
+                  </button>
+                  <button class="nmenu pointer" matTooltip="Restore" *ngIf="showRestore" (click)="_restore(data.version)">
+                    <span>
+                      <mat-icon>restore</mat-icon>Restore
+                    </span>
+                  </button>
+                </ng-template>
+              </mat-menu>            
+            </td>
+          </ng-container>
+
+          <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+          <!-- <tr mat-row class="pointer" (click)="onRowClick(row,i)"
+           [class.selected]="row.selected"  *matRowDef="let row; let i = index columns: displayedColumns;"></tr> -->
+           <tr mat-row *matRowDef="let row; let i = index columns: displayedColumns;" class="pointer"  style="height:50px;"
+           [class]="currentFileIndex == i &amp;&amp; cuurentFile ? &apos;selected pointer&apos;: &apos;pointer&apos;"
+           (click)="onRowClick(row,i);currentFileIndex=i;$event.stopPropagation();cuurentFile=true;"></tr>
+        </table>
+      </div>
+      <div style="min-height: 2em;">
+
+      </div>
+    </div>
+    <div fxFlex="30" style="min-height: 60vh; border-left: 1px solid #c5c5c5;">
+      <bh-documentdetails #docsChildDetails></bh-documentdetails>
+    </div>
+  </mat-card-content>
+</mat-card>

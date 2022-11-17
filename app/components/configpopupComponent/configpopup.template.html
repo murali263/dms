@@ -1,0 +1,84 @@
+<div class="spborder">
+  <div fxLayout="column wrap" class="configpopup" fxLayoutGap="10px" fxLayoutAlign="start stretch" [fxShow]="true" [fxHide]="false">
+    <div fxLayout="row " class="padding-horiz-30px popuptitle" fxLayoutAlign="space-between center" [fxShow]="true" [fxHide]="false">
+      <div class="title">
+        {{title}}</div>
+      <mat-icon class="pointer" (click)="close()">close</mat-icon>
+    </div>
+    <form [formGroup]="configForm" class="config-form">
+      <div fxLayout="column wrap" fxLayoutGap="20px" fxLayoutAlign="start stretch" [fxShow]="true" [fxHide]="false">
+        <div fxLayout="column wrap" class="config-content" fxLayoutGap="20px" fxLayoutAlign="start stretch" [fxShow]="true" [fxHide]="false">
+          <div fxLayout="row " fxLayoutGap="20px" fxLayoutAlign="start start" [fxShow]="true" [fxHide]="false" fxLayout.lt-md="column">
+            <div fxLayout="column wrap" class="padding-horiz-30px" fxFlex="50" fxLayoutGap="30px" fxLayoutAlign="start stretch" [fxShow]="true" [fxHide]="false">
+              <mat-form-field [appearance]="&apos;outline&apos;" [floatLabel]="&apos;auto&apos;">
+                <input matInput placeholder="Input" required formControlName="name">
+                <mat-label>Meta Data Name</mat-label>
+              </mat-form-field>
+              <div>
+                <mat-form-field appearance="outline" floatLabel="auto" class="width-100">
+                  <mat-label>Meta Data Field Type</mat-label>
+                  <mat-select formControlName="fieldType" required>
+                    <mat-option value="AD">AD Linked</mat-option>
+                    <mat-option value="DDL">Drop Down List</mat-option>
+                    <mat-option value="FT">Free Text</mat-option>
+                    <!-- <mat-option value="RB">Radio Button</mat-option> -->
+                  </mat-select>
+                </mat-form-field>
+              </div>
+              <div>
+                <mat-form-field appearance="outline" floatLabel="auto" class="width-100">
+                  <mat-label>Business Department</mat-label>
+                  <mat-select formControlName= "businessDepartment"  #select [(ngModel)]="selected" required multiple>
+                    <div style="margin: 5px 17px;">
+                      <mat-checkbox [(ngModel)]="allSelected"
+                                      [ngModelOptions]="{standalone: true}"
+                                      (change)="toggleAllSelection()">Select All</mat-checkbox>
+                  </div>
+                    <mat-option (click)="singleSelection()" *ngFor="let value of businessDepartments" [value]="value">{{value.businessDepartmentname}}</mat-option>
+                  </mat-select>
+                </mat-form-field>
+              </div>
+            </div>
+            <div fxLayout="column wrap" class="padding-horiz-30px" fxFlex="50" fxLayoutGap="41px" fxLayoutAlign="start stretch" [fxShow]="true" [fxHide]="false">
+              <div fxLayout="column wrap" fxLayoutAlign="start stretch" [fxShow]="true" [fxHide]="false"><label>
+                Show in Document Upload?</label>
+              <div fxLayout="row wrap" fxLayoutGap="30px" fxLayoutAlign="start stretch" [fxShow]="true" [fxHide]="false">
+                <div>
+                  <mat-radio-group aria-label="Show in Document Upload?" fxLayoutGap="30px" formControlName="visible" (change)="onRadioChange($event, &apos;visible&apos;)">
+                    <mat-radio-button [value]="true">Yes</mat-radio-button>
+                    <mat-radio-button [value]="false">No</mat-radio-button>
+                  </mat-radio-group>
+                </div>
+              </div>
+            </div>
+              <div fxLayout="column wrap" fxLayoutAlign="start stretch" [fxShow]="true" [fxHide]="false"><label>
+                  Mapping Required?</label>
+                <div fxLayout="row wrap" fxLayoutGap="30px" fxLayoutAlign="start stretch" [fxShow]="true" [fxHide]="false">
+                  <div>
+                    <mat-radio-group aria-label="Show in Document Upload?" fxLayoutGap="30px" formControlName="isChildren" (change)="onRadioChange($event, &apos;isChildren&apos;)">
+                      <mat-radio-button [value]="true">Yes</mat-radio-button>
+                      <mat-radio-button [value]="false">No</mat-radio-button>
+                    </mat-radio-group>
+                  </div>
+                </div>
+              </div>
+              <div>
+                <mat-form-field appearance="outline" floatLabel="auto" *ngIf="configForm.get(&apos;parent&apos;)" class="width-100">
+                  <mat-label>Parent Meta Data</mat-label>
+                  <mat-select formControlName="parent" required (selectionChange)="checkParent($event,i)">
+                    <mat-option *ngFor="let p of parentList" [value]="p.configId">{{p.name}}</mat-option>
+                  </mat-select>
+                </mat-form-field>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div fxLayout="row wrap" class="padding-horiz-20px m-30" fxLayoutGap="30px" fxLayoutAlign="center center" [fxShow]="true" [fxHide]="false">
+          <button mat-raised-button class="confirm" *ngIf="action !== &apos;VIEW&apos;" (click)="submit()" type="submit">{{submitAction}}</button>
+          <button mat-raised-button class="white-btn" (click)="close()" type="button">{{closeAction}}</button>
+        </div>
+      </div>
+    </form>
+  </div>
+  </div>
+  

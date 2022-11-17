@@ -1,0 +1,14 @@
+<div fxLayout="column " fxFlex="100" fxLayoutGap="1em" fxLayoutAlign="  none" [fxShow]="true" [fxHide]="false">
+  <div fxLayout="row wrap" class="header" fxFlex="100" fxLayoutAlign="space-between center" [fxShow]="true" [fxHide]="false">
+    <div fxFlex="61">
+      Notes</div>
+    <div fxFlex="5.4">
+      <mat-icon (click)="dialogRef.close()" class="close-icon">close</mat-icon>
+    </div>
+  </div>
+  <div class="dialog-textarea">
+    {{data.notes ? data.notes : &quot;No Note to Display.&quot;}}
+
+  </div>
+  <div fxLayout="row wrap" style=" margin-top: 20px;" class="access-action-btn" fxFlex="100" fxLayoutGap="1em" fxLayoutAlign="center center" [fxShow]="true" [fxHide]="false"><button mat-button style="background: #4DCFE0;color: #F9F9FA;" class="btn-class" mat-dialog-close (click)="dialogRef.close()">OK</button></div>
+</div>

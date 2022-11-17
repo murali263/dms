@@ -1,0 +1,189 @@
+<mat-tab-group mat-align-tabs="start" [(selectedIndex)]="currentTab" (selectedTabChange)="switchTab(currentTab)" class="scrool">
+  <mat-tab style="height:100%;" label="Details" [disabled]="!folderdetails &amp;&amp; !filedetails">
+    <div fxLayout="row wrap" style="height:30vh;" fxFlex="100" fxLayoutAlign="center center" [fxShow]="true"
+      [fxHide]="false" *ngIf="!folderdetails &amp;&amp; !filedetails">
+      <div fxLayout="column wrap" fxFlex="46" fxLayoutGap="1em" fxLayoutAlign="center center" [fxShow]="true"
+        [fxHide]="false"><img imgSrc="Web/Vector.svg" width="70"><span class="content">
+          Select a file or folder to view details</span></div>
+    </div>
+    <div fxLayout="column wrap" [fxShow]="true" [fxHide]="false" *ngIf="folderdetails &amp;&amp; !filedetails">
+      <div fxLayout="row" style="padding-top: 20px;" class="font-13">
+        <div fxFlex="45" class="detailkey">Created By</div>&nbsp;:&nbsp;<div class="detailvalue" fxFlex="45">
+          {{folderdetails?.uploadedBy?.displayName}}</div>
+      </div>
+      <div fxLayout="row" style="padding-top: 20px;" class="font-13">
+        <div fxFlex="45" class="detailkey">Updated on</div>&nbsp;:&nbsp;<div class="detailvalue" fxFlex="45">
+          {{folderdetails?.lastModified | date: &apos;MMM d, y, h:mm:ss a&apos;}}</div>
+      </div>
+      <div fxLayout="row" style="padding-top: 20px;" class="font-13">
+        <div fxFlex="45" class="detailkey">Folder Location</div>&nbsp;:&nbsp;<div class="detailvalue" fxFlex="45">
+          Master{{folderdetails?.path}}</div>
+      </div>
+
+      <div class="folderselect">
+        <div>
+          <img src="assets/Web/newfolder.png" [height]="FSchange ? &apos;30&apos;:&apos;60&apos;"
+            style="padding-left: 4px;padding-top: 20px;">
+        </div>
+        <div>
+          <div class="font-color-new font-14" style="text-align:center;word-wrap:break-word;">{{folderdetails.name}}
+          </div>
+        </div>
+      </div>
+    </div>
+    <div fxLayout="column " fxLayoutAlign="  none" [fxShow]="true" [fxHide]="false"
+      *ngIf="filedetails &amp;&amp; !folderdetails ">
+      <div fxLayout="row" style="padding-top: 20px;" class="font-13">
+        <div fxFlex="45" class="detailkey">Created By</div>&nbsp;:&nbsp;<div class="detailvalue" fxFlex="45">
+          {{filedetails?.uploadedBy?.displayName}}</div>
+      </div>
+      <div fxLayout="row" style="padding-top: 20px;" class="font-13">
+        <div fxFlex="45" class="detailkey">Updated on</div>&nbsp;:&nbsp;<div class="detailvalue" fxFlex="45">
+          {{filedetails?.lastModified | date: &apos;MMM d, y, h:mm:ss a&apos;}}</div>
+      </div>
+
+      <div fxLayout="row" style="padding-top: 20px;" class="font-13">
+        <div fxFlex="45" class="detailkey">File Location</div>&nbsp;:&nbsp;<div class="detailvalue" fxFlex="45">
+          Master{{filedetails?.path}}</div>
+      </div>
+      <div fxLayout="row" style="padding-top: 20px;" class="font-13">
+        <div fxFlex="45" class="detailkey">Current Version</div>&nbsp;:&nbsp;<div class="detailvalue" fxFlex="45">
+          {{filedetails?.version}}</div>
+      </div>
+      <div fxLayout="row" style="padding-top: 20px;" class="font-13">
+        <div fxFlex="45" class="detailkey">Document Owners</div>&nbsp;:&nbsp;<div class="detailvalue" fxFlex="45">
+          <div *ngFor="let docOwner of filedetails?.documentOwner">{{docOwner?.displayName}}</div>
+        </div>
+      </div>   
+    
+    <div fxLayout="row" style="padding-top: 20px;" class="font-13">
+        <div fxFlex="45" class="detailkey">Approver 1</div>&nbsp;:&nbsp;<div *ngIf="filedetails?.approvalLevels?.length&gt;0" class="detailvalue" fxFlex="45">
+          {{filedetails?.approvalLevels[0]?.displayName}}</div>
+      </div>
+      <div fxLayout="row" style="padding-top: 20px;" class="font-13">
+        <div fxFlex="45" class="detailkey">Approver 2</div>&nbsp;:&nbsp;<div *ngIf="filedetails?.approvalLevels?.length&gt;1" class="detailvalue" fxFlex="45">
+          {{filedetails?.approvalLevels[1]?.displayName}}</div>
+      </div>
+      <div fxLayout="row" style="padding-top: 20px;" class="font-13">
+        <div fxFlex="45" class="detailkey">Business Department</div>&nbsp;:&nbsp;
+        <div *ngFor="let filedetails of filedetails?.BusinessDepartment;">
+          &nbsp;&nbsp;{{filedetails?.businessDepartmentname}}
+        </div>
+      </div>
+
+
+      <!-- <div *ngFor="let m of addata; let i=index">
+        <div fxLayout="row" style="padding-top: 20px;" class="font-13">
+          <div fxFlex="45" class="detailkey">{{m}}</div>&nbsp;:&nbsp;<div class="detailvalue" fxFlex="45">
+            </div>
+        </div>
+      </div> -->
+
+      
+      
+    <div *ngFor="let m of metadata; let i=index">
+      <div fxLayout="row" style="padding-top: 20px;" class="font-13">
+        <div fxFlex="45" class="detailkey">{{m._id}}</div>&nbsp;:&nbsp;<div class="detailvalue" fxFlex="45">
+          {{m.value}}</div>
+      </div>
+    </div>
+    <div fxLayout="row" style="padding-top: 20px;" class="font-13"
+      *ngIf="filedetails.uploadedBy &amp;&amp; filedetails.uploadedBy.displayName == &apos;Auto Generated&apos;">
+      <div fxFlex="45" class="detailkey">Approver Name</div>&nbsp;:&nbsp;<div class="detailvalue" fxFlex="45">
+        {{filedetails?.username ? filedetails?.username : &apos;&apos;}}</div>
+    </div>
+    <div fxLayout="row" style="padding-top: 20px;" class="font-13">
+      <div fxFlex="45" class="detailkey">Notes</div>&nbsp;:&nbsp;<div class="detailvalue" fxFlex="45">
+        {{filedetails?.notes}}</div>
+    </div>
+    <div fxLayout="row" style="padding-top: 20px;" class="font-13">
+      <div fxFlex="45" class="detailkey" style="color: red;">Expires on</div>&nbsp;:&nbsp;<div class="detailvalue"
+        fxFlex="45">{{filedetails?.expiryDate | date: &apos;MMM d, y, h:mm:ss a&apos;}}</div>
+    </div>
+    <div>
+      <div>
+        <div class="font-18 fileSelect">{{filedetails.name}}
+        </div>
+        <div class="font-14 viewDetails">View Details
+        </div>
+      </div>
+    </div>
+    </div>
+  </mat-tab>
+  <mat-tab label="Logs" *ngIf="filedetails">
+    <div fxLayout="column " style="overflow-y:auto;" fxLayoutAlign="  none" [fxShow]="true" [fxHide]="false">
+      <div fxLayout="row" style="padding-top: 20px;" class="font-13">
+        <div fxFlex="90" class="detailkeylog">
+          <div fxLayout="column " style="overflow-y:auto;" fxFlex="90" fxLayoutAlign="  none" [fxShow]="true"
+            [fxHide]="false">
+            <div fxLayout="column wrap" class="folder-detail" fxLayoutAlign="center stretch" [fxShow]="true"
+              [fxHide]="false" *ngFor="let auditItem of auditList">
+              <div *ngIf="auditItem.display">
+                <span fxLayout="row" fxLayoutAlign="space-between center" style="color:#A1A4B1;">
+                  <mat-icon>outlined_flag</mat-icon>
+                  <div style="border-top: 1px dashed rgb(161, 164, 177);width: 24%;">
+                  </div>
+                  <span class="font-13">{{auditItem?.timestamp | date: &apos;MMM d, y, h:mm:ss a&apos;}}
+                  </span>
+                </span>
+              </div>
+
+              <div fxLayout="row" style="padding-top: 20px;" *ngIf="auditItem.display">
+                <div fxFlex="50" [ngClass]="auditItem.headerColor">{{auditItem.displayMsg}}</div>&nbsp;:&nbsp;<div
+                  class="detailvalue" fxFlex="50">{{auditItem.actor?.displayName}}</div>
+              </div>
+              <div fxLayout="row" *ngIf="auditItem.action === 'approved' " style="padding-top: 20px;">
+                <div fxFlex="50" style="color: #A1A4B1;">Approver Reason</div>&nbsp;:&nbsp;<div class="detailvalue"
+                  fxFlex="50">{{auditItem?.approvalReason}}</div>
+              </div>
+              <div fxLayout="row" *ngIf="auditItem.action === 'rejected' " style="padding-top: 20px;">
+                <div fxFlex="50" style="color: #A1A4B1;">Rejection Reason</div>&nbsp;:&nbsp;<div class="detailvalue"
+                  fxFlex="50">{{auditItem?.rejectionReason}}</div>
+              </div>
+              <div fxLayout="row" *ngIf="auditItem.action === 'restore_file' " style="padding-top: 20px;">
+                <div fxFlex="50" style="color: #A1A4B1;">Restoration Reason</div>&nbsp;:&nbsp;<div class="detailvalue"
+                  fxFlex="50">{{auditItem.additional?.restoreReason}}</div>
+              </div>
+              <div fxLayout="row" *ngIf="auditItem.action === 'restore_file' " style="padding-top: 20px;">
+                <div fxFlex="50" style="color: #A1A4B1;">Version</div>&nbsp;:&nbsp;<div class="detailvalue" fxFlex="50">
+                  {{auditItem.additional?.docVersion}}</div>
+              </div>
+              <div fxLayout="row" *ngIf="auditItem?.additional?.submittedBy && auditItem?.display"
+                style="padding-top: 20px;">
+                <div fxFlex="50" style="color: #A1A4B1;">Submitted By</div>&nbsp;:&nbsp;<div class="detailvalue"
+                  fxFlex="50">{{auditItem?.additional?.submittedBy?.displayName}}</div>
+              </div>
+            </div>
+            <!-- <div fxLayout="column wrap" class="folder-detail" fxLayoutAlign="center stretch" [fxShow]="true">
+              <div *ngIf="auditItem?.action == 'rejected'" fxLayout="row" 
+                  style="padding-top: 20px;">
+                  <div fxFlex="50" style="color: #A1A4B1;">Rejected By</div>&nbsp;:&nbsp;<div class="detailvalue"
+                    fxFlex="50">{{this.filedetails.approvalLevels[0]?.displayName}}</div>
+              </div>
+              <div *ngIf="this.filedetails.approvalStatus == 'rejected'" fxLayout="row" 
+                  style="padding-top: 20px;">
+                  <div fxFlex="50" style="color: #A1A4B1;">Rejection Reason</div>&nbsp;:&nbsp;<div class="detailvalue"
+                    fxFlex="50">{{this.filedetails.approvalLevels[0]?.rejectionReason}}</div>
+              </div>
+              <div fxLayout="row" *ngIf="this.filedetails.approvalStatus == 'approved'"
+                  style="padding-top: 20px;">
+                  <div fxFlex="50" style="color: #A1A4B1;">Approved By</div>&nbsp;:&nbsp;<div class="detailvalue"
+                    fxFlex="50">{{this.filedetails.approvalLevels[0]?.displayName}}</div>
+              </div>
+              <div *ngIf="this.filedetails.approvalStatus == 'rejected'" fxLayout="row" 
+                  style="padding-top: 20px;">
+                  <div fxFlex="50" style="color: #A1A4B1;">Approver Comment</div>&nbsp;:&nbsp;<div class="detailvalue"
+                    fxFlex="50">{{this.filedetails.approvalLevels[0]?.displayName}}</div>
+              </div>
+            </div> -->
+           
+            <div fxLayout="row wrap" fxLayoutAlign="end end" [fxShow]="showloadmore">
+              <button mat-button style="color:#5597E3;" color="primary" (click)=" loadAudit() ">Load more</button>
+            </div>
+          </div>
+        </div>
+        <div fxFlex="10"></div>
+      </div>
+    </div>
+  </mat-tab>
+</mat-tab-group>

@@ -1,0 +1,49 @@
+<div fxLayout="column wrap" style="padding:15px;" class="margin-tb" fxLayoutGap="1em" fxLayoutAlign="start stretch" [fxShow]="true" [fxHide]="false">
+  <div class="title">
+    <span *ngIf="currentAction == &apos;create&apos;" >
+      Create New Privilege
+    </span>
+    <span *ngIf="currentAction == &apos;update&apos;" >
+      Update Privilege
+    </span>
+    <mat-divider></mat-divider>
+  </div>
+  <div fxLayout="column wrap" class="card" fxLayoutAlign="start stretch" [fxShow]="true" [fxHide]="false">
+    <mat-card fxFlex="100" fxFlex.sm="100" fxFlex.xs="100" ngStyle.sm="margin: 0px 20px 0px 20px;" ngStyle.xs="margin:0;" style="margin:0px" class="width-100">
+      <mat-card-content>
+        <div>
+          <mat-horizontal-stepper [linear]="false" [selectedIndex]="stepperIndex" #stepper class="stepper">
+            <ng-template matStepperIcon="edit" let-index="index">
+              {{index+1}}
+            </ng-template>
+            <mat-step label="Create New" optional="false" editable="true">
+              <div fxLayout="row wrap" class="input-outline " fxFlex="100" fxLayoutGap="20px" fxLayoutAlign="start center" [fxShow]="true" [fxHide]="false" fxFlex.xs="70" fxFlex.sm="70" fxFlex.lt-md="70" fxFlex.gt-md="70" fxFlex.md="70">
+                <h4 class="font-14 font-color-new">
+                  Name</h4>
+                <mat-form-field class="groupnamef" [appearance]="&apos;outline&apos;" [floatLabel]="&apos;never&apos;">
+                  <input matInput [(ngModel)]="groupName" placeholder="Group Name" (keyup.enter)="nextStep(stepperIndex)" [readonly]="(currentAction == &apos;edit&apos;) &amp;&amp; (groupName == &apos;DMS Super User Group&apos;)" maxlength="50" required>
+
+                </mat-form-field>
+              </div>
+            </mat-step>
+            <mat-step label="Features" optional="false" editable="true">
+              <bh-accessfeature #accessFeature></bh-accessfeature>
+            </mat-step>
+            <mat-step label="Folder Privileges" optional="false" editable="true">
+              <bh-accessprivilege #accessFolder [currentGrpId]="currentGrpId"></bh-accessprivilege>
+            </mat-step>
+            <mat-step label="Users &amp; Groups" optional="false" editable="true">
+              <bh-accessgroups #accessGroups></bh-accessgroups>
+            </mat-step>
+          </mat-horizontal-stepper>
+        </div>
+        <div fxLayout="row wrap" style="padding: 30px 30px 30px 0px;" fxLayoutGap="1em" fxLayoutAlign="end end" [fxShow]="true" [fxHide]="false">
+          <button *ngIf="stepperIndex!=0" mat-raised-button class="btn-class prevbtn" (click)="previousStep(stepperIndex)">Previous</button>
+          <button mat-raised-button class="btn-class" (click)="resetSteps();">Cancel</button>
+          <button mat-raised-button class="btn-class confirm" *ngIf="currentAction == &apos;create&apos;" (click)="nextStep(stepperIndex)" [disabled]="!groupName">{{stepperIndex == 3 ? &apos;Create&apos; : &apos;Next&apos;}}</button>
+          <button mat-raised-button class="btn-class confirm" *ngIf="currentAction == &apos;edit&apos;" (click)="nextStep(stepperIndex)" [disabled]="!groupName">{{stepperIndex == 3 ? &apos;Update&apos; : &apos;Next&apos;}}</button>
+        </div>
+      </mat-card-content>
+    </mat-card>
+  </div>
+</div>

@@ -1,0 +1,146 @@
+<div class="outer">
+    <div class="header">
+        <span class="title">Dashboard</span>
+    </div>
+    <mat-divider></mat-divider>
+    <div class="content">
+        <div class="content-cards">
+            <mat-card (click)="awtApprvl()" id="AP"  class="pointer">
+                <mat-icon>update</mat-icon>
+                <span>AWAITING APPROVAL</span>
+            </mat-card>
+            <mat-card (click)="Apprvd()" id="APPR" class="pointer">
+                <mat-icon>thumb_up</mat-icon>
+                <span>APPROVED</span>
+            </mat-card>
+            <mat-card (click)="Reject()" id="Reject" class="pointer">
+                <i class="material-icons">person_add_disabled</i>
+                <span>REJECTED</span>
+            </mat-card>
+            <mat-card *ngIf="admin" id="docs" (click)="Docs()" class="pointer">
+                <mat-icon> insert_drive_file</mat-icon>
+                <span>ALL DOCUMENT STATUS</span>
+            </mat-card>
+        </div>
+
+        <div class="subject-div">
+            <mat-card class="subject">
+                {{subject}}
+            </mat-card>
+        </div>
+
+        <!--............... -->
+        <div class="table">
+            <table mat-table [dataSource]="dataSource" id="table2" class="dashboard-table">
+                
+                    <!--- Note that these columns can be defined in any order.
+                  The actual rendered columns are set as a property on the row definition" -->
+
+                    <!-- Column -->
+                    <ng-container matColumnDef="title">
+                        <th class="th" mat-header-cell style=" border-top-left-radius: 7px;background-color: #add8e6;" *matHeaderCellDef> Title </th>
+                        <td mat-cell class="ellipsis-text" *matCellDef="let element"> {{element.name}} </td>
+                    </ng-container>
+
+                    <!-- Column -->
+                    <ng-container matColumnDef="ownerofawaitapproval">
+                        <th class="th" [hidden]="!dateofawaitapproval" mat-header-cell style="background-color: #add8e6;" *matHeaderCellDef> Document Owner </th>
+                        <td mat-cell [hidden]="!dateofawaitapproval" class="ellipsis-text" *matCellDef="let element" >
+                            <div *ngFor = "let docOwner of element?.documentOwner;let isLast=last"><span [ngClass]="{'orangeText': currentUserInfo.displayName==docOwner?.displayName}">{{docOwner?.displayName}}&nbsp;{{isLast ? '' : ', '}}</span></div>  </td>
+                    </ng-container>
+                    <ng-container matColumnDef="ownerofapproval">
+                        <th class="th" [hidden]="!dateofapproval" mat-header-cell style="background-color: #add8e6;" *matHeaderCellDef> Document Owner </th>
+                        <td mat-cell [hidden]="!dateofapproval" class="ellipsis-text" *matCellDef="let element" >
+                            <div *ngFor = "let docOwner of element?.documentOwner;let isLast=last"><span [ngClass]="{'greenText': currentUserInfo.displayName==docOwner?.displayName}">{{docOwner?.displayName}}&nbsp;{{isLast ? '' : ', '}}</span></div>  </td>
+                    </ng-container>
+                    <ng-container matColumnDef="ownerofrejected">
+                        <th class="th" [hidden]="!dateofrejected" mat-header-cell style="background-color: #add8e6;" *matHeaderCellDef> Document Owner </th>
+                        <td mat-cell [hidden]="!dateofrejected" class="ellipsis-text" *matCellDef="let element" >
+                            <div *ngFor = "let docOwner of element?.documentOwner;let isLast=last"><span [ngClass]="{'redText': currentUserInfo.displayName==docOwner?.displayName}">{{docOwner?.displayName}}&nbsp;{{isLast ? '' : ', '}}</span></div>  </td>
+                    </ng-container>
+                    <ng-container matColumnDef="ownerofall">
+                        <th class="th" [hidden]="!dateofall" mat-header-cell style="background-color: #add8e6;" *matHeaderCellDef> Document Owner </th>
+                        <td mat-cell [hidden]="!dateofall"  class="ellipsis-text" *matCellDef="let element" >
+                            <div *ngFor = "let docOwner of element?.documentOwner;let isLast=last"><span [ngClass]="{'blueText': currentUserInfo.displayName==docOwner?.displayName}">{{docOwner?.displayName}}&nbsp;{{isLast ? '' : ', '}}</span></div> </td>
+                    </ng-container>
+                    <!--  -->
+                    <!-- Column -->
+                    <ng-container  matColumnDef="app1ofawaitapproval">
+                        <th class="th" [hidden]="!dateofawaitapproval" mat-header-cell style="background-color: #add8e6;" *matHeaderCellDef> Approver 1 </th>
+                        <td mat-cell [hidden]="!dateofawaitapproval" class="ellipsis-text" *matCellDef="let element" >
+                            <span [ngClass]="{'orangeText': currentUserInfo.displayName==element.approvalLevels[0]?.displayName}">
+                         {{element.approvalLevels? element.approvalLevels[0]?.displayName : ''}} </span></td>
+                    </ng-container>
+                    <ng-container  matColumnDef="app1ofapproval">
+                        <th class="th" [hidden]="!dateofapproval" mat-header-cell style="background-color: #add8e6;" *matHeaderCellDef> Approver 1 </th>
+                        <td mat-cell [hidden]="!dateofapproval" class="ellipsis-text" *matCellDef="let element" >
+                            <span [ngClass]="{'greenText': currentUserInfo.displayName==element.approvalLevels[0]?.displayName}">
+                         {{element.approvalLevels? element.approvalLevels[0]?.displayName : ''}} </span></td>
+                    </ng-container>
+                    <ng-container  matColumnDef="app1ofall">
+                        <th class="th" [hidden]="!dateofall" mat-header-cell style="background-color: #add8e6;" *matHeaderCellDef> Approver 1 </th>
+                        <td mat-cell [hidden]="!dateofall" class="ellipsis-text" *matCellDef="let element" >
+                            <span [ngClass]="{'blueText': currentUserInfo.displayName==element.approvalLevels[0]?.displayName}">
+                         {{element.approvalLevels? element.approvalLevels[0]?.displayName : ''}} </span></td>
+                    </ng-container>
+                     <!-- Column -->
+                     <ng-container matColumnDef="rjct">
+                        <th class="th" [hidden]="!rejected" mat-header-cell style="background-color: #add8e6;" *matHeaderCellDef> Rejected By </th>
+                        <td mat-cell [hidden]="!rejected" class="ellipsis-text" *matCellDef="let element" >
+                             <span [ngClass]="{'redText': currentUserInfo.displayName==element.approvalLevels[0]?.displayName}">{{element.approvalLevels? element.approvalLevels[0]?.displayName : ''}}</span>
+                             </td>
+                    </ng-container>
+
+                    <!-- Column -->
+                    <ng-container matColumnDef="app2ofawaitapproval">
+                        <th class="th" [hidden]="!dateofawaitapproval" mat-header-cell style="background-color: #add8e6;" *matHeaderCellDef> Approver 2 </th>
+                        <td mat-cell [hidden]="!dateofawaitapproval" class="ellipsis-text" *matCellDef="let element" >
+                            <span [ngClass]="{'orangeText': currentUserInfo.displayName==element.approvalLevels[1]?.displayName}">
+                            {{element.approvalLevels? element.approvalLevels[1]?.displayName : ''}}
+                         </span>
+                        </td>
+                    </ng-container>
+                    <ng-container matColumnDef="app2ofapproval">
+                        <th class="th" [hidden]="!dateofapproval" mat-header-cell style="background-color: #add8e6;" *matHeaderCellDef> Approver 2 </th>
+                        <td mat-cell [hidden]="!dateofapproval" class="ellipsis-text" *matCellDef="let element" >
+                            <span [ngClass]="{'greenText': currentUserInfo.displayName==element.approvalLevels[1]?.displayName}">
+                            {{element.approvalLevels? element.approvalLevels[1]?.displayName : ''}}
+                         </span>
+                        </td>
+                    </ng-container>
+                    <ng-container matColumnDef="app2ofall">
+                        <th class="th" [hidden]="!dateofall" mat-header-cell style="background-color: #add8e6;" *matHeaderCellDef> Approver 2 </th>
+                        <td mat-cell [hidden]="!dateofall" class="ellipsis-text" *matCellDef="let element" >
+                            <span [ngClass]="{'blueText': currentUserInfo.displayName==element.approvalLevels[1]?.displayName}">
+                            {{element.approvalLevels? element.approvalLevels[1]?.displayName : ''}}
+                         </span>
+                        </td>
+                    </ng-container>
+                    <ng-container matColumnDef="dateofawaitapproval">
+                        <th class="th" [hidden]="!dateofawaitapproval" mat-header-cell style=" border-top-right-radius: 7px;background-color: #add8e6;" *matHeaderCellDef> Date of Submission </th>
+                        <td mat-cell [hidden]="!dateofawaitapproval" class="ellipsis-text" *matCellDef="let element"> {{element.timestamp | date:'dd-MM-yyyy'}}</td>
+                    </ng-container>
+                    <ng-container matColumnDef="dateofapproval">
+                        <th class="th" [hidden]="!dateofapproval" mat-header-cell style=" border-top-right-radius: 7px;background-color: #add8e6;" *matHeaderCellDef> Date of Approval </th>
+                        <td mat-cell [hidden]="!dateofapproval" class="ellipsis-text" *matCellDef="let element"> {{element.timestamp | date:'dd-MM-yyyy'}}</td>
+                    </ng-container>
+                    <ng-container matColumnDef="dateofrejected">
+                        <th class="th" [hidden]="!dateofrejected" mat-header-cell style=" border-top-right-radius: 7px;background-color: #add8e6;" *matHeaderCellDef> Date of Rejection </th>
+                        <td mat-cell [hidden]="!dateofrejected" class="ellipsis-text" *matCellDef="let element"> {{element.timestamp | date:'dd-MM-yyyy'}}</td>
+                    </ng-container>
+                    
+                    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+           
+            </table>
+
+
+        </div>
+   
+    </div>
+    <div (click)="more()" class="more pointer">
+        <mat-icon style="align-items: center;font-size: small;justify-content: flex-end;display: flex;">fast_rewind</mat-icon>
+        <span style="font-weight: bold;color:#4ba0dd">View More</span>
+    </div>
+    
+</div>

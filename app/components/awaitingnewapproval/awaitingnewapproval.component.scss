@@ -1,0 +1,154 @@
+//trash
+
+.icons {
+  width: 65%;
+  place-content: flex-end !important;
+}
+
+.trashchild{
+  padding-top: 8px;
+  text-align: center;
+} 
+
+.tableheader{
+  background-color: #ADD8E6;
+  color: black;
+  font-weight: bold;
+ }
+
+.trashborder{
+  border-top: 8px solid #c5c5c5;
+  border-right: 2px solid #c5c5c5;
+  border-left: 2px solid #c5c5c5;
+  border-radius: 7px 7px 0px 0px;
+}
+
+
+.trashchildactive{
+  padding-top: 8px;
+  text-align: center;
+  color: #0072C6;
+}
+
+
+.table-data td.mat-cell, .table-data td.mat-footer-cell, .table-data th.mat-header-cell {
+ 
+  width: auto !important;
+}
+.pad20{
+  padding-bottom: 20px;
+}
+
+.icons{
+  width: 75% !important;
+}
+mat-card{
+box-shadow: none !important;
+}
+
+
+.red{
+  color: #EB5757;
+  font-size: 13px;
+}
+.yellow{
+  color: #F6A609;
+  font-size: 13px;
+}
+.skyblue{
+  color: #5597E3;
+  font-size: 13px;
+}
+.orange{
+  color: #F2994A;
+  font-size: 13px;
+}
+
+.detailkey{
+  text-align:left;
+  color: #4DCFE0;
+}
+.detailkeylog{
+  text-align:left;
+}
+.detailvalue{
+  text-align:left;
+  word-wrap: break-word
+}
+
+.rowback{
+  background-color:black;
+}
+.demo-row-is-clicked {
+  background-color: #e6edee;
+}
+
+.myarrow{
+  font-size: 28px !important;
+line-height: 7px;
+cursor:pointer;
+}
+
+.p_15{
+  padding: 0 15px !important;
+}
+
+.m-10{
+  margin-top: 20px;
+}
+
+.m-r-5{
+  margin-right: 5% !important;
+  margin-top: 40px !important;
+}
+
+.mat-mini-fab.mat-accent{
+  background: #0072C6 !important;
+  color:#fff !important
+}
+
+
+.gray{
+  color:#A1A4B1;
+}
+.boxsize{
+  padding:40px 0px;
+}
+
+.border{
+  border-bottom: 1px solid  #CACCCF ; 
+}
+.border-left{
+   border-left:1px solid #E8E8E8;
+}
+.detail-margin{
+  margin:5%;
+}
+.details-box{
+  width:100%;
+  border-bottom:1px solid #E8E8E8;
+}
+
+.word-break{
+  word-break: break-all;
+}
+.border-btm{
+  border-bottom:1px solid  #ddd;
+}
+//detail
+.detail{
+  border-left:1px solid #A1A4B1;
+}
+
+.folder-detail{
+  border-bottom: 1px solid rgb(196, 192, 192);
+  padding:12px 15px;
+}
+
+.selectedfile{
+  opacity: 0.8;
+  background-color:rgba(243, 243, 243, 0.724);
+}
+.fileSelect, .viewDetails{
+  display: none;
+}

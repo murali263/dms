@@ -1,0 +1,76 @@
+<div fxLayout="column " class="card-padding " fxLayoutGap="0.8em" fxLayoutAlign="start stretch" [fxShow]="true" [fxHide]="false">
+  <div class="mtitle">
+    Trash</div>
+  <div fxLayout="row wrap" fxLayoutAlign="start stretch" [fxShow]="true" [fxHide]="false">
+    <div style="width:70%">
+      <div style="height: 48px;border-style: solid none;border-color: #c5c5c5;"></div>
+      <table mat-table [dataSource]="dataSource" class="table-data mat-elevation-z8 pt20 pointer" style="width:100%;"> 
+
+        <!--- Note that these columns can be defined in any order.
+        The actual rendered columns are set as a property on the row definition" --> 
+
+        <ng-container matColumnDef="name">
+          <th mat-header-cell class="tableheader"  *matHeaderCellDef> Folder/File </th>
+          <td mat-cell *matCellDef="let element" [matTooltip]="element.name"> {{element.name}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="owner">
+          <th mat-header-cell class="tableheader"  *matHeaderCellDef>Document Owner</th>
+          <td mat-cell *matCellDef="let element" ><div *ngFor="let docOwner of element?.documentOwner;  let isLast=last" [matTooltip]="docOwner.displayName">
+            {{docOwner?.displayName}}&nbsp;{{isLast ? '' : ', '}} </div></td>
+        </ng-container>
+
+        <!-- Name Column -->
+        <ng-container matColumnDef="deletedAt">   
+          <th mat-header-cell class="tableheader" *matHeaderCellDef> Removed By </th>
+          <td mat-cell *matCellDef="let element"> {{element.deletedBy}} </td>
+        </ng-container>
+        
+
+        <ng-container matColumnDef="removeddate">   
+          <th mat-header-cell class="tableheader" *matHeaderCellDef> Removed Date </th>
+          <td mat-cell *matCellDef="let element"> {{element.deletedAt | date: &apos;MMM d, y, h:mm:ss a&apos;}} </td>
+        </ng-container>
+
+
+        <!-- Weight Column -->
+        <ng-container matColumnDef="action">
+          <th  mat-header-cell *matHeaderCellDef class="tableheader" style="text-align:center;"> Action </th>
+          <td mat-cell *matCellDef="let element">
+            <div fxLayout="row" fxLayoutGap="4px" fxLayoutAlign="center center" class="icons">
+              <mat-icon matTooltip="Download" class="pointer" *ngIf="element.type == &apos;File&apos;" (click)="downloadFile(element.fileName, element.name, element.fsuuid , element.clientContainerName)">arrow_downward</mat-icon>
+              <mat-icon matTooltip="Restore Back" class="pointer" (click)="restoreFS(element)">replay</mat-icon>
+              <mat-icon matTooltip="Delete" class="pointer" (click)="deleteFilesPopup(element)">cancel</mat-icon>
+            </div>
+
+
+          </td>
+        </ng-container>
+
+        <!-- <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row (click)="onrowclick(row);clickedRows.add(row)" [class.demo-row-is-clicked]="clickedRows.has(row)"  *matRowDef="let row; columns: displayedColumns;"></tr> -->
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row  *matRowDef="let row;let i=index; columns: displayedColumns;" style="height:50px;" (click)="rowdataothers(row);currentFileIndex=i;$event.stopPropagation();cuurentFile=true;"
+        [class]="currentFileIndex == i &amp;&amp; cuurentFile ? &apos;selectedfile pointer&apos;: &apos;pointer&apos;"></tr>
+      </table>
+      
+      <div style="padding: 10px;">
+         <div fxLayout="row nowrap" class="p_15 m-10 m-r-5"  fxLayoutAlign="end center" [fxShow]="true" [fxHide]="false" *ngIf="totalCount &gt; 0">
+          <div fxLayout="row wrap" fxLayoutAlign="start stretch" [fxShow]="true" [fxHide]="false"></div>
+          <div fxLayout="row wrap" fxLayoutAlign="end end" [fxShow]="true" [fxHide]="false">
+            <mat-icon class="myarrow" *ngIf="currntPageNum != 1"  (click)="loadPrevious(currntPageNum ,pageSize)">keyboard_arrow_left</mat-icon>&nbsp;&nbsp;
+            <button mat-mini-fab color="accent" >{{currntPageNum}}</button>
+            <mat-icon class="myarrow"   *ngIf="currntPageNum != totalpage" (click)="loadNext(currntPageNum ,pageSize)">keyboard_arrow_right</mat-icon> </div>
+        </div>
+
+      </div>
+
+      
+
+    </div>
+    <div fxLayout="column" style="width: 30%;border-left: 2px solid #c5c5c5;">
+      <bh-documentdetails #docsChildDetails class=""></bh-documentdetails>
+    </div>
+  </div>
+</div>

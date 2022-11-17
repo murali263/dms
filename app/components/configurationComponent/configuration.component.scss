@@ -1,0 +1,135 @@
+// .green{
+//     color:#5EA73E;
+// }
+
+.green{
+    color:#4DCFE0;
+}
+
+.savebtn{
+    color:white;
+    background-color: #4DCFE0;
+    border-radius: 0px;
+    width:120px;
+    border: 1px solid #A1A4B1;
+    margin-right:20px;
+}
+.newstyle{
+  background: #0072C6 !important;
+height: 24px;
+line-height: 10px !important;
+padding: 0 46px !important;
+border-radius: 16px !important;
+border: #0072C6 1px solid !important;
+letter-spacing: 1px;
+font-weight: 600;
+font-size: 16px;
+}
+.border_style{
+  border-bottom:1px #c6c6c6 solid  !important;
+
+}
+.mat-mini-fab.mat-accent{
+  background: #0072C6 !important;
+  color:#fff !important
+}
+.myarrow{
+  font-size: 28px !important;
+line-height: 7px;
+cursor:pointer;
+}
+.p_15{
+  padding: 0 15px !important;
+}
+.l-10{
+  padding-left: 20px !important;
+}
+.m-10{
+  margin-top: 20px;
+}
+.width-30{
+  width: 35% !important;
+  line-height: 0px;
+}
+.m-40{
+  margin-top: 40px;
+}
+.mat-header-row{
+  background: #ADD8E6 !important;
+  .mat-header-cell{
+    color:#000 !important;
+    font-size: 15px !important;
+  }
+}
+.mat-icon{
+  color:#000 !important;
+}
+.mat-row{
+  .mat-cell{
+    color:#605f5f !important;
+    a{
+      color:#605f5f !important;
+      text-decoration: none;
+    }
+  }
+}
+.m-r-5{
+  margin-right: 5% !important;
+  margin-top: 60px !important;
+}
+.newsearchborder{
+  border: #0072C6 solid 1px;
+  border-radius: 16px !important;
+}
+.title, h3{
+  font-weight: 300 !important;
+  font-size: 22px;
+  color:#000 !important;
+}
+.input-field-search{
+  border: none !important;
+  border-radius: 16px 0px 0px 16px !important;
+  color:#605f5f !important;
+  font-size: 16px !important;
+  &:active{
+    border: #0072C6 solid 1px;
+    border-radius: 16px 0px 0px 16px !important;
+  }
+}
+.prefix-icon{
+  background: #fff !important;
+  color: #000;
+  border: #0072C6 solid 1px;
+  margin: 1px;
+  border-radius: 16px !important;
+}
+
+.row{
+    flex:-1px;
+}
+.feilds{
+    background-color: #F3F2F2;
+    border-radius: 5px;
+    max-width: 29em;
+    width:100%;
+    height:41.2px;
+    padding-right: 19px;
+}
+.iconcolor{
+    color:#828282;
+}
+
+.height{
+    margin:7px 20px;
+    height:401px;
+    overflow:auto;
+}
+.maxwidth{
+    width: 100%;
+    margin-top: 10px;
+    margin-right: inherit;
+}
+
+.card-content{
+    padding:0px 20px;
+}
